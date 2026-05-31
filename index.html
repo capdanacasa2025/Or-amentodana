@@ -1488,24 +1488,75 @@ function fromSupa_orcamento(r){
 // Cache local para performance
 const _cache = {};
 
+// Estado de conexão com Supabase
+let _supaOnline = true;
+
 const SUPA_DB = {
   async get(tabela){
     if(_cache[tabela]) return _cache[tabela];
+    // Tentar Supabase primeiro
+    if(_supaOnline){
+      try{
+        let rows;
+        const order = '?order=id.asc';
+        if(tabela==='produtos')    rows=(await SUPA.get('produtos',order)).map(fromSupa_produto);
+        else if(tabela==='clientes')   rows=(await SUPA.get('clientes',order)).map(fromSupa_cliente);
+        else if(tabela==='vendedores') rows=(await SUPA.get('vendedores',order)).map(fromSupa_vendedor);
+        else if(tabela==='arquitetos') rows=(await SUPA.get('arquitetos',order)).map(fromSupa_arquiteto);
+        else if(tabela==='orcamentos') rows=(await SUPA.get('orcamentos',order)).map(fromSupa_orcamento);
+        else rows=[];
+        _cache[tabela]=rows;
+        // Sincronizar com localStorage como backup
+        try{ localStorage.setItem('deco_'+tabela, JSON.stringify(rows)); }catch(e){}
+        _supaOnline = true;
+        return rows;
+      }catch(e){
+        console.warn('Supabase offline, usando localStorage:', tabela, e.message);
+        _supaOnline = false;
+        showOfflineBanner();
+      }
+    }
+    // Fallback: localStorage
     try{
-      let rows;
-      const order = tabela==='orcamentos'?'?order=id.asc':'?order=id.asc';
-      if(tabela==='produtos')    rows=(await SUPA.get('produtos',order)).map(fromSupa_produto);
-      else if(tabela==='clientes')   rows=(await SUPA.get('clientes',order)).map(fromSupa_cliente);
-      else if(tabela==='vendedores') rows=(await SUPA.get('vendedores',order)).map(fromSupa_vendedor);
-      else if(tabela==='arquitetos') rows=(await SUPA.get('arquitetos',order)).map(fromSupa_arquiteto);
-      else if(tabela==='orcamentos') rows=(await SUPA.get('orcamentos',order)).map(fromSupa_orcamento);
-      else rows=[];
-      _cache[tabela]=rows;
-      return rows;
-    }catch(e){ console.error('SUPA_DB.get',tabela,e); return []; }
+      const local = JSON.parse(localStorage.getItem('deco_'+tabela)||'[]');
+      _cache[tabela] = local;
+      return local;
+    }catch(e){ return []; }
   },
-  invalidate(tabela){ delete _cache[tabela]; },
+  invalidate(tabela){
+    delete _cache[tabela];
+    // Ao invalidar, forçar retry no Supabase
+    _supaOnline = true;
+  },
 };
+
+function showOfflineBanner(){
+  let b = document.getElementById('offline-banner');
+  if(!b){
+    b = document.createElement('div');
+    b.id = 'offline-banner';
+    b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#c08040;color:#fff;text-align:center;padding:8px;font-size:12px;z-index:9998;font-family:DM Sans,sans-serif';
+    b.innerHTML = '⚠️ Supabase offline — usando dados locais. <button onclick="retrySupabase()" style="background:#fff;color:#c08040;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:12px">🔄 Tentar reconectar</button> <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#fff;cursor:pointer;margin-left:8px">✕</button>';
+    document.body.appendChild(b);
+  }
+}
+
+async function retrySupabase(){
+  _supaOnline = true;
+  Object.keys(_cache).forEach(k=>delete _cache[k]);
+  const b = document.getElementById('offline-banner');
+  if(b) b.innerHTML = '🔄 Reconectando ao Supabase...';
+  try{
+    await SUPA.get('produtos','?select=id&limit=1');
+    if(b) b.remove();
+    alertMsg('✅ Supabase reconectado!');
+    // Recarregar tela atual
+    const active = document.querySelector('.nav-item.active');
+    if(active){ active.click(); }
+  }catch(e){
+    if(b) b.innerHTML = '⚠️ Supabase ainda offline. <button onclick="retrySupabase()" style="background:#fff;color:#c08040;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;margin-left:8px;font-size:12px">🔄 Tentar novamente</button>';
+  }
+}
 
 // ── Config no Supabase (empresa, usuarios, permissoes) ────────
 async function supaGetConfig(chave){
@@ -1548,18 +1599,19 @@ function goPage(page){
   document.querySelectorAll('.nav-item').forEach(n=>{ if(n.getAttribute('onclick')?.includes(`'${page}'`)) n.classList.add('active'); });
   document.getElementById('page-title').textContent = pageConfig[page].title;
   document.getElementById('topbar-actions').innerHTML = '';
-  if(page==='dashboard') renderDashboard();
-  if(page==='produtos') renderProdutos();
-  if(page==='clientes') renderClientes();
-  if(page==='vendedores') renderVendedores();
-  if(page==='orcamentos') renderOrcamentos();
-  if(page==='diretoria') renderDiretoria();
-  if(page==='aguardando') renderAguardando();
-  if(page==='reprovados') renderReprovados();
-  if(page==='cobranca') renderCobranca();
-  if(page==='pedidos') renderPedidos();
-  if(page==='arquitetos') renderArquitetos();
-  if(page==='dash-arq') renderDashArq();
+  const _c = e => console.error('render err:', page, e);
+  if(page==='dashboard') renderDashboard().catch(_c);
+  if(page==='produtos')  renderProdutos().catch(_c);
+  if(page==='clientes')  renderClientes().catch(_c);
+  if(page==='vendedores') renderVendedores().catch(_c);
+  if(page==='orcamentos') renderOrcamentos().catch(_c);
+  if(page==='diretoria') renderDiretoria().catch(_c);
+  if(page==='aguardando') renderAguardando().catch(_c);
+  if(page==='reprovados') renderReprovados().catch(_c);
+  if(page==='cobranca') renderCobranca().catch(_c);
+  if(page==='pedidos') renderPedidos().catch(_c);
+  if(page==='arquitetos') renderArquitetos().catch(_c);
+  if(page==='dash-arq') renderDashArq().catch(_c);
   if(page==='empresa') renderEmpresa();
   if(page==='usuarios') renderUsuarios();
 }
@@ -1638,8 +1690,9 @@ async function renderProdutos(){
   }).join('');
 }
 
-function editProduto(id){
-  const p = DB.get('produtos').find(x=>x.id===id); if(!p) return;
+async function editProduto(id){
+  const todos = await SUPA_DB.get('produtos');
+  const p = todos.find(x=>x.id===id); if(!p) return;
   editProdId = id;
   document.getElementById('modal-produto-title').textContent='Editar Produto';
   document.getElementById('prod-nome').value=p.nome||'';
@@ -1670,7 +1723,7 @@ function addFornecedorRow(nome='', custo=''){
   wrap.appendChild(div);
 }
 
-function salvarProduto(){
+async function salvarProduto(){
   const nome = document.getElementById('prod-nome').value.trim();
   if(!nome) return alertMsg('Informe o nome do produto','danger');
 
@@ -1691,7 +1744,7 @@ function salvarProduto(){
   // Custo padrão = menor custo entre fornecedores
   const custoMin = Math.min(...fornecedores.map(f=>f.custo));
 
-  const prods = DB.get('produtos');
+  const prods = await SUPA_DB.get('produtos');
   const data = {
     id: editProdId || DB.nextId('produtos'),
     nome, custo: custoMin, fornecedores,
@@ -1764,8 +1817,8 @@ async function renderClientes(){
     </tr>`).join('');
 }
 
-function editCliente(id){
-  const c=DB.get('clientes').find(x=>x.id===id); if(!c) return;
+async function editCliente(id){
+  const c=(await SUPA_DB.get('clientes')).find(x=>x.id===id); if(!c) return;
   editCliId=id;
   document.getElementById('cli-nome').value=c.nome||'';
   document.getElementById('cli-doc').value=c.doc||'';
@@ -1778,10 +1831,10 @@ function editCliente(id){
   openModal('modal-cliente');
 }
 
-function salvarCliente(){
+async function salvarCliente(){
   const nome=document.getElementById('cli-nome').value.trim();
   if(!nome) return alertMsg('Informe o nome do cliente','danger');
-  const clientes=DB.get('clientes');
+  const clientes=await SUPA_DB.get('clientes');
   const data={
     id: editCliId||DB.nextId('clientes'),
     nome,
@@ -1838,8 +1891,8 @@ async function renderVendedores(){
     </tr>`).join('');
 }
 
-function editVendedor(id){
-  const v=DB.get('vendedores').find(x=>x.id===id); if(!v) return;
+async function editVendedor(id){
+  const v=(await SUPA_DB.get('vendedores')).find(x=>x.id===id); if(!v) return;
   editVendId=id;
   document.getElementById('vend-nome').value=v.nome||'';
   document.getElementById('vend-email').value=v.email||'';
@@ -1848,10 +1901,10 @@ function editVendedor(id){
   openModal('modal-vendedor');
 }
 
-function salvarVendedor(){
+async function salvarVendedor(){
   const nome=document.getElementById('vend-nome').value.trim();
   if(!nome) return alertMsg('Informe o nome do vendedor','danger');
-  const vends=DB.get('vendedores');
+  const vends=await SUPA_DB.get('vendedores');
   const data={
     id:editVendId||DB.nextId('vendedores'),
     nome,
@@ -2091,16 +2144,17 @@ function aplicarFornecedor(itemIdx, fornIdx){
 }
 
 // PRODUCT SELECT
-function openProdSelect(){
+async function openProdSelect(){
   selectedProds=new Set();
   document.getElementById('search-prod-select').value='';
-  renderProdSelect();
+  await renderProdSelect();
   openModal('modal-prod-select');
 }
 
-function renderProdSelect(){
+async function renderProdSelect(){
   const q=(document.getElementById('search-prod-select')?.value||'').toLowerCase();
-  const prods=DB.get('produtos').filter(p=>!q||p.nome.toLowerCase().includes(q));
+  const _allP=await SUPA_DB.get('produtos');
+  const prods=_allP.filter(p=>!q||p.nome.toLowerCase().includes(q));
   const list=document.getElementById('prod-select-list');
   if(!prods.length){ list.innerHTML=`<div style="padding:20px;text-align:center;color:var(--text3)">Nenhum produto encontrado</div>`; return; }
   list.innerHTML=prods.map(p=>{
@@ -2300,10 +2354,10 @@ async function salvarOrcamento(){
 }
 
 
-function salvarESair(novoStatus){
+async function salvarESair(novoStatus){
   // Setar o status antes de salvar
   document.getElementById('orc-status').value = novoStatus;
-  salvarOrcamento();
+  await salvarOrcamento();
 }
 
 function filterOrc(btn, val){
@@ -2428,7 +2482,11 @@ async function mudarStatus(id, novoStatus){
   try{
     await SUPA.patch('orcamentos',{status:novoStatus},'?id=eq.'+id);
     SUPA_DB.invalidate('orcamentos');
-  }catch(e){ console.error('mudarStatus SUPA:',e); }
+  }catch(e){
+    console.warn('mudarStatus offline, salvando local');
+    DB.set('orcamentos',orcs);
+    showOfflineBanner();
+  }
   DB.set('orcamentos',orcs);
 
   // Fechar TODOS os modais abertos
@@ -2830,11 +2888,11 @@ async function renderArquitetos(){
   }).join('');
 }
 
-function salvarArquiteto(){
+async function salvarArquiteto(){
   const nome = document.getElementById('arq-nome').value.trim();
   if(!nome) return alertMsg('Informe o nome','danger');
   const editId = parseInt(document.getElementById('arq-edit-id').value)||0;
-  const arqs = getArquitetos();
+  const arqs = await SUPA_DB.get('arquitetos');
   const data = {
     id: editId||Date.now(),
     nome,
@@ -2863,8 +2921,8 @@ function salvarArquiteto(){
   }catch(e){ alertMsg('Erro: '+e.message,'danger'); }
 }
 
-function editarArquiteto(id){
-  const a = getArquitetos().find(x=>x.id===id); if(!a) return;
+async function editarArquiteto(id){
+  const a = (await SUPA_DB.get('arquitetos')).find(x=>x.id===id); if(!a) return;
   document.getElementById('arq-edit-id').value=id;
   document.getElementById('arq-nome').value=a.nome||'';
   document.getElementById('arq-cau').value=a.cau||'';
@@ -2878,8 +2936,8 @@ function editarArquiteto(id){
   openModal('modal-arquiteto');
 }
 
-function deletarArquiteto(id){
-  const a = getArquitetos().find(x=>x.id===id);
+async function deletarArquiteto(id){
+  const a = (await SUPA_DB.get('arquitetos')).find(x=>x.id===id);
   if(!confirm('Excluir arquiteto "'+a?.nome+'"?')) return;
   try{
     await SUPA.del('arquitetos','?id=eq.'+id);
@@ -3459,7 +3517,7 @@ function removerSalvo(idx){
   renderSenhasSalvas();
 }
 
-function doLogin(){
+async function doLogin(){
   const u = (document.getElementById('login-user').value||'').trim();
   const p = document.getElementById('login-pass').value||'';
   const err = document.getElementById('login-err');
@@ -3494,7 +3552,7 @@ function doLogin(){
   document.getElementById('logged-name').textContent = found.nome;
   // Sincronizar configurações do Supabase
   syncEmpresaSupa().then(()=>renderEmpresa());
-  renderDashboard();
+  await renderDashboard();
 }
 
 // Check session on load
@@ -3519,7 +3577,7 @@ window.addEventListener('DOMContentLoaded', function(){
     if(userExists){
       loginScreen.style.display = 'none';
       document.getElementById('logged-name').textContent = s.nome;
-      renderDashboard();
+      renderDashboard().catch(e=>console.error('dash:',e));
     } else {
       localStorage.removeItem('deco_session');
       loginScreen.style.display = 'flex';
