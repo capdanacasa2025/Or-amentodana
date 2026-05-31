@@ -141,7 +141,7 @@ textarea { resize:vertical; min-height:80px; }
 /* ORCAMENTO ITEMS */
 .orcamento-items { display:flex; flex-direction:column; gap:10px; }
 .item-row {
-  display:grid; grid-template-columns:76px 1fr 80px 110px 110px auto auto;
+  display:grid; grid-template-columns:76px 1fr 135px 70px 100px 100px auto auto;
   align-items:center; gap:12px; background:var(--surface2); padding:10px 12px;
   border-radius:var(--radius2); border:1px solid var(--border);
 }
@@ -443,6 +443,7 @@ textarea { resize:vertical; min-height:80px; }
     <div class="nav-item" onclick="goPage('clientes')"><span class="ico">👤</span> Clientes</div>
     <div class="nav-item" onclick="goPage('vendedores')"><span class="ico">🤝</span> Vendedores</div>
     <div class="nav-item" onclick="goPage('arquitetos')"><span class="ico">📐</span> Arquitetos</div>
+    <div class="nav-item" onclick="goPage('ambientes')"><span class="ico">🏠</span> Ambientes</div>
 
     <div class="nav-group">Comercial</div>
     <div class="nav-item" onclick="goPage('orcamentos')"><span class="ico">📄</span> Orçamentos</div>
@@ -538,7 +539,7 @@ textarea { resize:vertical; min-height:80px; }
       </div>
       <div class="search-bar"><input type="text" placeholder="Buscar produto..." id="search-produto" oninput="renderProdutos()"></div>
       <div class="table-wrap">
-        <table><thead><tr><th>Foto</th><th>Nome</th><th>Categoria</th><th>Custo</th><th>Ações</th></tr></thead>
+        <table><thead><tr><th>Foto</th><th>Nome</th><th>Ambiente</th><th>Custo</th><th>Ações</th></tr></thead>
         <tbody id="tbody-produtos"></tbody></table>
       </div>
     </div>
@@ -934,6 +935,51 @@ textarea { resize:vertical; min-height:80px; }
     </div>
   </div>
 
+  
+  <!-- ===== AMBIENTES ===== -->
+  <div class="page" id="page-ambientes">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🏠 Ambientes</span>
+        <button class="btn btn-gold" onclick="openModal('modal-ambiente')">+ Novo Ambiente</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar ambiente..." id="search-ambiente" oninput="renderAmbientes()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nome</th><th>Descrição</th><th>Produtos</th><th>Ações</th></tr></thead>
+          <tbody id="tbody-ambientes"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AMBIENTE -->
+  <div class="modal-overlay" id="modal-ambiente">
+    <div class="modal" style="width:480px">
+      <div class="modal-header">
+        <span class="modal-title" id="amb-modal-title">Novo Ambiente</span>
+        <button class="modal-close" onclick="closeModal('modal-ambiente');limparFormAmb()">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nome do Ambiente *</label>
+          <input type="text" id="amb-nome" placeholder="Ex: Sala de Estar, Quarto Master, Cozinha...">
+        </div>
+        <div class="form-group full">
+          <label>Descrição</label>
+          <textarea id="amb-descricao" rows="2" placeholder="Descrição opcional..."></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="amb-edit-id">
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-ambiente');limparFormAmb()">Cancelar</button>
+        <button class="btn btn-gold" onclick="salvarAmbiente()">💾 Salvar Ambiente</button>
+      </div>
+    </div>
+  </div>
+
   <!-- PDF OVERLAY -->
 
   <!-- ===== EMPRESA ===== -->
@@ -1132,17 +1178,8 @@ textarea { resize:vertical; min-height:80px; }
         <input type="text" id="prod-nome" placeholder="Ex: Luminária Art Deco">
       </div>
       <div class="form-group">
-        <label>Categoria</label>
-        <select id="prod-categoria">
-          <option value="">Selecione...</option>
-          <option>Iluminação</option>
-          <option>Mobiliário</option>
-          <option>Tapetes & Cortinas</option>
-          <option>Arte & Quadros</option>
-          <option>Vasos & Plantas</option>
-          <option>Acessórios</option>
-          <option>Outros</option>
-        </select>
+        <label>Ambiente</label>
+        <select id="prod-categoria"><option value="">Selecione o ambiente...</option></select>
       </div>
       <div class="form-group">
         <label>Unidade</label>
@@ -1587,6 +1624,7 @@ const pageConfig = {
   cobranca:   { title:'Cobrança Financeiro' },
   pedidos:    { title:'Pedidos Aprovados' },
   arquitetos: { title:'Arquitetos' },
+  ambientes:  { title:'Ambientes' },
   'dash-arq': { title:'Pontuação de Arquitetos' },
   empresa:    { title:'Configurações da Empresa' },
   usuarios:   { title:'Gerenciar Usuários' },
@@ -1662,6 +1700,7 @@ function goPage(page){
   if(page==='cobranca') renderCobranca().catch(_c);
   if(page==='pedidos') renderPedidos().catch(_c);
   if(page==='arquitetos') renderArquitetos().catch(_c);
+  if(page==='ambientes') renderAmbientes();
   if(page==='dash-arq') renderDashArq().catch(_c);
   if(page==='empresa') renderEmpresa();
   if(page==='usuarios') renderUsuarios();
@@ -1824,6 +1863,7 @@ function limparFormProduto(){
   editProdId=null;
   document.getElementById('modal-produto-title').textContent='Novo Produto';
   ['prod-nome','prod-descricao','prod-foto-data'].forEach(id=>document.getElementById(id).value='');
+  atualizarSelectAmbiente();
   document.getElementById('prod-categoria').value='';
   document.getElementById('prod-unidade').value='Un';
   document.getElementById('preview-foto').style.display='none';
@@ -2072,9 +2112,14 @@ function renderOrcItems(){
     // botão troca fornecedor (se produto tem múltiplos)
     const fornBtn = (item.fornecedores||[]).length>1
       ? `<button class="item-del" style="background:var(--surface2);color:var(--text2);font-size:10px;padding:4px 8px;width:auto" onclick="trocarFornecedor(${i})" title="Trocar fornecedor">🔄</button>` : '';
+    // Select de ambientes para este item
+    const ambs = getAmbientes();
+    const ambOptions = '<option value="">Ambiente...</option>'
+      + ambs.map(a=>`<option value="${a.nome}" ${item.ambiente===a.nome?'selected':''}>${a.nome}</option>`).join('');
     return `<div class="item-row">
       ${item.foto?`<img src="${item.foto}" class="item-thumb">`:`<div class="item-thumb"></div>`}
-      <div class="item-name">${item.nome}<small>${item.fornecedor?'🏭 '+item.fornecedor:(item.categoria||'')}</small></div>
+      <div class="item-name">${item.nome}<small>${item.fornecedor?'🏭 '+item.fornecedor:''}</small></div>
+      <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
       <input class="item-qty" type="number" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
       <div style="font-size:12px;color:var(--text3)">Custo: ${fmt(item.custo*item.qty)}</div>
       <div class="item-val">${fmt(venda)}</div>
@@ -2082,6 +2127,11 @@ function renderOrcItems(){
       <button class="item-del" onclick="removeItem(${i})">✕</button>
     </div>`;
   }).join('');
+}
+
+
+function updateAmbiente(i, val){
+  orcItems[i].ambiente = val;
 }
 
 function updateQty(i,val){
@@ -2252,7 +2302,7 @@ function confirmarProdSelect(){
     const forn = p.fornecedores||[];
     const custo = forn.length===1 ? forn[0].custo : p.custo;
     const fornNome = forn.length===1 ? forn[0].nome : '';
-    orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn});
+    orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn,ambiente:''});
   });
 
   if(comMultForn.length>0){
@@ -2906,6 +2956,113 @@ async function renderPedidos(){
 
 // ===================== DASHBOARD =====================
 
+
+// ===================== AMBIENTES =====================
+function getAmbientes(){
+  try{ return JSON.parse(localStorage.getItem('deco_ambientes')||'[]'); }catch{ return []; }
+}
+function saveAmbientes(a){ localStorage.setItem('deco_ambientes', JSON.stringify(a)); }
+
+function renderAmbientes(){
+  const q = (document.getElementById('search-ambiente')?.value||'').toLowerCase();
+  const ambs = getAmbientes().filter(a=>!q||a.nome.toLowerCase().includes(q));
+  const prods = JSON.parse(localStorage.getItem('deco_produtos')||'[]');
+  const tbody = document.getElementById('tbody-ambientes');
+  if(!ambs.length){
+    tbody.innerHTML='<tr><td colspan="4"><div class="empty"><div class="empty-ico">🏠</div><div class="empty-msg">Nenhum ambiente cadastrado</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = ambs.map(a=>{
+    const qtdProds = prods.filter(p=>p.categoria===a.nome).length;
+    return `<tr>
+      <td><b>${a.nome}</b></td>
+      <td style="color:var(--text3)">${a.descricao||'—'}</td>
+      <td><span class="badge badge-andamento">${qtdProds} produto${qtdProds!==1?'s':''}</span></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="editarAmbiente(${a.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deletarAmbiente(${a.id})">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Atualizar o select de ambiente no form de produto
+  atualizarSelectAmbiente();
+}
+
+function atualizarSelectAmbiente(){
+  const sel = document.getElementById('prod-categoria');
+  if(!sel) return;
+  const ambs = getAmbientes();
+  const current = sel.value;
+  sel.innerHTML = '<option value="">Selecione o ambiente...</option>'
+    + ambs.map(a=>`<option value="${a.nome}">${a.nome}</option>`).join('');
+  if(current) sel.value = current;
+}
+
+function salvarAmbiente(){
+  const nome = document.getElementById('amb-nome').value.trim();
+  if(!nome) return alertMsg('Informe o nome do ambiente','danger');
+  const editId = parseInt(document.getElementById('amb-edit-id').value)||0;
+  const ambs = getAmbientes();
+  if(!editId && ambs.find(a=>a.nome.toLowerCase()===nome.toLowerCase()))
+    return alertMsg('Ambiente já cadastrado','danger');
+  const data = {
+    id: editId||Date.now(),
+    nome,
+    descricao: document.getElementById('amb-descricao').value.trim()
+  };
+  if(editId){ const i=ambs.findIndex(x=>x.id===editId); ambs[i]=data; }
+  else ambs.push(data);
+  saveAmbientes(ambs);
+  closeModal('modal-ambiente');
+  limparFormAmb();
+  renderAmbientes();
+  alertMsg('Ambiente salvo!');
+}
+
+function editarAmbiente(id){
+  const a=getAmbientes().find(x=>x.id===id); if(!a) return;
+  document.getElementById('amb-edit-id').value=id;
+  document.getElementById('amb-nome').value=a.nome||'';
+  document.getElementById('amb-descricao').value=a.descricao||'';
+  document.getElementById('amb-modal-title').textContent='Editar Ambiente';
+  openModal('modal-ambiente');
+}
+
+function deletarAmbiente(id){
+  const a=getAmbientes().find(x=>x.id===id);
+  if(!confirm('Excluir ambiente "'+a?.nome+'"?')) return;
+  saveAmbientes(getAmbientes().filter(x=>x.id!==id));
+  renderAmbientes();
+  alertMsg('Ambiente excluído');
+}
+
+function limparFormAmb(){
+  document.getElementById('amb-edit-id').value='';
+  document.getElementById('amb-nome').value='';
+  document.getElementById('amb-descricao').value='';
+  document.getElementById('amb-modal-title').textContent='Novo Ambiente';
+}
+
+// Ambientes padrão se não houver nenhum
+function initAmbientes(){
+  if(!localStorage.getItem('deco_ambientes')){
+    const defaults=[
+      {id:1,nome:'Sala de Estar',descricao:''},
+      {id:2,nome:'Sala de Jantar',descricao:''},
+      {id:3,nome:'Quarto Master',descricao:''},
+      {id:4,nome:'Quarto de Hóspedes',descricao:''},
+      {id:5,nome:'Cozinha',descricao:''},
+      {id:6,nome:'Banheiro',descricao:''},
+      {id:7,nome:'Escritório',descricao:''},
+      {id:8,nome:'Varanda / Jardim',descricao:''},
+      {id:9,nome:'Hall / Corredor',descricao:''},
+      {id:10,nome:'Área de Serviço',descricao:''},
+    ];
+    saveAmbientes(defaults);
+  }
+}
+
 // ===================== ARQUITETOS =====================
 function getArquitetos(){ try{ return JSON.parse(localStorage.getItem('deco_arquitetos')||'[]'); }catch{ return []; } }
 function saveArquitetos(a){ localStorage.setItem('deco_arquitetos', JSON.stringify(a)); }
@@ -3211,6 +3368,7 @@ const TODAS_TELAS = [
   {id:'cobranca',   label:'💰 Cobrança'},
   {id:'pedidos',    label:'✅ Pedidos Aprovados'},
   {id:'arquitetos', label:'📐 Arquitetos'},
+  {id:'ambientes',  label:'🏠 Ambientes'},
   {id:'dash-arq',   label:'🏆 Pontuação Arquitetos'},
   {id:'empresa',    label:'🏢 Minha Empresa'},
   {id:'usuarios',   label:'👥 Usuários'},
@@ -3654,6 +3812,7 @@ async function doLogin(){
 window.addEventListener('DOMContentLoaded', function(){
   try { renderEmpresa(); } catch(e){}
   try { initPermissoes(); } catch(e){}
+  try { initAmbientes(); } catch(e){}
   try { renderSenhasSalvas(); } catch(e){}
 
   const loginScreen = document.getElementById('login-screen');
@@ -3805,9 +3964,11 @@ async function gerarPDF(id){
     const imgCell = item.foto
       ? '<img src="'+item.foto+'" class="prod-img-pdf">'
       : '<span class="prod-no-img-pdf"></span>';
+    const ambLabel = item.ambiente ? '<br><span style="font-size:10px;color:#a8721e;font-weight:600">🏠 '+item.ambiente+'</span>' : '';
+    const fornLabel = item.fornecedor ? '<br><span style="font-size:10px;color:#888">🏭 '+item.fornecedor+'</span>' : '';
     return '<tr>'
       +'<td style="width:72px;padding:6px 8px">'+imgCell+'</td>'
-      +'<td><strong>'+item.nome+'</strong>'+(item.categoria?'<br><span style="font-size:10px;color:#888">'+item.categoria+'</span>':'')+'</td>'
+      +'<td><strong>'+item.nome+'</strong>'+ambLabel+fornLabel+'</td>'
       +'<td class="c" style="width:60px">'+item.qty+'</td>'
       +'<td class="c" style="width:70px">'+(item.unidade||'Un')+'</td>'
       +'<td class="r" style="width:100px">'+fmt(vlUnit)+'</td>'
