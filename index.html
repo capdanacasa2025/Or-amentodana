@@ -3405,42 +3405,74 @@ function cancelarEditUser(){
 
 // ─── TABELA DE PERMISSÕES POR PERFIL ─────────────────
 function renderPermissoes(){
-  // Garantir que permissões estejam inicializadas
   initPermissoes();
   const perms = getPermissoes();
   const perfis = ['vendas','diretoria','financeiro','custom'];
-  const perfisLabel = {vendas:'🛒 Vendas', diretoria:'🏛️ Diretoria', financeiro:'💰 Financeiro', custom:'⚙️ Personalizado (padrão)'};
+  const perfisLabel = {vendas:'🛒 Vendas', diretoria:'🏛️ Diretoria', financeiro:'💰 Financeiro', custom:'⚙️ Personalizado'};
+  const perfisColors = {vendas:'#2050a0', diretoria:'#6a1080', financeiro:'#1a5028', custom:'#7a5000'};
 
-  let tableHTML = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:600px">';
-  // Header
-  tableHTML += '<thead><tr>';
-  tableHTML += '<th style="padding:10px 14px;background:var(--surface2);text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);border:1px solid var(--border)">Tela</th>';
+  // Cores fixas para garantir visibilidade
+  const C = {
+    border: '#d0c8b8',
+    bg: '#ffffff',
+    bgAlt: '#f9f6f0',
+    bgHeader: '#2a2200',
+    textHeader: '#e8c96a',
+    textLabel: '#1a1500',
+    textSub: '#6a5a40',
+    textMuted: '#9a8a70',
+    bgCheckd: '#d8f0e0',
+  };
+
+  let html = `<div style="overflow-x:auto;border:1px solid ${C.border};border-radius:8px;overflow:hidden">`;
+  html += `<table style="width:100%;border-collapse:collapse;min-width:500px">`;
+
+  // HEADER
+  html += `<thead><tr>`;
+  html += `<th style="padding:12px 16px;background:${C.bgHeader};text-align:left;font-size:12px;font-weight:700;color:${C.textHeader};border-right:1px solid #4a3a10;white-space:nowrap">TELA</th>`;
   perfis.forEach(p=>{
-    tableHTML += `<th style="padding:10px 12px;background:var(--surface2);text-align:center;font-size:12px;font-weight:700;color:var(--text);border:1px solid var(--border);min-width:120px">${perfisLabel[p]}</th>`;
+    html += `<th style="padding:12px 10px;background:${C.bgHeader};text-align:center;font-size:12px;font-weight:700;color:${C.textHeader};border-right:1px solid #4a3a10;min-width:130px">${perfisLabel[p]}</th>`;
   });
-  tableHTML += '</tr></thead><tbody>';
+  html += `</tr></thead><tbody>`;
 
-  TODAS_TELAS.forEach(t=>{
+  // LINHAS
+  TODAS_TELAS.forEach((t,idx)=>{
     const isAdminOnly = t.id==='usuarios';
-    tableHTML += `<tr>`;
-    tableHTML += `<td style="padding:10px 14px;font-size:12px;color:var(--text);border:1px solid var(--border);background:var(--surface)">${t.label}</td>`;
+    const rowBg = idx%2===0 ? C.bg : C.bgAlt;
+    html += `<tr style="background:${rowBg}">`;
+    html += `<td style="padding:10px 16px;font-size:13px;font-weight:500;color:${C.textLabel};border-right:1px solid ${C.border};border-bottom:1px solid ${C.border};white-space:nowrap">${t.label}</td>`;
     perfis.forEach(p=>{
       const checked = isAdminOnly ? false : (perms[p]||[]).includes(t.id);
-      tableHTML += `<td style="padding:10px;text-align:center;border:1px solid var(--border)">`;
+      html += `<td style="padding:10px;text-align:center;border-right:1px solid ${C.border};border-bottom:1px solid ${C.border};background:${checked&&!isAdminOnly?C.bgCheckd:rowBg}">`;
       if(isAdminOnly){
-        tableHTML += `<span style="font-size:11px;color:var(--text3)" title="Exclusivo admin">—</span>`;
+        html += `<span style="font-size:13px;color:${C.textMuted}" title="Exclusivo do Administrador">—</span>`;
       } else {
-        tableHTML += `<label class="perm-toggle"><input type="checkbox" id="perm-${p}-${t.id}" ${checked?'checked':''}><span class="perm-slider"></span></label>`;
+        html += `<label style="display:inline-flex;align-items:center;cursor:pointer;gap:6px">`;
+        html += `<input type="checkbox" id="perm-${p}-${t.id}" ${checked?'checked':''} style="width:16px;height:16px;cursor:pointer;accent-color:#a8721e">`;
+        html += `<span style="font-size:11px;color:${checked?'#1a5028':C.textMuted}">${checked?'✓ Sim':'Não'}</span>`;
+        html += `</label>`;
       }
-      tableHTML += `</td>`;
+      html += `</td>`;
     });
-    tableHTML += `</tr>`;
+    html += `</tr>`;
   });
 
-  tableHTML += '</tbody></table></div>';
-  tableHTML += '<p style="font-size:11px;color:var(--text3);margin-top:10px">* Administrador sempre tem acesso total a todas as telas.</p>';
+  html += `</tbody></table></div>`;
+  html += `<p style="font-size:12px;color:${C.textSub};margin-top:10px">* Administrador sempre tem acesso total a todas as telas. Marque ✓ para liberar acesso.</p>`;
 
-  document.getElementById('perms-table-wrap').innerHTML = tableHTML;
+  document.getElementById('perms-table-wrap').innerHTML = html;
+
+  // Listener para atualizar label ao clicar
+  document.querySelectorAll('#perms-table-wrap input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', function(){
+      const lbl = this.nextElementSibling;
+      if(lbl){
+        lbl.textContent = this.checked ? '✓ Sim' : 'Não';
+        lbl.style.color = this.checked ? '#1a5028' : '#9a8a70';
+        this.closest('td').style.background = this.checked ? '#d8f0e0' : '';
+      }
+    });
+  });
 }
 
 function salvarPermissoes(){
