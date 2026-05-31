@@ -1592,7 +1592,58 @@ const pageConfig = {
   usuarios:   { title:'Gerenciar Usuários' },
 };
 
+
+// ===================== CONTROLE DE ACESSO =====================
+function getSessao(){
+  try{ return JSON.parse(localStorage.getItem('deco_session')||'{}'); }catch{ return {}; }
+}
+
+function getTelasPermitidas(){
+  const sess = getSessao();
+  if(!sess.user) return [];
+  if(sess.perfil === 'admin') return null; // null = acesso total
+
+  const usuarios = getUsuarios();
+  const usuario = usuarios.find(u=>u.user===sess.user);
+  if(!usuario) return [];
+
+  // Usuário tem telas próprias (custom) ou pega do perfil
+  if(usuario.telas && usuario.telas.length){
+    return usuario.telas;
+  }
+
+  // Pegar do mapeamento de permissões salvo
+  const perms = getPermissoes();
+  return perms[sess.perfil] || PERFIL_TELAS[sess.perfil] || [];
+}
+
+function temAcesso(page){
+  const telas = getTelasPermitidas();
+  if(telas === null) return true; // admin: tudo
+  return telas.includes(page);
+}
+
+function aplicarPermissoesSidebar(){
+  const telas = getTelasPermitidas();
+  if(telas === null) return; // admin vê tudo
+
+  // Ocultar itens do nav que o usuário não tem acesso
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    const onclick = item.getAttribute('onclick')||'';
+    const match = onclick.match(/goPage\('([^']+)'\)/);
+    if(match){
+      const page = match[1];
+      item.style.display = telas.includes(page) ? '' : 'none';
+    }
+  });
+}
+
 function goPage(page){
+  // Verificar permissão
+  if(!temAcesso(page)){
+    alertMsg('Você não tem permissão para acessar esta tela.', 'danger');
+    return;
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
@@ -3583,9 +3634,20 @@ async function doLogin(){
   localStorage.setItem('deco_session', JSON.stringify({user:found.user, nome:found.nome, perfil:found.perfil}));
   localStorage.setItem('deco_session_user', JSON.stringify({user:found.user}));
   document.getElementById('logged-name').textContent = found.nome;
+
+  // Aplicar permissões na sidebar
+  aplicarPermissoesSidebar();
+
   // Sincronizar configurações do Supabase
   syncEmpresaSupa().then(()=>renderEmpresa());
-  await renderDashboard();
+
+  // Ir para dashboard (se tiver acesso) ou primeira tela permitida
+  const telas = getTelasPermitidas();
+  if(telas === null || telas.includes('dashboard')){
+    await renderDashboard();
+  } else if(telas.length > 0){
+    goPage(telas[0]);
+  }
 }
 
 // Check session on load — SEMPRE mostra login, sessão só pré-preenche usuário
@@ -3615,6 +3677,8 @@ window.addEventListener('DOMContentLoaded', function(){
 
 function doLogout(){
   localStorage.removeItem('deco_session');
+  // Resetar sidebar — mostrar todos os itens
+  document.querySelectorAll('.nav-item').forEach(item=>{ item.style.display=''; });
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('login-pass').type='password';
   document.getElementById('login-eye-btn').innerHTML='&#128065;';
