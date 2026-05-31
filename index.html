@@ -3581,43 +3581,36 @@ async function doLogin(){
   // Entrar no sistema
   document.getElementById('login-screen').style.display='none';
   localStorage.setItem('deco_session', JSON.stringify({user:found.user, nome:found.nome, perfil:found.perfil}));
+  localStorage.setItem('deco_session_user', JSON.stringify({user:found.user}));
   document.getElementById('logged-name').textContent = found.nome;
   // Sincronizar configurações do Supabase
   syncEmpresaSupa().then(()=>renderEmpresa());
   await renderDashboard();
 }
 
-// Check session on load
+// Check session on load — SEMPRE mostra login, sessão só pré-preenche usuário
 window.addEventListener('DOMContentLoaded', function(){
   try { renderEmpresa(); } catch(e){}
   try { initPermissoes(); } catch(e){}
   try { renderSenhasSalvas(); } catch(e){}
 
   const loginScreen = document.getElementById('login-screen');
-  const sess = localStorage.getItem('deco_session');
 
-  if(!sess){
-    // Sem sessão: mostrar login
-    loginScreen.style.display = 'flex';
-    return;
-  }
+  // SEMPRE mostrar login ao abrir o sistema
+  loginScreen.style.display = 'flex';
 
+  // Limpar qualquer sessão anterior — usuário deve sempre fazer login
+  localStorage.removeItem('deco_session');
+
+  // Se tinha sessão, pré-preencher o campo usuário para facilitar
   try {
-    const s = JSON.parse(sess);
-    const usuarios = getUsuarios();
-    const userExists = usuarios.find(function(u){ return u.user === s.user; });
-    if(userExists){
-      loginScreen.style.display = 'none';
-      document.getElementById('logged-name').textContent = s.nome;
-      renderDashboard().catch(e=>console.error('dash:',e));
-    } else {
-      localStorage.removeItem('deco_session');
-      loginScreen.style.display = 'flex';
+    const sess = localStorage.getItem('deco_session_user');
+    if(sess){
+      const s = JSON.parse(sess);
+      const userEl = document.getElementById('login-user');
+      if(userEl && s.user) userEl.value = s.user;
     }
-  } catch(e){
-    localStorage.removeItem('deco_session');
-    loginScreen.style.display = 'flex';
-  }
+  } catch(e){}
 });
 
 function doLogout(){
