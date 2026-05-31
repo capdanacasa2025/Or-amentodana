@@ -2787,7 +2787,7 @@ async function renderCobranca(){
   }).join('');
 }
 
-function marcarPago(id){
+async function marcarPago(id){
   const orcs=await SUPA_DB.get('orcamentos');
   const i=orcs.findIndex(x=>x.id===id);
   if(i<0) return;
