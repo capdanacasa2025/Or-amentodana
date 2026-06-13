@@ -1431,6 +1431,48 @@ const SUPA = {
   del(table, params)       { return SUPA.req('DELETE', table, null, params); },
 };
 
+// ============================================================
+// PING AUTOMÁTICO — mantém o projeto Supabase ativo
+// Executa um fetch leve a cada 3 dias para evitar pausa
+// ============================================================
+(function initSupaPing(){
+  const PING_KEY  = 'deco_supa_last_ping';
+  const INTERVALO = 3 * 24 * 60 * 60 * 1000; // 3 dias em ms
+
+  async function ping(){
+    try{
+      await fetch(SUPA_URL + '/rest/v1/configuracoes?select=chave&limit=1', {
+        headers:{ 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+      });
+      localStorage.setItem(PING_KEY, Date.now().toString());
+      console.log('[DecoOrça] Ping Supabase OK —', new Date().toLocaleString('pt-BR'));
+    }catch(e){
+      console.warn('[DecoOrça] Ping Supabase falhou:', e.message);
+    }
+  }
+
+  function agendarPing(){
+    const ultimo = parseInt(localStorage.getItem(PING_KEY) || '0', 10);
+    const agora  = Date.now();
+    const restante = INTERVALO - (agora - ultimo);
+
+    if(restante <= 0){
+      // Já passou o intervalo — pingar agora e depois a cada 3 dias
+      ping();
+      setInterval(ping, INTERVALO);
+    } else {
+      // Aguardar o tempo restante, depois pingar e repetir
+      setTimeout(function(){
+        ping();
+        setInterval(ping, INTERVALO);
+      }, restante);
+    }
+  }
+
+  // Iniciar após 5 segundos do carregamento da página
+  setTimeout(agendarPing, 5000);
+})();
+
 // ── Mapeamento campo JS → coluna Supabase ────────────────────
 function toSupa_produto(p){
   return { nome:p.nome, categoria:p.categoria||null, unidade:p.unidade||'Un',
