@@ -2370,7 +2370,7 @@ function renderOrcItems(){
     const resetBtn = precoManual
       ? `<span class="item-preco-auto" onclick="resetPrecoItem(${i})" title="Voltar ao cálculo automático">↺ automático</span>`
       : `<span class="item-preco-auto" style="opacity:.5;cursor:default">×${markup} markup</span>`;
-    return `<div class="item-row">
+    return `<div class="item-row" data-idx="${i}">
       ${item.foto?`<img src="${item.foto}" class="item-thumb">`:`<div class="item-thumb"></div>`}
       <div class="item-name">${item.nome}<small>${item.fornecedor?'🏭 '+item.fornecedor:''}</small></div>
       <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
@@ -2379,7 +2379,8 @@ function renderOrcItems(){
       <div class="item-preco-wrap">
         <input class="item-preco-input${precoManual?' item-preco-custom':''}" type="number" step="0.01" min="0"
           value="${precoAtual.toFixed(2)}"
-          onchange="updatePrecoItem(${i},this.value)"
+          data-item-idx="${i}"
+          oninput="updatePrecoItem(${i},this.value,this)"
           title="Preço de venda total (editável)">
         ${resetBtn}
       </div>
@@ -2406,35 +2407,40 @@ function updateQty(i,val){
   calcTotais();
 }
 
-function updatePrecoItem(i, val){
+function updatePrecoItem(i, val, inputEl){
   const markup = parseFloat(document.getElementById('orc-markup')?.value)||0;
-  const auto = orcItems[i].custo * orcItems[i].qty * markup;
-  const novo = parseFloat(val)||0;
-  // Se é igual ao automático, não marca como manual
-  if(Math.abs(novo - auto) < 0.01){
-    orcItems[i].precoManual = null;
+  const item = orcItems[i];
+  if(!item) return;
+  const auto = item.custo * item.qty * markup;
+  const novo = parseFloat(val);
+  // Valor inválido ou vazio → ignora sem apagar o preço manual existente
+  if(isNaN(novo) || val === '') return;
+  // Se é igual ao automático (tolerância de 1 centavo), remove o manual
+  if(Math.abs(novo - auto) < 0.005){
+    item.precoManual = null;
   } else {
-    orcItems[i].precoManual = novo;
+    item.precoManual = novo;
   }
   calcTotais();
-  // Rerender somente o badge de markup sem perder o foco
-  const rows = document.querySelectorAll('#orc-items-list .item-row');
-  if(rows[i]){
-    const autoSpan = rows[i].querySelector('.item-preco-auto');
-    const input = rows[i].querySelector('.item-preco-input');
-    if(autoSpan && input){
-      if(orcItems[i].precoManual != null){
+  // Atualizar visual do badge e da borda diretamente no elemento recebido
+  const row = inputEl ? inputEl.closest('.item-row') : document.querySelector(`#orc-items-list .item-row[data-idx="${i}"]`);
+  if(row){
+    const autoSpan = row.querySelector('.item-preco-auto');
+    const inp = row.querySelector('.item-preco-input');
+    if(autoSpan && inp){
+      if(item.precoManual != null){
         autoSpan.textContent = '↺ automático';
         autoSpan.style.opacity = '1';
         autoSpan.style.cursor = 'pointer';
+        autoSpan.style.textDecoration = 'underline';
         autoSpan.onclick = ()=>resetPrecoItem(i);
-        input.classList.add('item-preco-custom');
+        inp.classList.add('item-preco-custom');
       } else {
         autoSpan.textContent = '×'+markup+' markup';
         autoSpan.style.opacity = '.5';
         autoSpan.style.cursor = 'default';
         autoSpan.onclick = null;
-        input.classList.remove('item-preco-custom');
+        inp.classList.remove('item-preco-custom');
       }
     }
   }
@@ -2594,12 +2600,21 @@ function toggleProdSel(id,el){
   el.querySelector('span').textContent=selectedProds.has(id)?'✅':'';
 }
 
-function confirmarProdSelect(){
-  const prods=DB.get('produtos');
+async function confirmarProdSelect(){
+  const prods=await SUPA_DB.get('produtos');
   const toAdd=[];
   selectedProds.forEach(id=>{
     const p=prods.find(x=>x.id===id);
-    if(p && !orcItems.find(x=>x.prodId===id)) toAdd.push(p);
+    if(!p) return;
+    // Se produto já existe no orçamento, incrementa a quantidade em vez de bloquear
+    const existing = orcItems.find(x=>x.prodId===id);
+    if(existing){
+      existing.qty++;
+      // Se tinha preço manual, ajustar proporcionalmente
+      if(existing.precoManual != null) existing.precoManual = existing.precoManual / (existing.qty-1) * existing.qty;
+    } else {
+      toAdd.push(p);
+    }
   });
   closeModal('modal-prod-select');
 
