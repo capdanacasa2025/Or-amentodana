@@ -1317,6 +1317,19 @@ textarea { resize:vertical; min-height:80px; }
       <div style="margin-top:8px;font-size:11px;color:var(--text3)">O <b>menor custo</b> será usado como custo padrão. No orçamento você escolhe qual fornecedor usar.</div>
     </div>
 
+    <!-- EXIBIR FORNECEDOR NO PDF -->
+    <div style="margin-top:14px;padding:12px 14px;background:var(--surface2);border-radius:var(--radius2);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Exibir fornecedor no pedido de venda</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Quando ativo, o nome do fornecedor aparece abaixo do produto no PDF</div>
+      </div>
+      <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;text-transform:none;letter-spacing:0">
+        <input type="checkbox" id="prod-exibir-fornecedor" style="opacity:0;width:0;height:0;position:absolute" onchange="updateToggleFornecedor(this)">
+        <span id="toggle-forn-track" style="position:absolute;inset:0;background:var(--border2);border-radius:24px;transition:.2s;cursor:pointer"></span>
+        <span id="toggle-forn-thumb" style="position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none"></span>
+      </label>
+    </div>
+
     <div class="form-actions">
       <button class="btn btn-outline" onclick="closeModal('modal-produto');limparFormProduto()">Cancelar</button>
       <button class="btn btn-gold" onclick="salvarProduto()">💾 Salvar Produto</button>
@@ -1591,12 +1604,14 @@ const SUPA = {
 function toSupa_produto(p){
   return { nome:p.nome, categoria:p.categoria||null, unidade:p.unidade||'Un',
     descricao:p.descricao||null, custo:p.custo||0,
-    fornecedores:p.fornecedores||[], foto:p.foto||null };
+    fornecedores:p.fornecedores||[], foto:p.foto||null,
+    exibir_fornecedor:p.exibirFornecedor||false };
 }
 function fromSupa_produto(r){
   return { id:r.id, nome:r.nome, categoria:r.categoria, unidade:r.unidade,
     descricao:r.descricao, custo:parseFloat(r.custo)||0,
-    fornecedores:r.fornecedores||[], foto:r.foto, criadoEm:r.criado_em };
+    fornecedores:r.fornecedores||[], foto:r.foto,
+    exibirFornecedor:r.exibir_fornecedor||false, criadoEm:r.criado_em };
 }
 
 function toSupa_cliente(c){
@@ -2045,7 +2060,27 @@ async function editProduto(id){
   const forn = p.fornecedores||[];
   if(forn.length){ forn.forEach(f=>addFornecedorRow(f.nome,f.custo)); }
   else { addFornecedorRow('',p.custo||''); }
+  // Carregar toggle exibir fornecedor
+  setToggleFornecedor(p.exibirFornecedor !== false ? p.exibirFornecedor : false);
   openModal('modal-produto');
+}
+
+function updateToggleFornecedor(cb){
+  const track = document.getElementById('toggle-forn-track');
+  const thumb = document.getElementById('toggle-forn-thumb');
+  if(cb.checked){
+    track.style.background = 'var(--gold)';
+    thumb.style.left = '23px';
+  } else {
+    track.style.background = 'var(--border2)';
+    thumb.style.left = '3px';
+  }
+}
+
+function setToggleFornecedor(val){
+  const cb = document.getElementById('prod-exibir-fornecedor');
+  cb.checked = !!val;
+  updateToggleFornecedor(cb);
 }
 
 function addFornecedorRow(nome='', custo=''){
@@ -2090,6 +2125,7 @@ async function salvarProduto(){
     unidade: document.getElementById('prod-unidade').value,
     descricao: document.getElementById('prod-descricao').value,
     foto: document.getElementById('prod-foto-data').value,
+    exibirFornecedor: document.getElementById('prod-exibir-fornecedor').checked,
     criadoEm: today()
   };
   try{
@@ -2109,6 +2145,7 @@ async function salvarProduto(){
 
 function limparFormProduto(){
   editProdId=null;
+  setToggleFornecedor(false);
   document.getElementById('modal-produto-title').textContent='Novo Produto';
   ['prod-nome','prod-descricao','prod-foto-data'].forEach(id=>document.getElementById(id).value='');
   atualizarSelectAmbiente();
@@ -2372,7 +2409,7 @@ function renderOrcItems(){
       : `<span class="item-preco-auto" style="opacity:.5;cursor:default">×${markup} markup</span>`;
     return `<div class="item-row" data-idx="${i}">
       ${item.foto?`<img src="${item.foto}" class="item-thumb">`:`<div class="item-thumb"></div>`}
-      <div class="item-name">${item.nome}<small>${item.fornecedor?'🏭 '+item.fornecedor:''}</small></div>
+      <div class="item-name">${item.nome}<small>${(item.fornecedor && item.exibirFornecedor)?'🏭 '+item.fornecedor:''}</small></div>
       <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
       <input class="item-qty" type="number" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
       <div style="font-size:12px;color:var(--text3)">Custo: ${fmt(item.custo*item.qty)}</div>
@@ -2627,7 +2664,7 @@ async function confirmarProdSelect(){
     const forn = p.fornecedores||[];
     const custo = forn.length===1 ? forn[0].custo : p.custo;
     const fornNome = forn.length===1 ? forn[0].nome : '';
-    orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn,ambiente:''});
+    orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn,ambiente:'',exibirFornecedor:p.exibirFornecedor||false});
   });
 
   if(comMultForn.length>0){
@@ -2694,7 +2731,7 @@ function escolherFornecedor(queueIdx, fornIdx){
     custo = Math.min(...forn.map(f=>f.custo));
     fornNome = forn.find(f=>f.custo===custo)?.nome||'';
   }
-  orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn});
+  orcItems.push({prodId:p.id,nome:p.nome,custo,foto:p.foto,categoria:p.categoria,unidade:p.unidade,qty:1,fornecedor:fornNome,fornecedores:forn,exibirFornecedor:p.exibirFornecedor||false});
   closeModal('modal-orc-detalhe');
   _fornQueueIdx++;
   abrirEscolhaFornecedor();
@@ -4290,7 +4327,7 @@ async function gerarPDF(id){
       ? '<img src="'+item.foto+'" class="prod-img-pdf">'
       : '<span class="prod-no-img-pdf"></span>';
     const ambLabel = item.ambiente ? '<br><span style="font-size:10px;color:#a8721e;font-weight:600">🏠 '+item.ambiente+'</span>' : '';
-    const fornLabel = item.fornecedor ? '<br><span style="font-size:10px;color:#888">🏭 '+item.fornecedor+'</span>' : '';
+    const fornLabel = (item.fornecedor && item.exibirFornecedor) ? '<br><span style="font-size:10px;color:#888">🏭 '+item.fornecedor+'</span>' : '';
     return '<tr>'
       +'<td style="width:72px;padding:6px 8px">'+imgCell+'</td>'
       +'<td><strong>'+item.nome+'</strong>'+ambLabel+fornLabel+'</td>'
