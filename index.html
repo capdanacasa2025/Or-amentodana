@@ -4277,15 +4277,15 @@ async function gerarPDF(id){
 
   const markup = orc.markup||0;
   const desc = orc.desconto||0;
-  const custo = orc.custoTotal||0;
-  const subtotal = custo*markup;
-  const descVal = subtotal*(desc/100);
-  const final = orc.valorFinal||0;
   const numOrc = String(id).padStart(4,'0');
 
+  // Calcular subtotal real respeitando preços manuais por item
+  let subtotalReal = 0;
   const prodRows = orc.items.map(item=>{
-    const vlUnit = item.custo*markup;
-    const vlTotal = vlUnit*item.qty;
+    // Se item tem preço manual salvo, usa ele; senão calcula pelo markup
+    const vlTotal = (item.precoManual != null) ? item.precoManual : (item.custo * item.qty * markup);
+    const vlUnit  = item.qty > 0 ? vlTotal / item.qty : 0;
+    subtotalReal += vlTotal;
     const imgCell = item.foto
       ? '<img src="'+item.foto+'" class="prod-img-pdf">'
       : '<span class="prod-no-img-pdf"></span>';
@@ -4300,6 +4300,9 @@ async function gerarPDF(id){
       +'<td class="r" style="width:110px">'+fmt(vlTotal)+'</td>'
       +'</tr>';
   }).join('');
+
+  const descVal = subtotalReal * (desc/100);
+  const final = orc.valorFinal || (subtotalReal - descVal);
 
   // Info cliente
   const cliInfoLines = [
@@ -4492,20 +4495,18 @@ async function gerarRelatorioInterno(id){
   const markup = orc.markup||1;
   const desc = orc.desconto||0;
   const custo = orc.custoTotal||0;
-  const subtotal = custo*markup;
-  const descVal = subtotal*(desc/100);
-  const aposDesc = subtotal - descVal;
-  const rtVal = orc.rt ? aposDesc*(orc.rtComissao||0)/100 : 0;
-  const valorFinal = aposDesc - rtVal;
-  const margem = valorFinal - custo;
-  const margemPct = custo>0 ? (margem/valorFinal*100).toFixed(1) : '0.0';
   const numOrc = String(id).padStart(4,'0');
 
-  // Linhas de produtos COM CUSTO
+  // Linhas de produtos COM CUSTO — respeita precoManual por item
+  let subtotalReal = 0;
   const prodRows = orc.items.map((item,i)=>{
-    const custoItem = item.custo*item.qty;
-    const vendaItem = custoItem*markup;
+    const custoItem = item.custo * item.qty;
+    // Valor de venda: manual salvo ou markup automático
+    const vendaItem = (item.precoManual != null) ? item.precoManual : (custoItem * markup);
+    // Custo unitário de venda para exibir na coluna "Venda Un."
+    const vendaUnit = item.qty > 0 ? vendaItem / item.qty : 0;
     const margemItem = vendaItem - custoItem;
+    subtotalReal += vendaItem;
     const bgRow = i%2===0 ? '#fff' : '#f9f6f0';
     return '<tr style="background:'+bgRow+'">'
       +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;font-size:12px;color:#1a1a1a"><strong>'+item.nome+'</strong>'
@@ -4513,10 +4514,17 @@ async function gerarRelatorioInterno(id){
       +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:center;font-size:12px">'+item.qty+'</td>'
       +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:right;font-size:12px">'+fmt(item.custo)+'</td>'
       +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:right;font-size:12px;font-weight:600;color:#7a3010">'+fmt(custoItem)+'</td>'
-      +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:right;font-size:12px">'+fmt(item.custo*markup)+'</td>'
+      +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:right;font-size:12px">'+fmt(vendaUnit)+'</td>'
       +'<td style="padding:8px 10px;border-bottom:1px solid #e8e0d0;text-align:right;font-size:12px;font-weight:600;color:#1a5028">'+fmt(margemItem)+'</td>'
       +'</tr>';
   }).join('');
+
+  const descVal = subtotalReal * (desc/100);
+  const aposDesc = subtotalReal - descVal;
+  const rtVal = orc.rt ? aposDesc*(orc.rtComissao||0)/100 : 0;
+  const valorFinal = orc.valorFinal || (aposDesc - rtVal);
+  const margem = valorFinal - custo;
+  const margemPct = valorFinal>0 ? (margem/valorFinal*100).toFixed(1) : '0.0';
 
   const logoSrc = emp.logo || DANA_LOGO_PDF;
   const empNome = emp.nome || 'Dana Casa';
@@ -4590,7 +4598,7 @@ async function gerarRelatorioInterno(id){
     +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#8a1810;border-bottom:2px solid #8a1810;padding-bottom:5px;margin-bottom:8px;font-weight:700">Composição Financeira</div>'
     +[
       {label:'Custo dos Produtos', val:fmt(custo), color:'#7a3010'},
-      {label:'Subtotal (×'+markup+')', val:fmt(subtotal), color:'#333'},
+      {label:'Subtotal de Venda', val:fmt(subtotalReal), color:'#333'},
       ...(desc>0?[{label:'Desconto ('+desc+'%)', val:'— '+fmt(descVal), color:'#8a6010'}]:[]),
       ...(orc.rt?[{label:'Comissão RT ('+(orc.rtComissao||0)+'%)', val:'— '+fmt(rtVal), color:'#6a5000'}]:[]),
       {label:'VALOR FINAL DE VENDA', val:fmt(valorFinal), color:'#1a3a8a', bold:true, sep:true},
