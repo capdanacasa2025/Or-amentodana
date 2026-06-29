@@ -4376,7 +4376,7 @@ async function gerarPDF(id){
     +'<div style="display:flex;justify-content:flex-end">'
     +'<div class="pdf-totals">'
     +(desc>0
-      ? '<div class="ptr"><span>Subtotal</span><span>'+fmt(subtotal)+'</span></div>'
+      ? '<div class="ptr"><span>Subtotal</span><span>'+fmt(subtotalReal)+'</span></div>'
         +'<div class="ptr"><span>Desconto ('+desc+'%)</span><span>— '+fmt(descVal)+'</span></div>'
       : '')
     +'<div class="ptr big"><span>VALOR TOTAL</span><span>'+fmt(final)+'</span></div>'
