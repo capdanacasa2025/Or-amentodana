@@ -141,7 +141,7 @@ textarea { resize:vertical; min-height:80px; }
 /* ORCAMENTO ITEMS */
 .orcamento-items { display:flex; flex-direction:column; gap:10px; }
 .item-row {
-  display:grid; grid-template-columns:76px 1fr 135px 70px 100px 100px auto auto;
+  display:grid; grid-template-columns:76px 1fr 135px 70px 100px 140px auto auto;
   align-items:center; gap:12px; background:var(--surface2); padding:10px 12px;
   border-radius:var(--radius2); border:1px solid var(--border);
 }
@@ -152,6 +152,17 @@ textarea { resize:vertical; min-height:80px; }
 .item-val { font-size:13px; color:var(--gold); font-weight:500; }
 .item-del { background:transparent; border:1px solid var(--border); color:var(--text3); padding:6px; border-radius:5px; cursor:pointer; transition:all .15s; }
 .item-del:hover { border-color:var(--danger); color:var(--danger); }
+.item-preco-wrap { display:flex; flex-direction:column; gap:2px; }
+.item-preco-input {
+  width:100%; background:var(--surface); border:1.5px solid var(--gold);
+  color:var(--gold); padding:5px 8px; border-radius:5px; font-size:12px;
+  font-weight:600; font-family:'DM Sans',sans-serif; text-align:right;
+  transition:border .15s,box-shadow .15s; outline:none;
+}
+.item-preco-input:focus { border-color:var(--gold2); box-shadow:0 0 0 2px rgba(168,114,30,0.18); }
+.item-preco-auto { font-size:10px; color:var(--text3); text-align:right; cursor:pointer; text-decoration:underline; transition:color .15s; }
+.item-preco-auto:hover { color:var(--gold); }
+.item-preco-custom { border-color:var(--gold2) !important; background:rgba(168,114,30,0.06) !important; }
 
 /* TOTALS */
 .totals-box { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius2); padding:16px; margin-top:16px; }
@@ -1388,7 +1399,7 @@ textarea { resize:vertical; min-height:80px; }
       </div>
       <div class="form-group">
         <label>Multiplicador de Venda</label>
-        <input type="number" id="orc-markup" value="2.0" min="0.01" step="0.1" oninput="calcTotais()" placeholder="Ex: 3.2">
+        <input type="number" id="orc-markup" value="2.0" min="0.01" step="0.1" oninput="renderOrcItems();calcTotais();" placeholder="Ex: 3.2">
       </div>
       <div class="form-group">
         <label>Desconto (%)</label>
@@ -2345,7 +2356,10 @@ function renderOrcItems(){
   }
   const markup=parseFloat(document.getElementById('orc-markup').value)||0;
   list.innerHTML=orcItems.map((item,i)=>{
-    const venda = item.custo * item.qty * markup;
+    const vendaAuto = item.custo * item.qty * markup;
+    // Se tem preço manual, usa ele; senão usa o calculado
+    const precoManual = (item.precoManual != null);
+    const precoAtual = precoManual ? item.precoManual : vendaAuto;
     // botão troca fornecedor (se produto tem múltiplos)
     const fornBtn = (item.fornecedores||[]).length>1
       ? `<button class="item-del" style="background:var(--surface2);color:var(--text2);font-size:10px;padding:4px 8px;width:auto" onclick="trocarFornecedor(${i})" title="Trocar fornecedor">🔄</button>` : '';
@@ -2353,13 +2367,22 @@ function renderOrcItems(){
     const ambs = getAmbientes();
     const ambOptions = '<option value="">Ambiente...</option>'
       + ambs.map(a=>`<option value="${a.nome}" ${item.ambiente===a.nome?'selected':''}>${a.nome}</option>`).join('');
+    const resetBtn = precoManual
+      ? `<span class="item-preco-auto" onclick="resetPrecoItem(${i})" title="Voltar ao cálculo automático">↺ automático</span>`
+      : `<span class="item-preco-auto" style="opacity:.5;cursor:default">×${markup} markup</span>`;
     return `<div class="item-row">
       ${item.foto?`<img src="${item.foto}" class="item-thumb">`:`<div class="item-thumb"></div>`}
       <div class="item-name">${item.nome}<small>${item.fornecedor?'🏭 '+item.fornecedor:''}</small></div>
       <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
       <input class="item-qty" type="number" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
       <div style="font-size:12px;color:var(--text3)">Custo: ${fmt(item.custo*item.qty)}</div>
-      <div class="item-val">${fmt(venda)}</div>
+      <div class="item-preco-wrap">
+        <input class="item-preco-input${precoManual?' item-preco-custom':''}" type="number" step="0.01" min="0"
+          value="${precoAtual.toFixed(2)}"
+          onchange="updatePrecoItem(${i},this.value)"
+          title="Preço de venda total (editável)">
+        ${resetBtn}
+      </div>
       ${fornBtn}
       <button class="item-del" onclick="removeItem(${i})">✕</button>
     </div>`;
@@ -2372,7 +2395,53 @@ function updateAmbiente(i, val){
 }
 
 function updateQty(i,val){
-  orcItems[i].qty=Math.max(1,parseInt(val)||1);
+  const oldQty = orcItems[i].qty;
+  const newQty = Math.max(1,parseInt(val)||1);
+  // Se tinha preço manual, reajustar proporcionalmente à nova quantidade
+  if(orcItems[i].precoManual != null && oldQty > 0){
+    orcItems[i].precoManual = orcItems[i].precoManual / oldQty * newQty;
+  }
+  orcItems[i].qty = newQty;
+  renderOrcItems();
+  calcTotais();
+}
+
+function updatePrecoItem(i, val){
+  const markup = parseFloat(document.getElementById('orc-markup')?.value)||0;
+  const auto = orcItems[i].custo * orcItems[i].qty * markup;
+  const novo = parseFloat(val)||0;
+  // Se é igual ao automático, não marca como manual
+  if(Math.abs(novo - auto) < 0.01){
+    orcItems[i].precoManual = null;
+  } else {
+    orcItems[i].precoManual = novo;
+  }
+  calcTotais();
+  // Rerender somente o badge de markup sem perder o foco
+  const rows = document.querySelectorAll('#orc-items-list .item-row');
+  if(rows[i]){
+    const autoSpan = rows[i].querySelector('.item-preco-auto');
+    const input = rows[i].querySelector('.item-preco-input');
+    if(autoSpan && input){
+      if(orcItems[i].precoManual != null){
+        autoSpan.textContent = '↺ automático';
+        autoSpan.style.opacity = '1';
+        autoSpan.style.cursor = 'pointer';
+        autoSpan.onclick = ()=>resetPrecoItem(i);
+        input.classList.add('item-preco-custom');
+      } else {
+        autoSpan.textContent = '×'+markup+' markup';
+        autoSpan.style.opacity = '.5';
+        autoSpan.style.cursor = 'default';
+        autoSpan.onclick = null;
+        input.classList.remove('item-preco-custom');
+      }
+    }
+  }
+}
+
+function resetPrecoItem(i){
+  orcItems[i].precoManual = null;
   renderOrcItems();
   calcTotais();
 }
@@ -2387,8 +2456,12 @@ function calcTotais(){
   const markup=parseFloat(document.getElementById('orc-markup')?.value)||0;
   const desc=parseFloat(document.getElementById('orc-desconto')?.value)||0;
   let custo=0;
-  orcItems.forEach(item=>custo+=item.custo*item.qty);
-  const subtotal = custo * markup;
+  let subtotal=0;
+  orcItems.forEach(item=>{
+    custo += item.custo * item.qty;
+    // Preço de venda: manual ou markup automático
+    subtotal += (item.precoManual != null) ? item.precoManual : (item.custo * item.qty * markup);
+  });
   const markupVal = subtotal - custo;
   const descVal = subtotal*(desc/100);
   const aposDesc = subtotal - descVal;
@@ -2620,9 +2693,11 @@ async function salvarOrcamento(){
 
   const markup=parseFloat(document.getElementById('orc-markup').value)||0;
   const desc=parseFloat(document.getElementById('orc-desconto').value)||0;
-  let custo=0;
-  orcItems.forEach(item=>custo+=item.custo*item.qty);
-  const subtotal=custo*markup;
+  let custo=0; let subtotal=0;
+  orcItems.forEach(item=>{
+    custo += item.custo*item.qty;
+    subtotal += (item.precoManual != null) ? item.precoManual : (item.custo*item.qty*markup);
+  });
   const valorFinal=subtotal*(1-desc/100);
 
   const orcs=await SUPA_DB.get('orcamentos');
