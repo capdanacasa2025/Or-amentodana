@@ -2660,7 +2660,6 @@ async function salvarOrcamento(){
     }
     SUPA_DB.invalidate('orcamentos');
   }catch(e){ alertMsg('Erro ao salvar orçamento: '+e.message,'danger'); return; }
-  const orcsLocal = DB.get('orcamentos'); // manter cache local tbm
   editOrcId=null;
   orcItems=[];
   closeModal('modal-orcamento');
@@ -2715,7 +2714,7 @@ async function renderOrcamentos(){
   // Status que pertencem a outras telas — não aparecem em Orçamentos
   const _outroStatus = ['enviado','diretoria','aprovado','reprovado','cobranca','pago'];
 
-  let orcs=DB.get('orcamentos');
+  let orcs=await SUPA_DB.get('orcamentos');
   if(currentOrcFilter==='all'){
     // Todos = somente "andamento" (os outros já foram para suas telas)
     orcs = orcs.filter(o=>!_outroStatus.includes(o.status));
@@ -3041,13 +3040,12 @@ function aprovarDir(id){ mudarStatusDir(id,'aprovado'); }
 function reprovarDir(id){ mudarStatusDir(id,'reprovado'); }
 
 async function mudarStatusDir(id, status){
-  const orcs=DB.get('orcamentos');
+  const orcs=await SUPA_DB.get('orcamentos');
   const i=orcs.findIndex(x=>x.id===id);
   if(i<0) return;
   orcs[i].status=status;
   orcs[i].atualizadoEm=today();
-  try{ await SUPA.patch('orcamentos',{status},'?id=eq.'+id); SUPA_DB.invalidate('orcamentos'); }catch(e){}
-  DB.set('orcamentos',orcs);
+  try{ await SUPA.patch('orcamentos',{status},'?id=eq.'+id); SUPA_DB.invalidate('orcamentos'); }catch(e){ DB.set('orcamentos',orcs); }
   document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));
   if(status==='aprovado'){
     alertMsg('Aprovado! Enviado para Cobrança.');
