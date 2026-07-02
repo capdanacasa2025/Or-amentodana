@@ -1777,7 +1777,42 @@ async function supaSetConfig(chave, valor){
   try{
     await SUPA.del('configuracoes','?chave=eq.'+chave);
     await SUPA.post('configuracoes',{chave, valor});
-  }catch(e){ console.error('supaSetConfig',e); }
+    return true;
+  }catch(e){ console.error('supaSetConfig',e); return false; }
+}
+
+// ── Usuários e Permissões — sincronização com Supabase ────────
+// Mantém os logins/senhas centralizados na nuvem (tabela "configuracoes"),
+// em vez de presos ao localStorage de cada dispositivo.
+let _usuariosSupaOnline = true;
+async function syncUsuariosSupa(){
+  try{
+    const r = await supaGetConfig('usuarios');
+    if(r && Array.isArray(r) && r.length){
+      localStorage.setItem('deco_usuarios', JSON.stringify(r));
+    } else if(r === null){
+      // Nada salvo ainda no Supabase — semear com o que existe localmente (ou os padrões)
+      const atuais = getUsuarios();
+      await supaSetConfig('usuarios', atuais);
+    }
+    _usuariosSupaOnline = true;
+  }catch(e){
+    _usuariosSupaOnline = false;
+    console.warn('syncUsuariosSupa falhou, usando cache local:', e.message);
+  }
+}
+async function syncPermissoesSupa(){
+  try{
+    const r = await supaGetConfig('permissoes');
+    if(r){
+      localStorage.setItem('deco_permissoes', JSON.stringify(r));
+    } else if(r === null){
+      const atuais = getPermissoes();
+      await supaSetConfig('permissoes', atuais);
+    }
+  }catch(e){
+    console.warn('syncPermissoesSupa falhou, usando cache local:', e.message);
+  }
 }
 
 // ===================== NAVIGATION =====================
@@ -3767,7 +3802,10 @@ function getUsuarios(){
   return defaults;
 }
 
-function saveUsuarios(users){ localStorage.setItem('deco_usuarios', JSON.stringify(users)); }
+function saveUsuarios(users){
+  localStorage.setItem('deco_usuarios', JSON.stringify(users));
+  supaSetConfig('usuarios', users); // grava na nuvem — dispara em segundo plano
+}
 
 function getPermissoes(){
   try {
@@ -3785,7 +3823,10 @@ function initPermissoes(){
     savePermissoes(JSON.parse(JSON.stringify(PERFIL_TELAS)));
   }
 }
-function savePermissoes(p){ localStorage.setItem('deco_permissoes', JSON.stringify(p)); }
+function savePermissoes(p){
+  localStorage.setItem('deco_permissoes', JSON.stringify(p));
+  supaSetConfig('permissoes', p); // grava na nuvem — dispara em segundo plano
+}
 
 // ─── ABAS ───────────────────────────────────────────
 function switchUserTab(tab){
@@ -4124,9 +4165,17 @@ async function doLogin(){
   const u = (document.getElementById('login-user').value||'').trim();
   const p = document.getElementById('login-pass').value||'';
   const err = document.getElementById('login-err');
+  const btn = document.querySelector('.btn-login');
 
   if(!u){ err.textContent='Informe o usuário.'; return; }
   if(!p){ err.textContent='Informe a senha.'; return; }
+
+  // Buscar a lista de usuários mais atual na nuvem antes de validar,
+  // para que uma senha alterada em outro dispositivo já valha aqui.
+  err.textContent='';
+  if(btn){ btn.disabled=true; btn.textContent='Verificando...'; }
+  await syncUsuariosSupa();
+  if(btn){ btn.disabled=false; btn.textContent='ENTRAR'; }
 
   const usuarios = getUsuarios();
   const found = usuarios.find(x=>x.user===u && x.pass===p);
@@ -4173,9 +4222,16 @@ async function doLogin(){
 // Check session on load — SEMPRE mostra login, sessão só pré-preenche usuário
 window.addEventListener('DOMContentLoaded', function(){
   try { renderEmpresa(); } catch(e){}
-  try { initPermissoes(); } catch(e){}
   try { initAmbientes(); } catch(e){}
   try { renderSenhasSalvas(); } catch(e){}
+
+  // Sincronizar usuários/permissões da nuvem em segundo plano — não trava a tela de login.
+  // initPermissoes só roda depois da checagem remota, para não sobrescrever dados
+  // reais de outro dispositivo com os padrões locais deste aparelho.
+  syncUsuariosSupa().catch(()=>{});
+  syncPermissoesSupa().catch(()=>{}).finally(()=>{
+    try { initPermissoes(); } catch(e){}
+  });
 
   const loginScreen = document.getElementById('login-screen');
 
