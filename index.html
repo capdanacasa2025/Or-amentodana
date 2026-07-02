@@ -85,6 +85,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text)
 .card-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:500; color:var(--text); }
 
 .table-wrap { overflow-x:auto; }
+.users-grid { display:grid; grid-template-columns:420px 1fr; gap:20px; align-items:start; }
 table { width:100%; border-collapse:collapse; font-size:13px; }
 th { padding:10px 14px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text3); border-bottom:1px solid var(--border); font-weight:500; }
 td { padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text2); vertical-align:middle; }
@@ -266,6 +267,7 @@ textarea { resize:vertical; min-height:80px; }
   /* Grids */
   .dash-grid { grid-template-columns:1fr 1fr; }
   .form-grid { grid-template-columns:1fr; }
+  .users-grid { grid-template-columns:1fr !important; }
   .item-row { grid-template-columns:48px 1fr 64px 64px 32px; font-size:12px; }
 
   /* Cards & padding */
@@ -864,7 +866,7 @@ textarea { resize:vertical; min-height:80px; }
 
     <!-- ABA: USUÁRIOS -->
     <div id="tab-users">
-      <div style="display:grid;grid-template-columns:420px 1fr;gap:20px;align-items:start">
+      <div class="users-grid">
 
         <!-- FORM -->
         <div class="card">
