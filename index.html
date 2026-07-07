@@ -630,7 +630,7 @@ textarea { resize:vertical; min-height:80px; }
       </div>
       <div class="search-bar"><input type="text" placeholder="Buscar produto..." id="search-produto" oninput="renderProdutos()"></div>
       <div class="table-wrap">
-        <table><thead><tr><th>Foto</th><th>Nome</th><th>Ambiente</th><th>Custo</th><th>Ações</th></tr></thead>
+        <table><thead><tr><th>Foto</th><th>Código</th><th>Nome</th><th>Ambiente</th><th>Custo</th><th>Ações</th></tr></thead>
         <tbody id="tbody-produtos"></tbody></table>
       </div>
     </div>
@@ -1294,6 +1294,10 @@ textarea { resize:vertical; min-height:80px; }
         <input type="text" id="prod-nome" placeholder="Ex: Luminária Art Deco">
       </div>
       <div class="form-group">
+        <label>Código do Produto</label>
+        <input type="text" id="prod-codigo" placeholder="Ex: LUM-001">
+      </div>
+      <div class="form-group">
         <label>Ambiente</label>
         <select id="prod-categoria"><option value="">Selecione o ambiente...</option></select>
       </div>
@@ -1497,7 +1501,10 @@ textarea { resize:vertical; min-height:80px; }
       <span class="modal-title">Selecionar Produto</span>
       <button class="modal-close" onclick="closeModal('modal-prod-select')">✕</button>
     </div>
-    <input type="text" id="search-prod-select" placeholder="Buscar produto..." oninput="renderProdSelect()" style="width:100%;margin-bottom:10px">
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:8px;margin-bottom:10px">
+      <input type="text" id="search-prod-select-codigo" placeholder="Código" oninput="renderProdSelect()">
+      <input type="text" id="search-prod-select-desc" placeholder="Buscar por descrição (ex: vaso vidro)..." oninput="renderProdSelect()">
+    </div>
     <div class="prod-select-list" id="prod-select-list"></div>
     <div class="form-actions">
       <button class="btn btn-outline" onclick="closeModal('modal-prod-select')">Cancelar</button>
@@ -1604,13 +1611,13 @@ const SUPA = {
 
 // ── Mapeamento campo JS → coluna Supabase ────────────────────
 function toSupa_produto(p){
-  return { nome:p.nome, categoria:p.categoria||null, unidade:p.unidade||'Un',
+  return { nome:p.nome, codigo:p.codigo||null, categoria:p.categoria||null, unidade:p.unidade||'Un',
     descricao:p.descricao||null, custo:p.custo||0,
     fornecedores:p.fornecedores||[], foto:p.foto||null,
     exibir_fornecedor:p.exibirFornecedor||false };
 }
 function fromSupa_produto(r){
-  return { id:r.id, nome:r.nome, categoria:r.categoria, unidade:r.unidade,
+  return { id:r.id, nome:r.nome, codigo:r.codigo, categoria:r.categoria, unidade:r.unidade,
     descricao:r.descricao, custo:parseFloat(r.custo)||0,
     fornecedores:r.fornecedores||[], foto:r.foto,
     exibirFornecedor:r.exibir_fornecedor||false, criadoEm:r.criado_em };
@@ -1925,6 +1932,24 @@ const today = () => new Date().toISOString().split('T')[0];
 const fmtDate = d => d ? new Date(d+'T12:00').toLocaleDateString('pt-BR') : '—';
 function uid(){ return Date.now()+Math.random().toString(36).slice(2,6); }
 
+// Normaliza texto: minúsculas + remove acentos, para busca tolerante
+function normalizeTxt(s){
+  return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+// Palavras de conexão ignoradas na busca (de/em/da/do etc), assim
+// "vaso vidro" encontra "vaso de vidro", "vaso em vidro", "vaso do vidro"...
+const STOPWORDS_BUSCA = new Set(['de','da','do','das','dos','em','no','na','nos','nas','e','com','para','a','o','as','os']);
+// Retorna true se todas as palavras da busca aparecem no texto (em qualquer ordem),
+// ignorando conectivos e diferenças de acentuação/maiúsculas.
+function textoContemBusca(texto, busca){
+  const q = normalizeTxt(busca);
+  if(!q) return true;
+  const t = normalizeTxt(texto);
+  const termos = q.split(/\s+/).filter(w=>w && !STOPWORDS_BUSCA.has(w));
+  if(!termos.length) return true;
+  return termos.every(termo=>t.includes(termo));
+}
+
 function alertMsg(msg, type='success'){
   const el = document.createElement('div');
   el.style.cssText=`position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--${type==='success'?'gold':'danger'});padding:14px 20px;border-radius:8px;color:var(--text);font-size:13px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.4)`;
@@ -2049,11 +2074,11 @@ function capturarFoto(){
 let editProdId = null;
 
 async function renderProdutos(){
-  const q = (document.getElementById('search-produto')?.value||'').toLowerCase();
+  const q = document.getElementById('search-produto')?.value||'';
   const todos = await SUPA_DB.get('produtos');
-  const prods = todos.filter(p=>!q||p.nome.toLowerCase().includes(q));
+  const prods = todos.filter(p=>textoContemBusca([p.nome,p.codigo,p.descricao].join(' '), q));
   const tbody = document.getElementById('tbody-produtos');
-  if(!prods.length){ tbody.innerHTML=`<tr><td colspan="5"><div class="empty"><div class="empty-ico">🪑</div><div class="empty-msg">Nenhum produto cadastrado</div></div></td></tr>`; return; }
+  if(!prods.length){ tbody.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-ico">🪑</div><div class="empty-msg">Nenhum produto cadastrado</div></div></td></tr>`; return; }
   tbody.innerHTML = prods.map(p=>{
     const forn = p.fornecedores||[];
     const custoMin = forn.length ? Math.min(...forn.map(f=>f.custo)) : (p.custo||0);
@@ -2062,6 +2087,7 @@ async function renderProdutos(){
       : `<span style="font-size:11px;color:var(--text3)">Custo: ${fmt(p.custo)}</span>`;
     return `<tr>
       <td>${p.foto?`<img src="${p.foto}" class="prod-thumb">`:`<div class="prod-thumb"></div>`}</td>
+      <td><span style="color:var(--text3);font-size:12px">${p.codigo||'—'}</span></td>
       <td><b>${p.nome}</b><br><small style="color:var(--text3)">${p.descricao||''}</small></td>
       <td><span style="color:var(--text3)">${p.categoria||'—'}</span></td>
       <td><div style="color:var(--gold);font-weight:600">${fmt(custoMin)} <small style="color:var(--text3);font-weight:400">${p.unidade||'Un'}</small></div>
@@ -2080,6 +2106,7 @@ async function editProduto(id){
   editProdId = id;
   document.getElementById('modal-produto-title').textContent='Editar Produto';
   document.getElementById('prod-nome').value=p.nome||'';
+  document.getElementById('prod-codigo').value=p.codigo||'';
   document.getElementById('prod-categoria').value=p.categoria||'';
   document.getElementById('prod-unidade').value=p.unidade||'Un';
   document.getElementById('prod-descricao').value=p.descricao||'';
@@ -2158,6 +2185,7 @@ async function salvarProduto(){
   const data = {
     id: editProdId || DB.nextId('produtos'),
     nome, custo: custoMin, fornecedores,
+    codigo: document.getElementById('prod-codigo').value.trim(),
     categoria: document.getElementById('prod-categoria').value,
     unidade: document.getElementById('prod-unidade').value,
     descricao: document.getElementById('prod-descricao').value,
@@ -2184,7 +2212,7 @@ function limparFormProduto(){
   editProdId=null;
   setToggleFornecedor(false);
   document.getElementById('modal-produto-title').textContent='Novo Produto';
-  ['prod-nome','prod-descricao','prod-foto-data'].forEach(id=>document.getElementById(id).value='');
+  ['prod-nome','prod-codigo','prod-descricao','prod-foto-data'].forEach(id=>document.getElementById(id).value='');
   atualizarSelectAmbiente();
   document.getElementById('prod-categoria').value='';
   document.getElementById('prod-unidade').value='Un';
@@ -2637,15 +2665,20 @@ function aplicarFornecedor(itemIdx, fornIdx){
 // PRODUCT SELECT
 async function openProdSelect(){
   selectedProds=new Set();
-  document.getElementById('search-prod-select').value='';
+  document.getElementById('search-prod-select-codigo').value='';
+  document.getElementById('search-prod-select-desc').value='';
   await renderProdSelect();
   openModal('modal-prod-select');
 }
 
 async function renderProdSelect(){
-  const q=(document.getElementById('search-prod-select')?.value||'').toLowerCase();
+  const qCodigo=document.getElementById('search-prod-select-codigo')?.value||'';
+  const qDesc=document.getElementById('search-prod-select-desc')?.value||'';
   const _allP=await SUPA_DB.get('produtos');
-  const prods=_allP.filter(p=>!q||p.nome.toLowerCase().includes(q));
+  const prods=_allP.filter(p=>
+    textoContemBusca(p.codigo, qCodigo) &&
+    textoContemBusca([p.nome,p.descricao].join(' '), qDesc)
+  );
   const list=document.getElementById('prod-select-list');
   if(!prods.length){ list.innerHTML=`<div style="padding:20px;text-align:center;color:var(--text3)">Nenhum produto encontrado</div>`; return; }
   list.innerHTML=prods.map(p=>{
@@ -2658,7 +2691,7 @@ async function renderProdSelect(){
     return `<div class="prod-select-item ${selectedProds.has(p.id)?'selected':''}" onclick="toggleProdSel(${p.id},this)">
       ${p.foto?`<img src="${p.foto}" class="prod-select-thumb">`:`<div class="prod-select-thumb"></div>`}
       <div style="flex:1">
-        <div style="font-size:13px;color:var(--text);font-weight:600">${p.nome}</div>
+        <div style="font-size:13px;color:var(--text);font-weight:600">${p.nome}${p.codigo?` <span style="font-weight:400;color:var(--text3)">· ${p.codigo}</span>`:''}</div>
         <div style="font-size:11px;color:var(--text3)">${p.categoria||''} · ${custoLabel}</div>
         ${fornHtml}
       </div>
