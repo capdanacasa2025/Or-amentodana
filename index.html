@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DecoOrça · Sistema de Orçamentos</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 :root {
   --bg: #f5f3ee;
@@ -1545,6 +1546,9 @@ const DB = {
 // ============================================================
 const SUPA_URL = 'https://ecevlbxpgoabnpkbxhvf.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZXZsYnhwZ29hYm5wa2J4aHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxODEwMjcsImV4cCI6MjA5NTc1NzAyN30.xKiQhuVSUPzpNow5gNbZS2l1ZogEFmCWzQzMQBEZIX4';
+// Bucket público do Supabase Storage onde os PDFs gerados são salvos pra virar link no WhatsApp.
+// Precisa existir no painel do Supabase (Storage > New bucket), marcado como "Public".
+const SUPA_BUCKET_PDF = 'orcamentos-pdf';
 
 const SUPA = {
   async req(method, table, body=null, params=''){
@@ -4417,7 +4421,7 @@ function formatarTelWhats(tel){
 }
 
 // Monta o texto da mensagem com o resumo do orçamento
-function montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final){
+function montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final, linkPDF){
   const primeiroNome = (cli.nome||'').split(' ')[0];
   const emp = getEmpresa();
   const empNome = emp.nome || 'Dana Casa';
@@ -4435,24 +4439,69 @@ function montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, fina
   msg += '\n*Valor Total: '+fmt(final)+'*\n';
   if(orc.validade) msg += 'Válido até: '+fmtDate(orc.validade)+'\n';
   if(orc.pagamento) msg += 'Forma de pagamento: '+orc.pagamento+'\n';
-  msg += '\n📎 Já te envio o PDF completo do orçamento em seguida.';
+  if(linkPDF){
+    msg += '\n📄 PDF completo do orçamento:\n'+linkPDF+'\n';
+  } else {
+    msg += '\n📎 Já te envio o PDF completo do orçamento em seguida.';
+  }
   msg += '\nQualquer dúvida, estou à disposição! 😊';
   return msg;
 }
 
-// Abre o WhatsApp (Web/App) com a mensagem do orçamento já preenchida para o telefone do cliente
+// Gera o PDF de verdade (arquivo binário) a partir da prévia (#pdf-doc) já montada na tela, usando html2pdf.js
+async function gerarPDFBlob(){
+  if(typeof html2pdf === 'undefined') throw new Error('Biblioteca de PDF não carregou (verifique sua conexão).');
+  const el = document.getElementById('pdf-doc');
+  if(!el || !el.innerHTML.trim()) throw new Error('Prévia do PDF não encontrada.');
+  const opt = {
+    margin: 0,
+    image: { type:'jpeg', quality:0.95 },
+    html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
+    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
+  };
+  return await html2pdf().set(opt).from(el).outputPdf('blob');
+}
+
+// Sobe o PDF gerado pro Supabase Storage e devolve a URL pública (bucket precisa existir e estar "Public")
+async function uploadPDFSupabase(blob, numOrc){
+  const path = 'orcamento-'+numOrc+'-'+Date.now()+'.pdf';
+  const res = await fetch(SUPA_URL+'/storage/v1/object/'+SUPA_BUCKET_PDF+'/'+path, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer '+SUPA_KEY,
+      'Content-Type': 'application/pdf',
+      'x-upsert': 'true'
+    },
+    body: blob
+  });
+  if(!res.ok){
+    const errTxt = await res.text().catch(()=>'');
+    throw new Error('Falha ao enviar PDF pro Storage ('+res.status+'). '+errTxt);
+  }
+  return SUPA_URL+'/storage/v1/object/public/'+SUPA_BUCKET_PDF+'/'+path;
+}
+
+// Abre o WhatsApp (Web/App) já com o PDF gerado e o link direto na mensagem, pro telefone do cliente
 async function enviarWhatsApp(id){
   if(!id){ alertMsg('Abra um orçamento antes de enviar pelo WhatsApp.','danger'); return; }
 
-  // Gera/abre a prévia do PDF junto (se ainda não estiver aberta pra esse orçamento),
-  // pra o usuário poder salvar/imprimir e depois anexar no WhatsApp que vai abrir
+  // Abre a aba do WhatsApp já de cara (mesmo que em branco), pra não cair no bloqueio de pop-up
+  // do navegador enquanto o PDF é gerado/enviado em segundo plano
+  let waWin = window.open('', '_blank');
+  if(waWin){
+    try{ waWin.document.write('<html><head><meta charset="UTF-8"><title>Preparando envio...</title></head><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#111;color:#25D366"><p>Gerando PDF e preparando o WhatsApp, aguarde...</p></body></html>'); }catch(e){}
+  }
+
+  // Gera/abre a prévia do PDF na tela (se ainda não estiver aberta pra esse orçamento)
   const overlayJaAberto = document.getElementById('pdf-overlay')?.classList.contains('open');
   if(!(overlayJaAberto && _pdfCurrentOrcId===id)){
     await gerarPDF(id);
   }
 
   const _orcsW = await SUPA_DB.get('orcamentos');
-  const orc = _orcsW.find(x=>x.id===id); if(!orc) return;
+  const orc = _orcsW.find(x=>x.id===id);
+  if(!orc){ if(waWin) waWin.close(); return; }
   const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId) || {};
 
   const markup = orc.markup||0;
@@ -4470,16 +4519,36 @@ async function enviarWhatsApp(id){
   let numero = formatarTelWhats(cli.tel);
   if(!numero){
     const manual = prompt('Cliente sem telefone cadastrado.\nInforme o número de WhatsApp (com DDD), ex: (47) 99999-9999:');
-    if(!manual) return;
+    if(!manual){ if(waWin) waWin.close(); return; }
     numero = formatarTelWhats(manual);
   }
-  if(!numero || numero.length<12){ alertMsg('Número de WhatsApp inválido.','danger'); return; }
+  if(!numero || numero.length<12){ alertMsg('Número de WhatsApp inválido.','danger'); if(waWin) waWin.close(); return; }
 
-  const msg = montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final);
+  // Gera o PDF de verdade e sobe pro Storage, pra mandar o link já pronto dentro da mensagem
+  let linkPDF = '';
+  try{
+    const blob = await gerarPDFBlob();
+    linkPDF = await uploadPDFSupabase(blob, numOrc);
+  }catch(e){
+    console.error(e);
+    alertMsg('Não consegui gerar o link automático do PDF (confira o bucket "'+SUPA_BUCKET_PDF+'" no Storage do Supabase). A mensagem vai sem o link — anexe o PDF manualmente.','danger');
+  }
+
+  const msg = montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final, linkPDF);
   const url = 'https://wa.me/'+numero+'?text='+encodeURIComponent(msg);
-  const waWin = window.open(url, '_blank');
-  if(!waWin){ alertMsg('Permita popups para abrir o WhatsApp.','danger'); return; }
-  alertMsg('PDF gerado e WhatsApp aberto! Clique em "🖨️ Imprimir / Salvar PDF" e depois anexe o arquivo na conversa do WhatsApp.');
+
+  if(waWin && !waWin.closed){
+    waWin.location.href = url;
+  } else {
+    waWin = window.open(url, '_blank');
+    if(!waWin){ alertMsg('Permita popups para abrir o WhatsApp.','danger'); return; }
+  }
+
+  if(linkPDF){
+    alertMsg('PDF enviado! O link já está na mensagem do WhatsApp.');
+  } else {
+    alertMsg('WhatsApp aberto! Clique em "🖨️ Imprimir / Salvar PDF" e anexe o arquivo na conversa.');
+  }
 }
 
 async function gerarPDF(id){
