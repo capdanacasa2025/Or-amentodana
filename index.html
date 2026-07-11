@@ -4470,8 +4470,7 @@ async function uploadPDFSupabase(blob, numOrc){
     headers: {
       'apikey': SUPA_KEY,
       'Authorization': 'Bearer '+SUPA_KEY,
-      'Content-Type': 'application/pdf',
-      'x-upsert': 'true'
+      'Content-Type': 'application/pdf'
     },
     body: blob
   });
