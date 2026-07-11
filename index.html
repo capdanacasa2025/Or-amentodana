@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DecoOrça · Sistema de Orçamentos</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 :root {
   --bg: #f5f3ee;
@@ -1133,11 +1132,6 @@ textarea { resize:vertical; min-height:80px; }
             <label>WhatsApp</label>
             <input type="text" id="emp-whats" placeholder="(47) 99999-9999">
           </div>
-          <div class="form-group full">
-            <label>WhatsApp de Análise (interno)</label>
-            <input type="text" id="emp-whats-analise" placeholder="(47) 99999-9999 ou link do grupo (chat.whatsapp.com/...)">
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">Número ou grupo padrão para onde vai o Relatório Interno (custos/margens) — não é enviado ao cliente.</div>
-          </div>
           <div class="form-group">
             <label>Email</label>
             <input type="email" id="emp-email" placeholder="contato@danacasa.com.br">
@@ -1217,7 +1211,6 @@ textarea { resize:vertical; min-height:80px; }
     <div id="pdf-toolbar">
       <span id="pdf-toolbar-title">Proposta Comercial · Dana Casa</span>
       <button onclick="imprimirPDF()" style="background:#c9a84c;color:#0a0800;border:none;padding:8px 18px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;font-family:DM Sans,sans-serif">🖨️ Imprimir / Salvar PDF</button>
-      <button onclick="enviarWhatsApp(_pdfCurrentOrcId)" style="background:#25D366;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;font-family:DM Sans,sans-serif">💬 Enviar WhatsApp</button>
       <button onclick="document.getElementById('pdf-overlay').classList.remove('open')" style="background:transparent;border:1px solid #3a3018;color:#c9a84c;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px">✕ Fechar</button>
     </div>
     <div id="pdf-doc"></div>
@@ -1546,9 +1539,6 @@ const DB = {
 // ============================================================
 const SUPA_URL = 'https://ecevlbxpgoabnpkbxhvf.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZXZsYnhwZ29hYm5wa2J4aHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxODEwMjcsImV4cCI6MjA5NTc1NzAyN30.xKiQhuVSUPzpNow5gNbZS2l1ZogEFmCWzQzMQBEZIX4';
-// Bucket público do Supabase Storage onde os PDFs gerados são salvos pra virar link no WhatsApp.
-// Precisa existir no painel do Supabase (Storage > New bucket), marcado como "Public".
-const SUPA_BUCKET_PDF = 'orcamentos-pdf';
 
 const SUPA = {
   async req(method, table, body=null, params=''){
@@ -1836,7 +1826,6 @@ async function syncPermissoesSupa(){
 
 // ===================== NAVIGATION =====================
 let currentOrcFilter = 'all';
-let _pdfCurrentOrcId = null;
 let currentCobFilter = 'all';
 const pageConfig = {
   dashboard:  { title:'Dashboard' },
@@ -2955,7 +2944,7 @@ async function renderOrcamentos(){
       <td>${statusBadge(o.status)}</td>
       <td style="color:var(--text3)">${fmtDate(o.criadoEm)}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap;">
-        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Enviar WhatsApp (cliente)" onclick="enviarWhatsApp(${o.id})" style="color:#25D366;border-color:#25D366">💬</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button><button class="btn btn-outline btn-sm" title="Enviar Análise (WhatsApp interno)" onclick="enviarAnalise(${o.id})" style="color:#0b6b3a;border-color:#0b6b3a">📊💬</button>
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button>
         <button class="btn btn-outline btn-sm" onclick="openOrcamentoForm(${o.id})">✏️</button>
         <button class="btn btn-danger btn-sm" onclick="delOrcamento(${o.id})">🗑️</button>
       </td>
@@ -3008,7 +2997,7 @@ async function verOrcamento(id){
     </div>`;
 
   // Actions por status
-  let actions=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe')">Fechar</button><button class="btn btn-gold" onclick="gerarPDF(${id})">🖨️ Gerar PDF</button><button class="btn" style="background:#25D366;color:#fff" onclick="enviarWhatsApp(${id})">💬 Enviar WhatsApp</button><button class="btn btn-outline" onclick="gerarRelatorioInterno(${id})">📊 Relatório Interno</button><button class="btn" style="background:#0b6b3a;color:#fff" onclick="enviarAnalise(${id})">📊💬 Enviar Análise</button>`;
+  let actions=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe')">Fechar</button><button class="btn btn-gold" onclick="gerarPDF(${id})">🖨️ Gerar PDF</button><button class="btn btn-outline" onclick="gerarRelatorioInterno(${id})">📊 Relatório Interno</button>`;
   if(orc.status==='andamento') actions+=`<button class="btn btn-outline" onclick="mudarStatus(${id},'enviado')">📤 Enviar ao Cliente</button><button class="btn btn-outline" onclick="mudarStatus(${id},'diretoria')">🏛️ Enviar à Diretoria</button>`;
   if(orc.status==='enviado') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'orcamentos')">❌ Reprovar</button>`;
   if(orc.status==='diretoria') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'diretoria')">❌ Reprovar</button>`;
@@ -4334,7 +4323,6 @@ function salvarEmpresa(){
     cep:         document.getElementById('emp-cep').value.trim(),
     tel:         document.getElementById('emp-tel').value.trim(),
     whats:       document.getElementById('emp-whats').value.trim(),
-    whatsAnalise:document.getElementById('emp-whats-analise').value.trim(),
     email:       document.getElementById('emp-email').value.trim(),
     site:        document.getElementById('emp-site').value.trim(),
     logo:        document.getElementById('emp-logo-data').value,
@@ -4356,7 +4344,6 @@ function renderEmpresa(){
     'emp-nome': e.nome||'', 'emp-cnpj': e.cnpj||'', 'emp-ie': e.ie||'',
     'emp-endereco': e.endereco||'', 'emp-cidade': e.cidade||'', 'emp-uf': e.uf||'',
     'emp-cep': e.cep||'', 'emp-tel': e.tel||'', 'emp-whats': e.whats||'',
-    'emp-whats-analise': e.whatsAnalise||'',
     'emp-email': e.email||'', 'emp-site': e.site||'',
     'emp-markup': e.markup||'', 'emp-validade-dias': e.validadeDias||'',
     'emp-pagamento-padrao': e.pagamento||'',
@@ -4410,147 +4397,6 @@ function removerLogo(){
 // ===================== GERAR PDF =====================
 const DANA_LOGO_PDF = 'data:image/png;base64,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';
 
-// ===================== WHATSAPP =====================
-// Limpa e formata um telefone para o padrão exigido pelo link do WhatsApp (DDI+DDD+numero, só dígitos)
-function formatarTelWhats(tel){
-  let d = String(tel||'').replace(/\D/g,'');
-  if(!d) return '';
-  d = d.replace(/^0+/,''); // remove zeros à esquerda (ex: 0DDD)
-  if(!d.startsWith('55')) d = '55'+d; // assume Brasil quando não informado
-  return d;
-}
-
-// Monta o texto da mensagem com o resumo do orçamento
-function montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final, linkPDF){
-  const primeiroNome = (cli.nome||'').split(' ')[0];
-  const emp = getEmpresa();
-  const empNome = emp.nome || 'Dana Casa';
-
-  let msg = 'Olá'+(primeiroNome?' '+primeiroNome:'')+'! 👋\n\n';
-  msg += 'Aqui é da '+empNome+'. Segue o resumo do seu orçamento *Nº '+numOrc+'*:\n\n';
-  orc.items.forEach(item=>{
-    const vlTotal = (item.precoManual != null) ? item.precoManual : (item.custo * item.qty * (orc.markup||0));
-    msg += '• '+item.nome+' ('+item.qty+'x) — '+fmt(vlTotal)+'\n';
-  });
-  if(desc>0){
-    msg += '\nSubtotal: '+fmt(subtotalReal)+'\n';
-    msg += 'Desconto ('+desc+'%): -'+fmt(descVal)+'\n';
-  }
-  msg += '\n*Valor Total: '+fmt(final)+'*\n';
-  if(orc.validade) msg += 'Válido até: '+fmtDate(orc.validade)+'\n';
-  if(orc.pagamento) msg += 'Forma de pagamento: '+orc.pagamento+'\n';
-  if(linkPDF){
-    msg += '\n📄 PDF completo do orçamento:\n'+linkPDF+'\n';
-  } else {
-    msg += '\n📎 Já te envio o PDF completo do orçamento em seguida.';
-  }
-  msg += '\nQualquer dúvida, estou à disposição! 😊';
-  return msg;
-}
-
-// Gera o PDF de verdade (arquivo binário) a partir da prévia (#pdf-doc) já montada na tela, usando html2pdf.js
-async function gerarPDFBlob(){
-  if(typeof html2pdf === 'undefined') throw new Error('Biblioteca de PDF não carregou (verifique sua conexão).');
-  const el = document.getElementById('pdf-doc');
-  if(!el || !el.innerHTML.trim()) throw new Error('Prévia do PDF não encontrada.');
-  const opt = {
-    margin: 0,
-    image: { type:'jpeg', quality:0.95 },
-    html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
-    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
-  };
-  return await html2pdf().set(opt).from(el).outputPdf('blob');
-}
-
-// Sobe o PDF gerado pro Supabase Storage e devolve a URL pública (bucket precisa existir e estar "Public")
-async function uploadPDFSupabase(blob, numOrc){
-  const path = 'orcamento-'+numOrc+'-'+Date.now()+'.pdf';
-  const res = await fetch(SUPA_URL+'/storage/v1/object/'+SUPA_BUCKET_PDF+'/'+path, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPA_KEY,
-      'Authorization': 'Bearer '+SUPA_KEY,
-      'Content-Type': 'application/pdf'
-    },
-    body: blob
-  });
-  if(!res.ok){
-    const errTxt = await res.text().catch(()=>'');
-    throw new Error('Falha ao enviar PDF pro Storage ('+res.status+'). '+errTxt);
-  }
-  return SUPA_URL+'/storage/v1/object/public/'+SUPA_BUCKET_PDF+'/'+path;
-}
-
-// Abre o WhatsApp (Web/App) já com o PDF gerado e o link direto na mensagem, pro telefone do cliente
-async function enviarWhatsApp(id){
-  if(!id){ alertMsg('Abra um orçamento antes de enviar pelo WhatsApp.','danger'); return; }
-
-  // Abre a aba do WhatsApp já de cara (mesmo que em branco), pra não cair no bloqueio de pop-up
-  // do navegador enquanto o PDF é gerado/enviado em segundo plano
-  let waWin = window.open('', '_blank');
-  if(waWin){
-    try{ waWin.document.write('<html><head><meta charset="UTF-8"><title>Preparando envio...</title></head><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#111;color:#25D366"><p>Gerando PDF e preparando o WhatsApp, aguarde...</p></body></html>'); }catch(e){}
-  }
-
-  // Gera/abre a prévia do PDF na tela (se ainda não estiver aberta pra esse orçamento)
-  const overlayJaAberto = document.getElementById('pdf-overlay')?.classList.contains('open');
-  if(!(overlayJaAberto && _pdfCurrentOrcId===id)){
-    await gerarPDF(id);
-  }
-
-  const _orcsW = await SUPA_DB.get('orcamentos');
-  const orc = _orcsW.find(x=>x.id===id);
-  if(!orc){ if(waWin) waWin.close(); return; }
-  const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId) || {};
-
-  const markup = orc.markup||0;
-  const desc = orc.desconto||0;
-  const numOrc = String(id).padStart(4,'0');
-
-  let subtotalReal = 0;
-  orc.items.forEach(item=>{
-    const vlTotal = (item.precoManual != null) ? item.precoManual : (item.custo * item.qty * markup);
-    subtotalReal += vlTotal;
-  });
-  const descVal = subtotalReal * (desc/100);
-  const final = orc.valorFinal || (subtotalReal - descVal);
-
-  let numero = formatarTelWhats(cli.tel);
-  if(!numero){
-    const manual = prompt('Cliente sem telefone cadastrado.\nInforme o número de WhatsApp (com DDD), ex: (47) 99999-9999:');
-    if(!manual){ if(waWin) waWin.close(); return; }
-    numero = formatarTelWhats(manual);
-  }
-  if(!numero || numero.length<12){ alertMsg('Número de WhatsApp inválido.','danger'); if(waWin) waWin.close(); return; }
-
-  // Gera o PDF de verdade e sobe pro Storage, pra mandar o link já pronto dentro da mensagem
-  let linkPDF = '';
-  try{
-    const blob = await gerarPDFBlob();
-    linkPDF = await uploadPDFSupabase(blob, numOrc);
-  }catch(e){
-    console.error(e);
-    alertMsg('Falha ao gerar o PDF automático. A mensagem vai sem o link.','danger');
-    alert('Erro ao gerar/enviar o PDF automático:\n\n'+(e && e.message ? e.message : e)+'\n\nA mensagem do WhatsApp vai ser enviada mesmo assim, só que sem o link do PDF.');
-  }
-
-  const msg = montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final, linkPDF);
-  const url = 'https://wa.me/'+numero+'?text='+encodeURIComponent(msg);
-
-  if(waWin && !waWin.closed){
-    waWin.location.href = url;
-  } else {
-    waWin = window.open(url, '_blank');
-    if(!waWin){ alertMsg('Permita popups para abrir o WhatsApp.','danger'); return; }
-  }
-
-  if(linkPDF){
-    alertMsg('PDF enviado! O link já está na mensagem do WhatsApp.');
-  } else {
-    alertMsg('WhatsApp aberto! Clique em "🖨️ Imprimir / Salvar PDF" e anexe o arquivo na conversa.');
-  }
-}
-
 async function gerarPDF(id){
   const _orcs2=await SUPA_DB.get('orcamentos');
   const orc = _orcs2.find(x=>x.id===id); if(!orc) return;
@@ -4560,7 +4406,6 @@ async function gerarPDF(id){
   const markup = orc.markup||0;
   const desc = orc.desconto||0;
   const numOrc = String(id).padStart(4,'0');
-  _pdfCurrentOrcId = id;
 
   // Calcular subtotal real respeitando preços manuais por item
   let subtotalReal = 0;
@@ -4768,62 +4613,6 @@ body { font-family:Georgia,serif; background:#fff; color:#1a1a1a; }
 
 
 // ===================== RELATÓRIO INTERNO =====================
-// Envia o resumo de custos/margens (uso interno) para o WhatsApp/grupo de análise cadastrado em Configurações > Empresa
-async function enviarAnalise(id){
-  const _orcsA = await SUPA_DB.get('orcamentos');
-  const orc = _orcsA.find(x=>x.id===id); if(!orc) return;
-  const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId) || {};
-  const vend = (await SUPA_DB.get('vendedores')).find(v=>v.id===orc.vendedorId) || {};
-  const emp = getEmpresa();
-
-  const markup = orc.markup||1;
-  const desc = orc.desconto||0;
-  const custo = orc.custoTotal||0;
-  const numOrc = String(id).padStart(4,'0');
-
-  let subtotalReal = 0;
-  orc.items.forEach(item=>{
-    const custoItem = item.custo * item.qty;
-    const vendaItem = (item.precoManual != null) ? item.precoManual : (custoItem * markup);
-    subtotalReal += vendaItem;
-  });
-  const descVal = subtotalReal * (desc/100);
-  const aposDesc = subtotalReal - descVal;
-  const rtVal = orc.rt ? aposDesc*(orc.rtComissao||0)/100 : 0;
-  const valorFinal = orc.valorFinal || (aposDesc - rtVal);
-  const margem = valorFinal - custo;
-  const margemPct = valorFinal>0 ? (margem/valorFinal*100).toFixed(1) : '0.0';
-
-  let msg = '📊 *ANÁLISE INTERNA — Orçamento Nº '+numOrc+'*\n';
-  msg += '_Uso interno — não enviar ao cliente_\n\n';
-  msg += 'Cliente: '+(cli.nome||'—')+'\n';
-  msg += 'Vendedor: '+(vend.nome||'—')+'\n';
-  if(orc.rt) msg += 'RT Arquiteto: Sim'+(orc.rtNome?' ('+orc.rtNome+')':'')+(orc.rtComissao?' · '+orc.rtComissao+'%':'')+'\n';
-  msg += '\nCusto Total: '+fmt(custo)+'\n';
-  msg += 'Valor de Venda: '+fmt(valorFinal)+'\n';
-  msg += 'Margem Bruta: '+fmt(margem)+' ('+margemPct+'%)\n';
-  msg += '\nMultiplicador: ×'+markup+(desc>0?' · Desconto: '+desc+'%':'')+'\n';
-
-  const destino = (emp.whatsAnalise||'').trim();
-  if(!destino){
-    alertMsg('Cadastre o WhatsApp (ou grupo) de análise em Configurações > Empresa antes de enviar.','danger');
-    return;
-  }
-
-  if(/chat\.whatsapp\.com/i.test(destino)){
-    // Grupo: o WhatsApp não permite pré-preencher texto direto num grupo,
-    // então copiamos a mensagem para a área de transferência e abrimos o link do grupo
-    try{ await navigator.clipboard.writeText(msg); alertMsg('Mensagem copiada! Cole no grupo que será aberto.'); }
-    catch(e){ alertMsg('Não foi possível copiar a mensagem automaticamente. Copie manualmente.','danger'); }
-    window.open(destino, '_blank');
-  } else {
-    const numero = formatarTelWhats(destino);
-    if(!numero || numero.length<12){ alertMsg('WhatsApp de análise inválido. Verifique em Configurações > Empresa.','danger'); return; }
-    const url = 'https://wa.me/'+numero+'?text='+encodeURIComponent(msg);
-    window.open(url, '_blank');
-  }
-}
-
 async function gerarRelatorioInterno(id){
   const _orcs3=await SUPA_DB.get('orcamentos');
   const orc = _orcs3.find(x=>x.id===id); if(!orc) return;
