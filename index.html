@@ -4612,7 +4612,6 @@ body { font-family:Georgia,serif; background:#fff; color:#1a1a1a; }
 }
 
 
-// ===================== RELATÓRIO INTERNO =====================
 async function gerarRelatorioInterno(id){
   const _orcs3=await SUPA_DB.get('orcamentos');
   const orc = _orcs3.find(x=>x.id===id); if(!orc) return;
