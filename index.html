@@ -4531,7 +4531,8 @@ async function enviarWhatsApp(id){
     linkPDF = await uploadPDFSupabase(blob, numOrc);
   }catch(e){
     console.error(e);
-    alertMsg('Não consegui gerar o link automático do PDF (confira o bucket "'+SUPA_BUCKET_PDF+'" no Storage do Supabase). A mensagem vai sem o link — anexe o PDF manualmente.','danger');
+    alertMsg('Falha ao gerar o PDF automático. A mensagem vai sem o link.','danger');
+    alert('Erro ao gerar/enviar o PDF automático:\n\n'+(e && e.message ? e.message : e)+'\n\nA mensagem do WhatsApp vai ser enviada mesmo assim, só que sem o link do PDF.');
   }
 
   const msg = montarMensagemWhats(orc, cli, numOrc, subtotalReal, desc, descVal, final, linkPDF);
