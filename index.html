@@ -91,7 +91,7 @@ th { padding:10px 14px; text-align:left; font-size:11px; text-transform:uppercas
 td { padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text2); vertical-align:middle; }
 tr:last-child td { border-bottom:none; }
 tr:hover td { background:var(--surface2); }
-.prod-thumb { width:56px; height:56px; border-radius:8px; object-fit:cover; background:var(--surface3); border:1px solid var(--border); }
+.prod-thumb { width:46px; height:46px; border-radius:8px; object-fit:cover; background:var(--surface3); border:1px solid var(--border); }
 
 /* FORM */
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
@@ -2096,8 +2096,9 @@ async function renderProdutos(){
     const fornInfo = forn.length
       ? forn.map(f=>`<span style="font-size:10px;background:var(--surface3);padding:1px 6px;border-radius:10px;margin-right:3px">${f.nome}: ${fmt(f.custo)}</span>`).join('')
       : `<span style="font-size:11px;color:var(--text3)">Custo: ${fmt(p.custo)}</span>`;
+    const thumbSrc = _fotoThumbCache[p.id] || THUMB_PLACEHOLDER;
     return `<tr>
-      <td>${p.foto?`<img src="${p.foto}" class="prod-thumb">`:`<div class="prod-thumb"></div>`}</td>
+      <td><img id="pthumb-${p.id}" src="${thumbSrc}" class="prod-thumb" alt=""></td>
       <td><span style="color:var(--text3);font-size:12px">${p.codigo||'—'}</span></td>
       <td><b>${p.nome}</b><br><small style="color:var(--text3)">${p.descricao||''}</small></td>
       <td><span style="color:var(--text3)">${p.categoria||'—'}</span></td>
@@ -2109,6 +2110,33 @@ async function renderProdutos(){
       </td>
     </tr>`;
   }).join('');
+  // Carrega as miniaturas em segundo plano (em lotes), sem travar a lista
+  carregarThumbsProdutos(prods.map(p=>p.id)).catch(()=>{});
+}
+
+// Placeholder transparente 1x1 enquanto a miniatura não carrega
+const THUMB_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+// Cache das miniaturas já baixadas — evita rebuscar ao filtrar/re-renderizar
+const _fotoThumbCache = {};
+
+// Busca as fotos em pequenos lotes (evita uma única resposta gigante) e
+// preenche as miniaturas conforme chegam.
+async function carregarThumbsProdutos(ids){
+  const faltando = ids.filter(id => !(id in _fotoThumbCache));
+  const BATCH = 12;
+  for(let i=0; i<faltando.length; i+=BATCH){
+    const grupo = faltando.slice(i, i+BATCH);
+    try{
+      const rows = await SUPA.get('produtos', '?id=in.('+grupo.join(',')+')&select=id,foto');
+      rows.forEach(r=>{
+        _fotoThumbCache[r.id] = r.foto || '';
+        if(r.foto){
+          const el = document.getElementById('pthumb-'+r.id);
+          if(el) el.src = r.foto;
+        }
+      });
+    }catch(e){ /* sem conexão: mantém o placeholder */ }
+  }
 }
 
 async function editProduto(id){
