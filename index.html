@@ -1616,6 +1616,14 @@ function toSupa_produto(p){
     fornecedores:p.fornecedores||[], foto:p.foto||null,
     exibir_fornecedor:p.exibirFornecedor||false };
 }
+// Busca a foto (base64) de UM produto sob demanda — a lista não traz mais foto.
+async function getProdutoFoto(id){
+  try{
+    const r = await SUPA.get('produtos','?id=eq.'+id+'&select=foto');
+    return (r && r[0] && r[0].foto) ? r[0].foto : '';
+  }catch(e){ return ''; }
+}
+
 function fromSupa_produto(r){
   return { id:r.id, nome:r.nome, codigo:r.codigo, categoria:r.categoria, unidade:r.unidade,
     descricao:r.descricao, custo:parseFloat(r.custo)||0,
@@ -1711,27 +1719,30 @@ let _supaOnline = true;
 const SUPA_DB = {
   async get(tabela){
     if(_cache[tabela]) return _cache[tabela];
-    // Tentar Supabase primeiro
-    if(_supaOnline){
-      try{
-        let rows;
-        const order = '?order=id.asc';
-        if(tabela==='produtos')    rows=(await SUPA.get('produtos',order)).map(fromSupa_produto);
-        else if(tabela==='clientes')   rows=(await SUPA.get('clientes',order)).map(fromSupa_cliente);
-        else if(tabela==='vendedores') rows=(await SUPA.get('vendedores',order)).map(fromSupa_vendedor);
-        else if(tabela==='arquitetos') rows=(await SUPA.get('arquitetos',order)).map(fromSupa_arquiteto);
-        else if(tabela==='orcamentos') rows=(await SUPA.get('orcamentos',order)).map(fromSupa_orcamento);
-        else rows=[];
-        _cache[tabela]=rows;
-        // Sincronizar com localStorage como backup
-        try{ localStorage.setItem('deco_'+tabela, JSON.stringify(rows)); }catch(e){}
-        _supaOnline = true;
-        return rows;
-      }catch(e){
-        console.warn('Supabase offline, usando localStorage:', tabela, e.message);
-        _supaOnline = false;
-        showOfflineBanner();
-      }
+    // Sempre tenta o Supabase quando não há cache — a falha de UMA tabela
+    // não deve desligar o Supabase para as demais (evita mostrar dados
+    // antigos do localStorage quando a nuvem está acessível).
+    try{
+      let rows;
+      const order = '?order=id.asc&limit=100000';
+      // Lista de produtos SEM a coluna "foto" (base64 pesado) — evita resposta
+      // gigante que derruba o carregamento. A foto é buscada sob demanda.
+      const orderProd = '?order=id.asc&limit=100000&select=id,nome,codigo,categoria,unidade,descricao,custo,fornecedores,exibir_fornecedor,criado_em';
+      if(tabela==='produtos')    rows=(await SUPA.get('produtos',orderProd)).map(fromSupa_produto);
+      else if(tabela==='clientes')   rows=(await SUPA.get('clientes',order)).map(fromSupa_cliente);
+      else if(tabela==='vendedores') rows=(await SUPA.get('vendedores',order)).map(fromSupa_vendedor);
+      else if(tabela==='arquitetos') rows=(await SUPA.get('arquitetos',order)).map(fromSupa_arquiteto);
+      else if(tabela==='orcamentos') rows=(await SUPA.get('orcamentos',order)).map(fromSupa_orcamento);
+      else rows=[];
+      _cache[tabela]=rows;
+      // Sincronizar com localStorage como backup
+      try{ localStorage.setItem('deco_'+tabela, JSON.stringify(rows)); }catch(e){}
+      _supaOnline = true;
+      return rows;
+    }catch(e){
+      console.warn('Supabase offline, usando localStorage:', tabela, e.message);
+      _supaOnline = false;
+      showOfflineBanner();
     }
     // Fallback: localStorage
     try{
@@ -2110,10 +2121,11 @@ async function editProduto(id){
   document.getElementById('prod-categoria').value=p.categoria||'';
   document.getElementById('prod-unidade').value=p.unidade||'Un';
   document.getElementById('prod-descricao').value=p.descricao||'';
-  document.getElementById('prod-foto-data').value=p.foto||'';
+  const fotoData = (p.foto!=null) ? p.foto : await getProdutoFoto(id);
+  document.getElementById('prod-foto-data').value=fotoData||'';
   const img=document.getElementById('preview-foto');
-  if(p.foto){
-    img.src=p.foto; img.style.display='block';
+  if(fotoData){
+    img.src=fotoData; img.style.display='block';
     document.getElementById('foto-placeholder').style.display='none';
     document.getElementById('foto-btns').style.display='flex';
   } else {
@@ -2724,6 +2736,10 @@ async function confirmarProdSelect(){
     }
   });
   closeModal('modal-prod-select');
+
+  // A lista não traz mais a foto — buscar sob demanda antes de adicionar ao
+  // orçamento, para preservar a imagem do produto no PDF.
+  for(const p of toAdd){ if(p.foto==null) p.foto = await getProdutoFoto(p.id); }
 
   // Se algum produto tem múltiplos fornecedores, abrir seleção sequencial
   const comMultForn = toAdd.filter(p=>(p.fornecedores||[]).length>1);
