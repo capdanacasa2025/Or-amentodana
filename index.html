@@ -2131,8 +2131,11 @@ async function carregarThumbsProdutos(ids){
       rows.forEach(r=>{
         _fotoThumbCache[r.id] = r.foto || '';
         if(r.foto){
-          const el = document.getElementById('pthumb-'+r.id);
-          if(el) el.src = r.foto;
+          // Preenche a miniatura na lista de produtos E no modal de seleção
+          ['pthumb-','psthumb-'].forEach(pre=>{
+            const el = document.getElementById(pre+r.id);
+            if(el) el.src = r.foto;
+          });
         }
       });
     }catch(e){ /* sem conexão: mantém o placeholder */ }
@@ -2728,8 +2731,9 @@ async function renderProdSelect(){
         + forn.map(f=>`<span style="font-size:10px;background:var(--surface3);padding:1px 7px;border-radius:10px;color:var(--text2)">${f.nome}: ${fmt(f.custo)}</span>`).join('')
         + `</div>` : '';
     const custoLabel = forn.length===1 ? `${forn[0].nome}: ${fmt(forn[0].custo)}` : (forn.length>1?`${forn.length} fornecedores`:fmt(p.custo));
+    const thumbSrc = _fotoThumbCache[p.id] || THUMB_PLACEHOLDER;
     return `<div class="prod-select-item ${selectedProds.has(p.id)?'selected':''}" onclick="toggleProdSel(${p.id},this)">
-      ${p.foto?`<img src="${p.foto}" class="prod-select-thumb">`:`<div class="prod-select-thumb"></div>`}
+      <img id="psthumb-${p.id}" src="${thumbSrc}" class="prod-select-thumb" alt="">
       <div style="flex:1">
         <div style="font-size:13px;color:var(--text);font-weight:600">${p.nome}${p.codigo?` <span style="font-weight:400;color:var(--text3)">· ${p.codigo}</span>`:''}</div>
         <div style="font-size:11px;color:var(--text3)">${p.categoria||''} · ${custoLabel}</div>
@@ -2738,6 +2742,8 @@ async function renderProdSelect(){
       <span style="font-size:16px">${selectedProds.has(p.id)?'✅':''}</span>
     </div>`;
   }).join('');
+  // Carrega as miniaturas do modal em segundo plano (em lotes)
+  carregarThumbsProdutos(prods.map(p=>p.id)).catch(()=>{});
 }
 
 function toggleProdSel(id,el){
