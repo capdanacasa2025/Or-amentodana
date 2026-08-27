@@ -1935,7 +1935,20 @@ function goPage(page){
 // ===================== MODAIS =====================
 function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
+// Fechar ao clicar no fundo — só fecha se o clique COMEÇOU e TERMINOU no fundo
+// (evita fechar sozinho ao selecionar texto num campo e soltar o mouse fora da caixa).
+// Formulários de cadastro NÃO fecham pelo fundo — só pelo ✕ ou Cancelar,
+// para não perder o que já foi digitado.
+const MODAIS_SEM_FECHAR_NO_FUNDO = ['modal-orcamento','modal-produto','modal-cliente','modal-vendedor','modal-arquiteto','modal-ambiente'];
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  let pressStartNoFundo=false;
+  o.addEventListener('mousedown',e=>{ pressStartNoFundo=(e.target===o); });
+  o.addEventListener('click',e=>{
+    const fechaNoFundo = !MODAIS_SEM_FECHAR_NO_FUNDO.includes(o.id);
+    if(fechaNoFundo && e.target===o && pressStartNoFundo) o.classList.remove('open');
+    pressStartNoFundo=false;
+  });
+});
 
 // ===================== UTILS =====================
 const fmt = v => 'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
