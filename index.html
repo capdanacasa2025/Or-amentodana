@@ -143,10 +143,13 @@ textarea { resize:vertical; min-height:80px; }
 /* ORCAMENTO ITEMS */
 .orcamento-items { display:flex; flex-direction:column; gap:10px; }
 .item-row {
-  display:grid; grid-template-columns:76px 1fr 135px 70px 100px 140px auto auto;
+  display:grid; grid-template-columns:22px 76px 1fr 135px 70px 100px 140px auto auto;
   align-items:center; gap:12px; background:var(--surface2); padding:10px 12px;
   border-radius:var(--radius2); border:1px solid var(--border);
 }
+.drag-handle { cursor:grab; color:var(--text3); font-size:17px; line-height:1; text-align:center; user-select:none; touch-action:none; }
+.drag-handle:active { cursor:grabbing; }
+.item-row.dragging { opacity:.6; box-shadow:0 6px 18px rgba(0,0,0,.28); }
 .item-thumb { width:70px; height:70px; border-radius:8px; object-fit:cover; background:var(--surface3); border:1px solid var(--border); }
 .item-name { font-size:13px; color:var(--text); }
 .item-name small { display:block; font-size:11px; color:var(--text3); }
@@ -269,7 +272,7 @@ textarea { resize:vertical; min-height:80px; }
   .dash-grid { grid-template-columns:1fr 1fr; }
   .form-grid { grid-template-columns:1fr; }
   .users-grid { grid-template-columns:1fr !important; }
-  .item-row { grid-template-columns:48px 1fr 64px 64px 32px; font-size:12px; }
+  .item-row { grid-template-columns:18px 48px 1fr 64px 64px 32px; font-size:12px; }
 
   /* Cards & padding */
   .card { padding:14px; }
@@ -2582,6 +2585,7 @@ function renderOrcItems(){
       ? `<span class="item-preco-auto" onclick="resetPrecoItem(${i})" title="Voltar ao cálculo automático">↺ automático</span>`
       : `<span class="item-preco-auto" style="opacity:.5;cursor:default">×${markup} markup</span>`;
     return `<div class="item-row" data-idx="${i}">
+      <span class="drag-handle" title="Arraste para reordenar" onpointerdown="iniciarDragItem(event,${i})">⠿</span>
       ${(item.foto||_fotoThumbCache[item.prodId])?`<img src="${item.foto||_fotoThumbCache[item.prodId]}" class="item-thumb">`:`<div class="item-thumb"></div>`}
       <div class="item-name">${item.nome}<small>${(item.fornecedor && item.exibirFornecedor)?'🏭 '+item.fornecedor:''}</small></div>
       <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
@@ -2670,6 +2674,46 @@ function removeItem(i){
   orcItems.splice(i,1);
   renderOrcItems();
   calcTotais();
+}
+
+// ── Reordenar itens arrastando (mouse e toque) ────────────────
+function iniciarDragItem(ev, i){
+  const handle = ev.currentTarget;
+  const row = handle.closest('.item-row');
+  const container = document.getElementById('orc-items-list');
+  if(!row || !container) return;
+  ev.preventDefault();
+  try{ handle.setPointerCapture(ev.pointerId); }catch(e){}
+  row.classList.add('dragging');
+
+  const move = (e)=>{
+    const y = e.clientY;
+    const outros = [...container.querySelectorAll('.item-row:not(.dragging)')];
+    const alvo = outros.find(r=>{
+      const rc = r.getBoundingClientRect();
+      return y < rc.top + rc.height/2;
+    });
+    if(alvo) container.insertBefore(row, alvo);
+    else container.appendChild(row);
+  };
+  const up = ()=>{
+    handle.removeEventListener('pointermove', move);
+    handle.removeEventListener('pointerup', up);
+    handle.removeEventListener('pointercancel', up);
+    row.classList.remove('dragging');
+    // Reconstrói orcItems na nova ordem lida do DOM (pelos data-idx originais)
+    const novaOrdem = [...container.querySelectorAll('.item-row')]
+      .map(r=>parseInt(r.getAttribute('data-idx')))
+      .filter(n=>!isNaN(n));
+    if(novaOrdem.length === orcItems.length){
+      orcItems = novaOrdem.map(idx=>orcItems[idx]);
+    }
+    renderOrcItems();
+    calcTotais();
+  };
+  handle.addEventListener('pointermove', move);
+  handle.addEventListener('pointerup', up);
+  handle.addEventListener('pointercancel', up);
 }
 
 // ── Editar um item do orçamento sem precisar excluir ──────────
