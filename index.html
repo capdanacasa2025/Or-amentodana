@@ -393,13 +393,13 @@ textarea { resize:vertical; min-height:80px; }
   border-radius:8px 8px 0 0;
 }
 #pdf-toolbar span { flex:1; font-size:13px; color:#c9a84c; font-family:'DM Sans',sans-serif; }
-#pdf-doc { padding:52px 56px; font-family:Georgia,serif; color:#1a1a1a; background:#fff; }
+#pdf-doc { padding:52px 56px; font-family:'DM Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#232018; background:#fff; }
 
 /* HEADER */
 .pdf-header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:20px; border-bottom:2px solid #b8960c; margin-bottom:24px; }
 .pdf-logo { width:150px; }
 .pdf-empresa { text-align:right; }
-.pdf-empresa h3 { font-size:14px; font-weight:700; color:#1a1500; margin-bottom:4px; }
+.pdf-empresa h3 { font-family:'Cormorant Garamond',Georgia,serif; font-size:23px; font-weight:600; letter-spacing:.02em; color:#1a1500; margin-bottom:4px; }
 .pdf-empresa p { font-size:11px; color:#666; line-height:1.7; }
 
 /* FAIXA TITULO */
@@ -409,15 +409,15 @@ textarea { resize:vertical; min-height:80px; }
   display:flex; justify-content:space-between; align-items:center;
   margin-bottom:22px;
 }
-.pdf-title-bar h2 { font-size:16px; font-weight:700; letter-spacing:.06em; margin:0; }
+.pdf-title-bar h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; font-weight:700; letter-spacing:.10em; margin:0; color:#e7c877; }
 .pdf-title-bar .pdf-num { font-size:12px; color:#a08030; text-align:right; line-height:1.9; }
 
 /* SECAO */
 .pdf-section { margin-bottom:20px; }
 .pdf-section-title {
-  font-size:10px; text-transform:uppercase; letter-spacing:.12em;
-  color:#7a6010; border-bottom:1px solid #e8d898; padding-bottom:5px; margin-bottom:10px;
-  font-family:Arial,sans-serif; font-weight:700;
+  font-size:10px; text-transform:uppercase; letter-spacing:.16em;
+  color:#8a6d12; border-bottom:1px solid #e8d898; padding-bottom:6px; margin-bottom:12px;
+  font-weight:600;
 }
 .pdf-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 20px; }
 .pdf-info-item { font-size:12px; }
@@ -4795,51 +4795,55 @@ function imprimirPDF(){
 
   const css = `
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:Georgia,serif; background:#fff; color:#1a1a1a; }
-#pdf-doc { padding:44px 52px; background:#fff; }
-.pdf-header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:20px; border-bottom:2px solid #b8960c; margin-bottom:24px; }
-.pdf-logo { width:150px; }
+body { font-family:'DM Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#fff; color:#232018; -webkit-font-smoothing:antialiased; }
+#pdf-doc { padding:48px 54px; background:#fff; }
+.pdf-header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:22px; border-bottom:2px solid #b8960c; margin-bottom:26px; }
+.pdf-logo { width:148px; }
 .pdf-empresa { text-align:right; }
-.pdf-empresa h3 { font-size:14px; font-weight:700; color:#1a1500; margin-bottom:4px; }
-.pdf-empresa p { font-size:11px; color:#666; line-height:1.7; }
-.pdf-title-bar { background:#1a1500; color:#c9a84c; padding:12px 20px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
-.pdf-title-bar h2 { font-size:16px; font-weight:700; letter-spacing:.06em; margin:0; font-family:Georgia,serif; }
-.pdf-num { font-size:12px; color:#a08030; text-align:right; line-height:1.9; }
-.pdf-section { margin-bottom:20px; }
-.pdf-section-title { font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:#7a6010; border-bottom:1px solid #e8d898; padding-bottom:5px; margin-bottom:10px; font-family:Arial,sans-serif; font-weight:700; }
-.pdf-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 20px; }
+.pdf-empresa h3 { font-family:'Cormorant Garamond',Georgia,serif; font-size:23px; font-weight:600; letter-spacing:.02em; color:#1a1500; margin-bottom:4px; }
+.pdf-empresa p { font-size:10.5px; color:#6b6250; line-height:1.75; }
+.pdf-title-bar { background:linear-gradient(135deg,#1a1500,#2a2000); color:#d9b968; padding:16px 24px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+.pdf-title-bar h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; font-weight:700; letter-spacing:.10em; margin:0; color:#e7c877; }
+.pdf-num { font-size:11.5px; color:#c6a55c; text-align:right; line-height:1.85; }
+.pdf-section { margin-bottom:22px; }
+.pdf-section-title { font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#8a6d12; border-bottom:1px solid #e8d898; padding-bottom:6px; margin-bottom:12px; font-weight:600; }
+.pdf-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; }
 .pdf-info-item { font-size:12px; }
-.pdf-info-item label { display:block; color:#999; font-size:10px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:1px; }
-.pdf-info-item span { color:#1a1a1a; font-weight:600; }
+.pdf-info-item label { display:block; color:#9a917d; font-size:9px; text-transform:uppercase; letter-spacing:.09em; margin-bottom:2px; }
+.pdf-info-item span { color:#232018; font-weight:600; }
 .pdf-table { width:100%; border-collapse:collapse; font-size:12px; }
-.pdf-table thead tr { background:#1a1500; color:#c9a84c; }
-.pdf-table th { padding:8px 10px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.07em; font-weight:700; }
+.pdf-table thead tr { background:#1a1500; color:#d9b968; }
+.pdf-table th { padding:10px 12px; text-align:left; font-size:9.5px; text-transform:uppercase; letter-spacing:.10em; font-weight:600; color:#e7c877; }
 .pdf-table th.r { text-align:right; } .pdf-table th.c { text-align:center; }
-.pdf-table td { padding:8px 10px; border-bottom:1px solid #efe6c0; color:#1a1a1a; vertical-align:middle; }
-.pdf-table td.r { text-align:right; font-weight:700; color:#7a5a00; } .pdf-table td.c { text-align:center; }
+.pdf-table td { padding:9px 12px; border-bottom:1px solid #efe6c0; color:#2c2820; vertical-align:middle; }
+.pdf-table td strong { font-weight:600; color:#1a1500; }
+.pdf-table td.r { text-align:right; font-weight:700; color:#7a5a00; font-variant-numeric:tabular-nums; } .pdf-table td.c { text-align:center; font-variant-numeric:tabular-nums; }
 .pdf-table tbody tr:nth-child(even) td { background:#fdf8ec; }
-.prod-img-pdf { width:64px; height:64px; object-fit:cover; border-radius:6px; vertical-align:middle; }
-.prod-no-img-pdf { width:64px; height:64px; background:#f0e8c0; border-radius:6px; display:inline-block; vertical-align:middle; }
-.pdf-totals { margin-left:auto; width:270px; margin-top:10px; }
-.ptr { display:flex; justify-content:space-between; padding:5px 0; font-size:12px; color:#555; border-bottom:1px solid #efe6c0; }
-.ptr.big { font-size:15px; font-weight:700; color:#1a1a1a; border-bottom:none; border-top:2px solid #b8960c; padding-top:10px; margin-top:4px; }
+.prod-img-pdf { width:60px; height:60px; object-fit:cover; border-radius:6px; vertical-align:middle; border:1px solid #ece3c4; }
+.prod-no-img-pdf { width:60px; height:60px; background:#f4eed6; border-radius:6px; display:inline-block; vertical-align:middle; }
+.pdf-totals { margin-left:auto; width:290px; margin-top:12px; }
+.ptr { display:flex; justify-content:space-between; padding:6px 2px; font-size:12px; color:#6b6250; border-bottom:1px solid #efe6c0; font-variant-numeric:tabular-nums; }
+.ptr.big { font-size:17px; font-weight:700; color:#1a1500; border-bottom:none; border-top:2px solid #b8960c; padding-top:12px; margin-top:6px; }
+.ptr.big span:first-child { font-family:'Cormorant Garamond',Georgia,serif; font-size:20px; letter-spacing:.04em; }
 .ptr.big span:last-child { color:#7a5a00; }
-.pdf-finfo { display:flex; gap:16px; margin-top:18px; padding:12px 14px; background:#fdf8ec; border-radius:6px; border-left:3px solid #c9a84c; }
+.pdf-finfo { display:flex; gap:18px; margin-top:20px; padding:14px 16px; background:#fdf8ec; border-radius:8px; border-left:3px solid #c9a84c; }
 .pdf-finfo div { flex:1; font-size:11px; }
-.pdf-finfo label { display:block; font-size:9px; color:#999; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px; }
-.pdf-finfo span { font-weight:700; color:#1a1a1a; }
-.pdf-obs { margin-top:14px; padding:10px 14px; background:#fdf8ec; border-radius:6px; font-size:11px; color:#555; border-left:3px solid #e0c860; }
-.pdf-obs strong { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:#7a6010; margin-bottom:4px; }
-.pdf-sign { display:flex; gap:40px; margin-top:36px; padding-top:18px; border-top:1px solid #e0d8b0; }
+.pdf-finfo label { display:block; font-size:9px; color:#9a917d; text-transform:uppercase; letter-spacing:.09em; margin-bottom:3px; }
+.pdf-finfo span { font-weight:700; color:#232018; }
+.pdf-obs { margin-top:16px; padding:12px 16px; background:#fdf8ec; border-radius:8px; font-size:11px; color:#5a5445; border-left:3px solid #e0c860; line-height:1.6; }
+.pdf-obs strong { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.09em; color:#8a6d12; margin-bottom:5px; }
+.pdf-sign { display:flex; gap:44px; margin-top:40px; padding-top:20px; }
 .pdf-sign div { flex:1; text-align:center; }
-.pdf-sign .line { border-top:1px solid #333; padding-top:6px; font-size:10px; color:#888; margin-top:30px; }
-.pdf-stamp { text-align:center; margin-top:20px; font-size:9px; color:#bbb; font-style:italic; padding-bottom:20px; }
+.pdf-sign .line { border-top:1px solid #555; padding-top:7px; font-size:10px; color:#8a8270; margin-top:34px; }
+.pdf-stamp { text-align:center; margin-top:22px; font-size:9px; color:#b8b09a; font-style:italic; padding-bottom:20px; }
 #toolbar { background:#1a1500; padding:10px 20px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:99; }
+@page { size:A4; margin:14mm 12mm; }
 @media print {
   * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
   body { margin:0 !important; }
   #toolbar { display:none !important; }
-  #pdf-doc { padding:16px 20px !important; }
+  #pdf-doc { padding:4px 6px !important; }
+  .pdf-table thead { display:table-header-group; }
   .pdf-table tr { page-break-inside:avoid; }
   .pdf-sign { page-break-inside:avoid; }
 }`;
