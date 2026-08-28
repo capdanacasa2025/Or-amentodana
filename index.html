@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DecoOrça · Sistema de Orçamentos</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧾</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1389,7 +1390,7 @@ textarea { resize:vertical; min-height:80px; }
 
 <!-- ORÇAMENTO FORM -->
 <div class="modal-overlay" id="modal-orcamento">
-  <div class="modal" style="width:720px">
+  <div class="modal" style="width:min(1180px,96vw);max-width:96vw;max-height:94vh">
     <div class="modal-header">
       <span class="modal-title" id="orc-modal-title">Novo Orçamento</span>
       <button class="modal-close" onclick="closeModal('modal-orcamento')">✕</button>
@@ -2183,6 +2184,25 @@ async function carregarThumbsProdutos(ids){
   }
 }
 
+// Reidrata as fotos (base64) dos itens de um orçamento salvo, buscando por
+// prodId na tabela produtos. As fotos NÃO ficam salvas no orçamento (evita o
+// timeout), então são recarregadas sob demanda ao abrir/ver/imprimir.
+async function hidratarFotosOrcamento(items){
+  if(!Array.isArray(items)) return;
+  const faltando = [...new Set(items.filter(it=>!it.foto && it.prodId).map(it=>it.prodId))];
+  if(!faltando.length) return;
+  const map = {};
+  const BATCH = 12;
+  for(let i=0; i<faltando.length; i+=BATCH){
+    const grupo = faltando.slice(i, i+BATCH);
+    try{
+      const rows = await SUPA.get('produtos', '?id=in.('+grupo.join(',')+')&select=id,foto');
+      rows.forEach(r=>{ map[r.id]=r.foto||''; if(r.foto) _fotoThumbCache[r.id]=r.foto; });
+    }catch(e){ /* mantém sem foto */ }
+  }
+  items.forEach(it=>{ if(!it.foto && map[it.prodId]) it.foto = map[it.prodId]; });
+}
+
 async function editProduto(id){
   const todos = await SUPA_DB.get('produtos');
   const p = todos.find(x=>x.id===id); if(!p) return;
@@ -2532,6 +2552,11 @@ async function openOrcamentoForm(id=null){
   renderOrcItems();
   calcTotais();
   openModal('modal-orcamento');
+  // Orçamento salvo não guarda mais a foto nos itens — recarrega por prodId
+  // e re-renderiza para exibir as miniaturas.
+  if(editOrcId){
+    hidratarFotosOrcamento(orcItems).then(()=>renderOrcItems()).catch(()=>{});
+  }
 }
 
 function renderOrcItems(){
@@ -3126,6 +3151,7 @@ async function verOrcamento(id){
   const vend=vends.find(v=>v.id===orc.vendedorId);
   document.getElementById('det-title').textContent=`Orçamento #${String(id).padStart(3,'0')} · ${statusBadge(orc.status)}`;
 
+  await hidratarFotosOrcamento(orc.items);
   const itensHtml=orc.items.map(item=>`
     <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--surface2);border-radius:6px;margin-bottom:6px">
       ${item.foto?`<img src="${item.foto}" style="width:64px;height:64px;border-radius:8px;object-fit:cover;border:1px solid #e0d9cc">`:`<div style="width:64px;height:64px;border-radius:8px;background:var(--surface3)"></div>`}
@@ -4585,6 +4611,7 @@ async function gerarPDF(id){
   const orc = _orcs2.find(x=>x.id===id); if(!orc) return;
   const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId) || {};
   const vend = (await SUPA_DB.get('vendedores')).find(v=>v.id===orc.vendedorId) || {};
+  await hidratarFotosOrcamento(orc.items);
 
   const markup = orc.markup||0;
   const desc = orc.desconto||0;
