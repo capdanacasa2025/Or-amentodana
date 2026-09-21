@@ -1477,10 +1477,24 @@ textarea { resize:vertical; min-height:80px; }
 
     <!-- PRODUTOS -->
     <div style="margin-top:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap;">
         <label style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;">Produtos</label>
-        <button class="btn btn-outline btn-sm" onclick="openProdSelect()">+ Adicionar Produto</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" id="btn-pesquisa-prod" onclick="togglePesquisaProd()">🔍 Pesquisar Produtos</button>
+          <button class="btn btn-outline btn-sm" onclick="openProdSelect()">+ Adicionar Produto</button>
+        </div>
       </div>
+
+      <!-- PAINEL DE PESQUISA / CONSULTA DE PRODUTOS (somente visualização) -->
+      <div id="orc-pesquisa-prod" style="display:none;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;background:var(--surface2);">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Filtre os produtos já adicionados a este orçamento. Apenas visualização.</div>
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:8px;margin-bottom:8px;">
+          <input type="text" id="orc-busca-prod-codigo" placeholder="Código" oninput="renderPesquisaProd()">
+          <input type="text" id="orc-busca-prod-desc" placeholder="Buscar por descrição (ex: tapete)..." oninput="renderPesquisaProd()">
+        </div>
+        <div id="orc-pesquisa-prod-list" style="max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+
       <div class="orcamento-items" id="orc-items-list"></div>
     </div>
 
@@ -1934,6 +1948,20 @@ function aplicarPermissoesSidebar(){
   });
 }
 
+// Navega para `page` apenas se o usuário tiver acesso. Usado após ações de
+// status (aprovar/enviar): a ação já foi gravada, então se o destino não for
+// permitido (ex.: Diretoria aprovando → Cobrança) apenas re-renderiza a tela
+// atual em vez de exibir o alerta "sem permissão".
+function navegarSeguro(page){
+  if(temAcesso(page)){ goPage(page); return; }
+  const atual=document.querySelector('.page.active');
+  const id=atual?atual.id.replace('page-',''):null;
+  if(id && temAcesso(id)){ goPage(id); return; }
+  const telas=getTelasPermitidas();
+  const destino=(telas===null)?'dashboard':(telas[0]||'dashboard');
+  goPage(destino);
+}
+
 function goPage(page){
   // Verificar permissão
   if(!temAcesso(page)){
@@ -2177,7 +2205,7 @@ async function carregarThumbsProdutos(ids){
         _fotoThumbCache[r.id] = r.foto || '';
         if(r.foto){
           // Preenche a miniatura na lista de produtos E no modal de seleção
-          ['pthumb-','psthumb-'].forEach(pre=>{
+          ['pthumb-','psthumb-','pqthumb-'].forEach(pre=>{
             const el = document.getElementById(pre+r.id);
             if(el) el.src = r.foto;
           });
@@ -2554,6 +2582,11 @@ async function openOrcamentoForm(id=null){
   }
   renderOrcItems();
   calcTotais();
+  // Painel de pesquisa de produtos sempre inicia fechado e limpo
+  const _pesq=document.getElementById('orc-pesquisa-prod');
+  if(_pesq) _pesq.style.display='none';
+  const _bp=document.getElementById('btn-pesquisa-prod');
+  if(_bp) _bp.classList.remove('active');
   openModal('modal-orcamento');
   // Orçamento salvo não guarda mais a foto nos itens — recarrega por prodId
   // e re-renderiza para exibir as miniaturas.
@@ -2915,6 +2948,70 @@ async function renderProdSelect(){
   carregarThumbsProdutos(prods.map(p=>p.id)).catch(()=>{});
 }
 
+// ── PESQUISA/CONSULTA DE PRODUTOS DENTRO DO ORÇAMENTO ──────────
+// Painel apenas de visualização: permite verificar se um produto já foi
+// lançado no cadastro sem sair do formulário do orçamento.
+function togglePesquisaProd(){
+  const panel=document.getElementById('orc-pesquisa-prod');
+  if(!panel) return;
+  const abrir = panel.style.display==='none' || panel.style.display==='';
+  panel.style.display = abrir ? 'block' : 'none';
+  const btn=document.getElementById('btn-pesquisa-prod');
+  if(btn) btn.classList.toggle('active', abrir);
+  if(abrir){
+    const c=document.getElementById('orc-busca-prod-codigo');
+    const d=document.getElementById('orc-busca-prod-desc');
+    if(c) c.value='';
+    if(d) d.value='';
+    renderPesquisaProd();
+    if(d) d.focus();
+  }
+}
+
+async function renderPesquisaProd(){
+  const list=document.getElementById('orc-pesquisa-prod-list');
+  if(!list) return;
+  const qCodigo=document.getElementById('orc-busca-prod-codigo')?.value||'';
+  const qDesc=document.getElementById('orc-busca-prod-desc')?.value||'';
+
+  if(!orcItems.length){
+    list.innerHTML=`<div style="padding:16px;text-align:center;color:var(--text3);font-size:12px">Nenhum produto adicionado a este orçamento</div>`;
+    return;
+  }
+
+  // Mapa de código do cadastro (os itens do orçamento não guardam o código)
+  let codMap={};
+  try{
+    const _allP=await SUPA_DB.get('produtos');
+    _allP.forEach(p=>{ codMap[p.id]=p.codigo||''; });
+  }catch(e){}
+
+  // Filtra somente entre os produtos já listados no orçamento
+  const itens=orcItems
+    .map(it=>({it, codigo:codMap[it.prodId]||''}))
+    .filter(({it,codigo})=>
+      textoContemBusca(codigo, qCodigo) &&
+      textoContemBusca([it.nome,it.categoria].join(' '), qDesc)
+    );
+
+  if(!itens.length){
+    list.innerHTML=`<div style="padding:16px;text-align:center;color:var(--text3);font-size:12px">Nenhum item do orçamento corresponde à busca</div>`;
+    return;
+  }
+
+  list.innerHTML=itens.map(({it,codigo})=>{
+    const thumbSrc=it.foto || _fotoThumbCache[it.prodId] || THUMB_PLACEHOLDER;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--surface)">
+      <img id="pqthumb-${it.prodId}" src="${thumbSrc}" class="prod-select-thumb" alt="">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;color:var(--text);font-weight:600">${it.nome}${codigo?` <span style="font-weight:400;color:var(--text3)">· ${codigo}</span>`:''}</div>
+        <div style="font-size:11px;color:var(--text3)">${it.categoria||'—'} · Qtd: ${it.qty||1} · Custo: ${fmt(it.custo)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  carregarThumbsProdutos(itens.map(x=>x.it.prodId)).catch(()=>{});
+}
+
 function toggleProdSel(id,el){
   if(selectedProds.has(id)) selectedProds.delete(id);
   else selectedProds.add(id);
@@ -3102,12 +3199,12 @@ async function salvarOrcamento(){
   alertMsg(redirMsg[status] || 'Orçamento salvo!');
 
   setTimeout(function(){
-    if     (status === 'enviado')   goPage('aguardando');
-    else if(status === 'diretoria') goPage('diretoria');
-    else if(status === 'reprovado') goPage('reprovados');
-    else if(status === 'aprovado')  goPage('cobranca');
-    else if(status === 'cobranca')  goPage('cobranca');
-    else                            goPage('orcamentos'); // andamento → fica
+    if     (status === 'enviado')   navegarSeguro('aguardando');
+    else if(status === 'diretoria') navegarSeguro('diretoria');
+    else if(status === 'reprovado') navegarSeguro('reprovados');
+    else if(status === 'aprovado')  navegarSeguro('cobranca');
+    else if(status === 'cobranca')  navegarSeguro('cobranca');
+    else                            navegarSeguro('orcamentos'); // andamento → fica
   }, 80);
 }
 
@@ -3261,11 +3358,11 @@ async function mudarStatus(id, novoStatus){
 
   // Pequeno delay para garantir que modal fechou antes de navegar
   setTimeout(()=>{
-    if(novoStatus==='enviado')        goPage('aguardando');
-    else if(novoStatus==='diretoria') goPage('diretoria');
-    else if(novoStatus==='aprovado')  goPage('cobranca');
-    else if(novoStatus==='cobranca')  goPage('cobranca');
-    else                              goPage('orcamentos');
+    if(novoStatus==='enviado')        navegarSeguro('aguardando');
+    else if(novoStatus==='diretoria') navegarSeguro('diretoria');
+    else if(novoStatus==='aprovado')  navegarSeguro('cobranca');
+    else if(novoStatus==='cobranca')  navegarSeguro('cobranca');
+    else                              navegarSeguro('orcamentos');
   }, 50);
 }
 
@@ -3424,10 +3521,10 @@ async function reverterStatus(id, paraStatus, msg){
   alertMsg(msg||'Orçamento revertido para '+labels[paraStatus]);
   // Redirecionar para a tela correta
   setTimeout(()=>{
-    if(paraStatus==='andamento')  goPage('orcamentos');
-    else if(paraStatus==='enviado')   goPage('aguardando');
-    else if(paraStatus==='diretoria') goPage('diretoria');
-    else if(paraStatus==='aprovado')  goPage('cobranca');
+    if(paraStatus==='andamento')  navegarSeguro('orcamentos');
+    else if(paraStatus==='enviado')   navegarSeguro('aguardando');
+    else if(paraStatus==='diretoria') navegarSeguro('diretoria');
+    else if(paraStatus==='aprovado')  navegarSeguro('cobranca');
   }, 50);
 }
 
@@ -3471,10 +3568,10 @@ async function mudarStatusDir(id, status){
   document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));
   if(status==='aprovado'){
     alertMsg('Aprovado! Enviado para Cobrança.');
-    setTimeout(()=>goPage('cobranca'), 50);
+    setTimeout(()=>navegarSeguro('cobranca'), 50);
   } else {
     alertMsg('Orçamento reprovado.', 'danger');
-    setTimeout(()=>goPage('reprovados'), 50);
+    setTimeout(()=>navegarSeguro('reprovados'), 50);
   }
 }
 
