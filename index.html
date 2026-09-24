@@ -168,6 +168,10 @@ textarea { resize:vertical; min-height:80px; }
 .item-preco-auto { font-size:10px; color:var(--text3); text-align:right; cursor:pointer; text-decoration:underline; transition:color .15s; }
 .item-preco-auto:hover { color:var(--gold); }
 .item-preco-custom { border-color:var(--gold2) !important; background:rgba(168,114,30,0.06) !important; }
+.item-mk-wrap { display:flex; align-items:center; gap:3px; margin-top:4px; font-size:10px; color:var(--text3); }
+.item-mk-input { width:54px; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:3px 5px; border-radius:4px; font-size:11px; text-align:right; font-family:'DM Sans',sans-serif; outline:none; }
+.item-mk-input:focus { border-color:var(--gold); }
+.item-mk-input.item-preco-custom { color:var(--gold); }
 
 /* TOTALS */
 .totals-box { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius2); padding:16px; margin-top:16px; }
@@ -2623,7 +2627,10 @@ function renderOrcItems(){
       <div class="item-name">${item.nome}<small>${(item.fornecedor && item.exibirFornecedor)?'🏭 '+item.fornecedor:''}</small></div>
       <select style="font-size:11px;padding:4px 6px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);max-width:130px" onchange="updateAmbiente(${i},this.value)">${ambOptions}</select>
       <input class="item-qty" type="number" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
-      <div style="font-size:12px;color:var(--text3)">Custo: ${fmt(item.custo*item.qty)}</div>
+      <div style="font-size:12px;color:var(--text3)">Custo: ${fmt(item.custo*item.qty)}
+        <div class="item-mk-wrap" title="Markup deste produto (padrão: markup do topo)">Mk ×<input class="item-mk-input${precoManual?' item-preco-custom':''}" type="number" step="0.01" min="0"
+          value="${_mkItemEfetivo(item, markup).toFixed(2)}" oninput="updateMarkupItem(${i},this.value,this)"></div>
+      </div>
       <div class="item-preco-wrap">
         <input class="item-preco-input${precoManual?' item-preco-custom':''}" type="number" step="0.01" min="0"
           value="${precoAtual.toFixed(2)}"
@@ -2642,6 +2649,42 @@ function renderOrcItems(){
   _syncPesquisaProd();
 }
 
+
+// Markup efetivo do item: preço manual ÷ custo; senão o markup do topo
+function _mkItemEfetivo(item, markupTopo){
+  const base = (item.custo||0) * (item.qty||0);
+  if(item.precoManual != null && base > 0) return item.precoManual / base;
+  return markupTopo;
+}
+
+// Altera o markup de um item específico (grava como preço manual do item)
+function updateMarkupItem(i, val, inputEl){
+  const markup = parseFloat(document.getElementById('orc-markup')?.value)||0;
+  const item = orcItems[i];
+  if(!item) return;
+  const m = parseFloat(val);
+  if(isNaN(m) || val === '') return;
+  const base = item.custo * item.qty;
+  if(Math.abs(m - markup) < 0.00001) item.precoManual = null;
+  else item.precoManual = base * m;
+  calcTotais();
+  const row = inputEl ? inputEl.closest('.item-row') : null;
+  if(row){
+    const inp = row.querySelector('.item-preco-input');
+    const autoSpan = row.querySelector('.item-preco-auto');
+    const precoAtual = (item.precoManual != null) ? item.precoManual : base * markup;
+    if(inp) inp.value = precoAtual.toFixed(2);
+    const manual = item.precoManual != null;
+    if(inp) inp.classList.toggle('item-preco-custom', manual);
+    if(inputEl) inputEl.classList.toggle('item-preco-custom', manual);
+    if(autoSpan){
+      autoSpan.textContent = manual ? '↺ automático' : '×'+markup+' markup';
+      autoSpan.style.opacity = manual ? '1' : '.5';
+      autoSpan.style.cursor = manual ? 'pointer' : 'default';
+      autoSpan.onclick = manual ? ()=>resetPrecoItem(i) : null;
+    }
+  }
+}
 
 function updateAmbiente(i, val){
   orcItems[i].ambiente = val;
@@ -2679,6 +2722,11 @@ function updatePrecoItem(i, val, inputEl){
   if(row){
     const autoSpan = row.querySelector('.item-preco-auto');
     const inp = row.querySelector('.item-preco-input');
+    const mkInp = row.querySelector('.item-mk-input');
+    if(mkInp){
+      mkInp.value = _mkItemEfetivo(item, markup).toFixed(2);
+      mkInp.classList.toggle('item-preco-custom', item.precoManual != null);
+    }
     if(autoSpan && inp){
       if(item.precoManual != null){
         autoSpan.textContent = '↺ automático';
@@ -3256,7 +3304,7 @@ async function renderOrcamentos(){
       <td>${statusBadge(o.status)}</td>
       <td style="color:var(--text3)">${fmtDate(o.criadoEm)}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap;">
-        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button><button class="btn btn-outline btn-sm" title="Catálogo p/ Cliente (fotos)" onclick="gerarCatalogoCliente(${o.id})">🖼️</button>
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button><button class="btn btn-outline btn-sm" title="Orçamento com Fotos" onclick="gerarCatalogoCliente(${o.id})">🖼️</button>
         <button class="btn btn-outline btn-sm" onclick="openOrcamentoForm(${o.id})">✏️</button>
         <button class="btn btn-danger btn-sm" onclick="delOrcamento(${o.id})">🗑️</button>
       </td>
@@ -5129,24 +5177,61 @@ body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1a1a; -
   closeModal('modal-orc-detalhe');
 }
 
-// Catálogo visual para o cliente — somente fotos e nomes (sem valores)
+// Orçamento visual para o cliente — fotos, valores, totais e assinatura
 async function gerarCatalogoCliente(id){
   const _orcs4=await SUPA_DB.get('orcamentos');
   const orc = _orcs4.find(x=>x.id===id); if(!orc) return;
   const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId)||{};
+  const vend = (await SUPA_DB.get('vendedores')).find(v=>v.id===orc.vendedorId) || {};
   await hidratarFotosOrcamento(orc.items);
   const emp = getEmpresa();
   const logoSrc = emp.logo || DANA_LOGO_PDF;
   const empNome = emp.nome || 'Dana Casa';
   const numOrc = String(id).padStart(4,'0');
+  const markup = orc.markup||0;
+  const desc = orc.desconto||0;
 
+  let subtotalReal = 0;
   const cards = (orc.items||[]).map(item=>{
+    const vlTotal = (item.precoManual != null) ? item.precoManual : (item.custo * item.qty * markup);
+    const vlUnit  = item.qty > 0 ? vlTotal / item.qty : 0;
+    subtotalReal += vlTotal;
     const img = item.foto
       ? '<img src="'+item.foto+'" alt="">'
       : '<div class="sem-foto">Sem foto</div>';
     return '<div class="card"><div class="foto">'+img+'</div>'
-      +'<div class="nome">'+item.nome+'</div></div>';
+      +'<div class="nome">'+item.nome+'</div>'
+      +'<div class="vals">'
+      +'<div><label>Qtd</label><span>'+item.qty+' '+(item.unidade||'Un')+'</span></div>'
+      +'<div><label>Vl. Unit.</label><span class="ouro">'+fmt(vlUnit)+'</span></div>'
+      +'<div><label>Total</label><span class="ouro">'+fmt(vlTotal)+'</span></div>'
+      +'</div></div>';
   }).join('');
+
+  const descVal = subtotalReal * (desc/100);
+  const final = orc.valorFinal || (subtotalReal - descVal);
+
+  const fechamento = ''
+    +'<div class="fech">'
+    +'<div class="tots">'
+    +(desc>0
+      ? '<div class="ptr"><span>Subtotal</span><span>'+fmt(subtotalReal)+'</span></div>'
+        +'<div class="ptr"><span>Desconto ('+desc+'%)</span><span>— '+fmt(descVal)+'</span></div>'
+      : '')
+    +'<div class="ptr big"><span>VALOR TOTAL</span><span>'+fmt(final)+'</span></div>'
+    +'</div>'
+    +'<div class="finfo">'
+    +'<div><label>Forma de Pagamento</label><span>'+(orc.pagamento||'—')+'</span></div>'
+    +'<div><label>Validade da Proposta</label><span>'+(orc.validade?fmtDate(orc.validade):'—')+'</span></div>'
+    +'<div><label>Vendedor Responsável</label><span>'+(vend.nome||'—')+'</span></div>'
+    +'</div>'
+    +(orc.obs ? '<div class="obs"><strong>Observações</strong>'+orc.obs+'</div>' : '')
+    +'<div class="sign">'
+    +'<div><div class="line">Assinatura do Cliente<br>'+(cli.nome||'')+'</div></div>'
+    +'<div><div class="line">'+empNome+' · Vendedor Responsável</div></div>'
+    +'</div>'
+    +'<div class="stamp">Documento gerado em '+new Date().toLocaleDateString('pt-BR')+' · '+empNome+' · Proposta Nº '+numOrc+'</div>'
+    +'</div>';
 
   const doc = ''
     +'<div class="cab">'
@@ -5156,6 +5241,7 @@ async function gerarCatalogoCliente(id){
     +'Orçamento Nº '+numOrc+' · '+fmtDate(orc.criadoEm||today())+'</div></div>'
     +'</div>'
     +'<div class="grid">'+cards+'</div>'
+    +fechamento
     +'<div class="rod">'+empNome+(emp.tel?' · '+emp.tel:'')+(emp.email?' · '+emp.email:'')+'</div>';
 
   const janela = window.open('', '_blank', 'width=1000,height=800');
@@ -5176,7 +5262,27 @@ body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1500; -
 .foto { aspect-ratio:1/1; background:#f7f3ea; display:flex; align-items:center; justify-content:center; }
 .foto img { width:100%; height:100%; object-fit:contain; }
 .sem-foto { font-size:12px; color:#b8b09a; }
-.nome { padding:12px 14px; font-size:14px; font-weight:500; text-align:center; border-top:1px solid #efe8da; }
+.nome { padding:12px 14px 8px; font-size:14px; font-weight:500; text-align:center; border-top:1px solid #efe8da; }
+.vals { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; padding:8px 14px 12px; text-align:center; font-variant-numeric:tabular-nums; }
+.vals label { display:block; font-size:9px; color:#9a917d; text-transform:uppercase; letter-spacing:.09em; margin-bottom:2px; }
+.vals span { font-size:13px; font-weight:600; color:#232018; }
+.vals span.ouro { color:#7a5a00; }
+.fech { margin-top:26px; page-break-inside:avoid; break-inside:avoid; }
+.tots { margin-left:auto; width:320px; }
+.ptr { display:flex; justify-content:space-between; padding:6px 2px; font-size:12px; color:#6b6250; border-bottom:1px solid #efe6c0; font-variant-numeric:tabular-nums; }
+.ptr.big { font-size:17px; font-weight:700; color:#1a1500; border-bottom:none; border-top:2px solid #b8960c; padding-top:12px; margin-top:6px; }
+.ptr.big span:first-child { font-family:'Cormorant Garamond',Georgia,serif; font-size:20px; letter-spacing:.04em; }
+.ptr.big span:last-child { color:#7a5a00; }
+.finfo { display:flex; gap:18px; margin-top:20px; padding:14px 16px; background:#fdf8ec; border-radius:8px; border-left:3px solid #c9a84c; }
+.finfo div { flex:1; font-size:11px; }
+.finfo label { display:block; font-size:9px; color:#9a917d; text-transform:uppercase; letter-spacing:.09em; margin-bottom:3px; }
+.finfo span { font-weight:700; color:#232018; }
+.obs { margin-top:16px; padding:12px 16px; background:#fdf8ec; border-radius:8px; font-size:11px; color:#5a5445; border-left:3px solid #e0c860; line-height:1.6; }
+.obs strong { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.09em; color:#8a6d12; margin-bottom:5px; }
+.sign { display:flex; gap:44px; margin-top:40px; padding-top:20px; }
+.sign div { flex:1; text-align:center; }
+.sign .line { border-top:1px solid #555; padding-top:7px; font-size:10px; color:#8a8270; margin-top:34px; }
+.stamp { text-align:center; margin-top:22px; font-size:9px; color:#b8b09a; font-style:italic; }
 .rod { text-align:center; margin-top:28px; font-size:10px; color:#a8a08a; }
 @page { size:A4; margin:12mm 10mm; }
 @media print {
