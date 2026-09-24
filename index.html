@@ -3256,7 +3256,7 @@ async function renderOrcamentos(){
       <td>${statusBadge(o.status)}</td>
       <td style="color:var(--text3)">${fmtDate(o.criadoEm)}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap;">
-        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button>
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button><button class="btn btn-outline btn-sm" title="PDF" onclick="gerarPDF(${o.id})">🖨️</button><button class="btn btn-outline btn-sm" title="Relatório Interno" onclick="gerarRelatorioInterno(${o.id})">📊</button><button class="btn btn-outline btn-sm" title="Catálogo p/ Cliente (fotos)" onclick="gerarCatalogoCliente(${o.id})">🖼️</button>
         <button class="btn btn-outline btn-sm" onclick="openOrcamentoForm(${o.id})">✏️</button>
         <button class="btn btn-danger btn-sm" onclick="delOrcamento(${o.id})">🗑️</button>
       </td>
@@ -3310,7 +3310,7 @@ async function verOrcamento(id){
     </div>`;
 
   // Actions por status
-  let actions=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe')">Fechar</button><button class="btn btn-gold" onclick="gerarPDF(${id})">🖨️ Gerar PDF</button><button class="btn btn-outline" onclick="gerarRelatorioInterno(${id})">📊 Relatório Interno</button>`;
+  let actions=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe')">Fechar</button><button class="btn btn-gold" onclick="gerarPDF(${id})">🖨️ Gerar PDF</button><button class="btn btn-outline" onclick="gerarRelatorioInterno(${id})">📊 Relatório Interno</button><button class="btn btn-outline" onclick="gerarCatalogoCliente(${id})">🖼️ Catálogo p/ Cliente</button>`;
   if(orc.status==='andamento') actions+=`<button class="btn btn-outline" onclick="mudarStatus(${id},'enviado')">📤 Enviar ao Cliente</button><button class="btn btn-outline" onclick="mudarStatus(${id},'diretoria')">🏛️ Enviar à Diretoria</button>`;
   if(orc.status==='enviado') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'orcamentos')">❌ Reprovar</button>`;
   if(orc.status==='diretoria') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'diretoria')">❌ Reprovar</button>`;
@@ -5006,7 +5006,7 @@ async function gerarRelatorioInterno(id){
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:3px solid #8a1810;margin-bottom:20px">'
     +'<div><img src="'+logoSrc+'" style="width:120px"><p style="font-size:10px;color:#888;margin-top:4px">USO INTERNO — CONFIDENCIAL</p></div>'
     +'<div style="text-align:right">'
-    +'<div style="background:#8a1810;color:#fff;padding:8px 16px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:.05em">ANÁLISE DE CUSTOS</div>'
+    +'<div style="background:#8a1810;color:#fff;padding:8px 18px;border-radius:4px;font-family:\'Cormorant Garamond\',Georgia,serif;font-size:19px;font-weight:600;letter-spacing:.08em">ANÁLISE DE CUSTOS</div>'
     +'<div style="font-size:11px;color:#666;margin-top:6px;line-height:1.8">'
     +'Orçamento Nº '+numOrc+'<br>'
     +'Data: '+fmtDate(orc.criadoEm||today())+'<br>'
@@ -5044,15 +5044,15 @@ async function gerarRelatorioInterno(id){
     ].map(k=>
       '<div style="padding:12px;background:'+k.bg+';border-radius:6px;text-align:center">'
       +'<div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:4px">'+k.label+'</div>'
-      +'<div style="font-size:18px;font-weight:800;color:'+k.color+'">'+k.val+'</div>'
+      +'<div class="num" style="font-size:18px;font-weight:600;color:'+k.color+'">'+k.val+'</div>'
       +'</div>'
     ).join('')
     +'</div>'
 
     // Tabela de produtos com custos
     +'<div style="margin-bottom:16px">'
-    +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#8a1810;border-bottom:2px solid #8a1810;padding-bottom:5px;margin-bottom:0;font-weight:700">Detalhamento de Produtos — Custos e Margens</div>'
-    +'<table style="width:100%;border-collapse:collapse">'
+    +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8a1810;border-bottom:2px solid #8a1810;padding-bottom:6px;margin-bottom:0;font-weight:600">Detalhamento de Produtos — Custos e Margens</div>'
+    +'<table class="rel-table" style="width:100%;border-collapse:collapse">'
     +'<thead><tr style="background:#8a1810;color:#fff">'
     +'<th style="padding:8px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase">Produto</th>'
     +'<th style="padding:8px 10px;text-align:center;font-size:10px;font-weight:700;width:50px">Qtd</th>'
@@ -5067,8 +5067,8 @@ async function gerarRelatorioInterno(id){
 
     // Composição financeira
     +'<div style="display:flex;justify-content:flex-end">'
-    +'<div style="width:300px">'
-    +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#8a1810;border-bottom:2px solid #8a1810;padding-bottom:5px;margin-bottom:8px;font-weight:700">Composição Financeira</div>'
+    +'<div style="width:340px">'
+    +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8a1810;border-bottom:2px solid #8a1810;padding-bottom:6px;margin-bottom:8px;font-weight:600">Composição Financeira</div>'
     +[
       {label:'Custo dos Produtos', val:fmt(custo), color:'#7a3010'},
       {label:'Subtotal de Venda', val:fmt(subtotalReal), color:'#333'},
@@ -5081,7 +5081,7 @@ async function gerarRelatorioInterno(id){
       (r.sep?'<div style="border-top:1px solid #e0d0c0;margin:4px 0"></div>':'')+
       '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:'+(r.bold?'13':'12')+'px;font-weight:'+(r.bold?'700':'400')+'">'
       +'<span style="color:#555">'+r.label+'</span>'
-      +'<span style="color:'+r.color+'">'+r.val+'</span>'
+      +'<span class="num" style="color:'+r.color+'">'+r.val+'</span>'
       +'</div>'
     ).join('')
     +'</div>'
@@ -5100,24 +5100,100 @@ async function gerarRelatorioInterno(id){
 
   const css = `
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:Georgia,serif; background:#fff; color:#1a1a1a; }
+body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1a1a; -webkit-font-smoothing:antialiased; }
+#rel-doc { max-width:1000px; margin:0 auto; }
+.num, .rel-table td:not(:first-child), .rel-table th { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.rel-table td:first-child strong { font-weight:600; }
+.rel-table th { letter-spacing:.06em; }
+@page { size:A4; margin:12mm 10mm; }
 #rel-doc { padding:36px 44px; }
 #toolbar { background:#6a1010; padding:10px 20px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:99; }
 @media print {
   * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
   #toolbar { display:none !important; }
-  #rel-doc { padding:16px 20px !important; }
+  #rel-doc { padding:0 !important; max-width:none; }
+  .rel-table thead { display:table-header-group; }
+  .rel-table tr { page-break-inside:avoid; }
 }`;
 
-  const head = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Análise de Custos Nº '+numOrc+'</title><style>'+css+'</style></head><body>';
+  const head = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><title>Análise de Custos Nº '+numOrc+'</title><style>'+css+'</style></head><body>';
   const toolbar = '<div id="toolbar">'
-    +'<span style="flex:1;color:#ffcccc;font-family:Arial,sans-serif;font-size:13px;font-weight:700">📊 Análise Interna · Orçamento Nº '+numOrc+' — USO CONFIDENCIAL</span>'
-    +'<button onclick="window.print()" style="background:#c9a84c;color:#0a0800;border:none;padding:9px 20px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;font-family:Arial,sans-serif">🖨️ Imprimir / Salvar PDF</button>'
-    +'<button onclick="window.close()" style="background:transparent;border:1px solid #aa4040;color:#ffaaaa;padding:9px 14px;border-radius:6px;cursor:pointer;font-size:13px">✕ Fechar</button>'
+    +'<span style="flex:1;color:#ffcccc;font-family:\'DM Sans\',Arial,sans-serif;font-size:13px;font-weight:600">📊 Análise Interna · Orçamento Nº '+numOrc+' — USO CONFIDENCIAL</span>'
+    +'<button onclick="window.print()" style="background:#c9a84c;color:#0a0800;border:none;padding:9px 20px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;font-family:\'DM Sans\',Arial,sans-serif">🖨️ Imprimir / Salvar PDF</button>'
+    +'<button onclick="window.close()" style="background:transparent;border:1px solid #aa4040;color:#ffaaaa;padding:9px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-family:\'DM Sans\',Arial,sans-serif">✕ Fechar</button>'
     +'</div>';
 
   janela.document.open();
   janela.document.write(head + toolbar + '<div id="rel-doc">' + doc + '</div></body></html>');
+  janela.document.close();
+  closeModal('modal-orc-detalhe');
+}
+
+// Catálogo visual para o cliente — somente fotos e nomes (sem valores)
+async function gerarCatalogoCliente(id){
+  const _orcs4=await SUPA_DB.get('orcamentos');
+  const orc = _orcs4.find(x=>x.id===id); if(!orc) return;
+  const cli = (await SUPA_DB.get('clientes')).find(c=>c.id===orc.clienteId)||{};
+  await hidratarFotosOrcamento(orc.items);
+  const emp = getEmpresa();
+  const logoSrc = emp.logo || DANA_LOGO_PDF;
+  const empNome = emp.nome || 'Dana Casa';
+  const numOrc = String(id).padStart(4,'0');
+
+  const cards = (orc.items||[]).map(item=>{
+    const img = item.foto
+      ? '<img src="'+item.foto+'" alt="">'
+      : '<div class="sem-foto">Sem foto</div>';
+    return '<div class="card"><div class="foto">'+img+'</div>'
+      +'<div class="nome">'+item.nome+'</div></div>';
+  }).join('');
+
+  const doc = ''
+    +'<div class="cab">'
+    +'<img src="'+logoSrc+'" class="logo">'
+    +'<div class="cab-dir"><h1>Seleção de Produtos</h1>'
+    +'<div class="meta">'+(cli.nome?'Cliente: <strong>'+cli.nome+'</strong><br>':'')
+    +'Orçamento Nº '+numOrc+' · '+fmtDate(orc.criadoEm||today())+'</div></div>'
+    +'</div>'
+    +'<div class="grid">'+cards+'</div>'
+    +'<div class="rod">'+empNome+(emp.tel?' · '+emp.tel:'')+(emp.email?' · '+emp.email:'')+'</div>';
+
+  const janela = window.open('', '_blank', 'width=1000,height=800');
+  if(!janela){ alertMsg('Permita popups para imprimir.','danger'); return; }
+
+  const css = `
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1500; -webkit-font-smoothing:antialiased; }
+#cat-doc { max-width:1000px; margin:0 auto; padding:36px 44px; }
+#toolbar { background:#1a1500; padding:10px 20px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:99; }
+.cab { display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:16px; border-bottom:2px solid #c9a84c; margin-bottom:26px; }
+.logo { width:130px; }
+.cab-dir { text-align:right; }
+.cab-dir h1 { font-family:'Cormorant Garamond',Georgia,serif; font-size:30px; font-weight:600; letter-spacing:.04em; color:#1a1500; }
+.meta { font-size:12px; color:#6a6250; margin-top:4px; line-height:1.7; }
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+.card { border:1px solid #e8e0d0; border-radius:8px; overflow:hidden; background:#fff; page-break-inside:avoid; break-inside:avoid; }
+.foto { aspect-ratio:1/1; background:#f7f3ea; display:flex; align-items:center; justify-content:center; }
+.foto img { width:100%; height:100%; object-fit:contain; }
+.sem-foto { font-size:12px; color:#b8b09a; }
+.nome { padding:12px 14px; font-size:14px; font-weight:500; text-align:center; border-top:1px solid #efe8da; }
+.rod { text-align:center; margin-top:28px; font-size:10px; color:#a8a08a; }
+@page { size:A4; margin:12mm 10mm; }
+@media print {
+  * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  #toolbar { display:none !important; }
+  #cat-doc { padding:0 !important; max-width:none; }
+}`;
+
+  const head = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"><title>Seleção de Produtos Nº '+numOrc+'</title><style>'+css+'</style></head><body>';
+  const toolbar = '<div id="toolbar">'
+    +'<span style="flex:1;color:#c9a84c;font-family:\'DM Sans\',Arial,sans-serif;font-size:13px;font-weight:600">🖼️ Seleção de Produtos · Orçamento Nº '+numOrc+'</span>'
+    +'<button onclick="window.print()" style="background:#c9a84c;color:#0a0800;border:none;padding:9px 20px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;font-family:\'DM Sans\',Arial,sans-serif">🖨️ Imprimir / Salvar PDF</button>'
+    +'<button onclick="window.close()" style="background:transparent;border:1px solid #4a3018;color:#c9a84c;padding:9px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-family:\'DM Sans\',Arial,sans-serif">✕ Fechar</button>'
+    +'</div>';
+
+  janela.document.open();
+  janela.document.write(head + toolbar + '<div id="cat-doc">' + doc + '</div></body></html>');
   janela.document.close();
   closeModal('modal-orc-detalhe');
 }
