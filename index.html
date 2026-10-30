@@ -599,6 +599,70 @@ th { font-weight:600; }
 .perm-toggle input:checked + .perm-slider { background:var(--gold); }
 .perm-toggle input:checked + .perm-slider::before { transform:translateX(18px); }
 
+/* ===================== SIDEBAR ELEGANTE ===================== */
+.sidebar{ width:240px; height:100vh; min-height:100vh; background:linear-gradient(180deg,#18140a 0%,#110e06 55%,#0b0904 100%);
+  border-right:1px solid #2a2212; box-shadow:4px 0 24px rgba(0,0,0,.18); }
+.main{ margin-left:240px; }
+.sb-brand{ padding:30px 18px 22px; text-align:center; border-bottom:1px solid rgba(201,168,76,.14); position:relative; flex-shrink:0; }
+.sb-brand::after{ content:''; position:absolute; left:50%; bottom:-1px; transform:translateX(-50%); width:70px; height:2px;
+  background:linear-gradient(90deg,transparent,#c9a84c,transparent); }
+.sb-logo{ width:168px; max-width:100%; display:block; margin:0 auto; filter:invert(1) sepia(.45) saturate(1.6) brightness(1.08); mix-blend-mode:screen; }
+.sb-tag{ margin-top:12px; font-size:9.5px; letter-spacing:.32em; text-transform:uppercase; color:#b8994f; font-weight:600; }
+.sidebar .nav{ flex:1; padding:8px 12px 14px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#3a3018 transparent; }
+.sidebar .nav-group{ padding:18px 12px 7px; font-size:9.5px; font-weight:700; letter-spacing:.2em; color:#7d6c45; }
+.sidebar .nav-item{ margin:2px 0; padding:8px 10px; border-radius:10px; border-left:none; color:#cdbf9c; font-size:13px; font-weight:500; position:relative; }
+.sidebar .nav-item .ico{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; background:rgba(255,255,255,.045); font-size:14px; flex-shrink:0; transition:all .15s; }
+.sidebar .nav-item:hover{ background:rgba(201,168,76,.09); color:#f5e8c6; }
+.sidebar .nav-item.active{ background:linear-gradient(90deg,rgba(201,168,76,.24),rgba(201,168,76,.05)); color:#f6dc92; border-left:none; font-weight:600; }
+.sidebar .nav-item.active::before{ content:''; position:absolute; left:-12px; top:8px; bottom:8px; width:3px; border-radius:0 3px 3px 0; background:linear-gradient(180deg,#f3cf7a,#a8721e); }
+.sidebar .nav-item.active .ico{ background:linear-gradient(135deg,#f3cf7a,#a8721e); box-shadow:0 4px 12px -4px rgba(201,168,76,.7); }
+.sidebar .sidebar-bottom{ border-top:1px solid rgba(201,168,76,.14); padding:14px 12px 16px; flex-shrink:0; }
+.sb-user{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:12px; background:rgba(255,255,255,.04); border:1px solid rgba(201,168,76,.14); }
+.sb-avatar{ width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#f3cf7a,#a8721e); color:#1a1500; font-weight:800; display:grid; place-items:center; font-size:13px; flex-shrink:0; }
+.sb-user-name{ color:#f5e8c6; font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sb-user-role{ color:#8a7850; font-size:10.5px; margin-top:1px; }
+.sb-logout{ width:32px; height:32px; border-radius:9px; border:1px solid rgba(201,168,76,.22); background:transparent; color:#b8994f; cursor:pointer; font-size:15px; flex-shrink:0; transition:.15s; }
+.sb-logout:hover{ background:rgba(201,168,76,.15); color:#f6dc92; }
+@media(max-width:768px){ .main{ margin-left:0; } }
+
+/* ===================== ANÁLISES (reprovados, pedidos, aguardando, funil) ===================== */
+.dx-k4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+.dx-insights{ display:grid; gap:10px; }
+.dx-ins{ display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border-radius:10px; background:var(--surface2); border:1px solid var(--border); border-left-width:3px; font-size:13px; color:var(--text2); line-height:1.55; }
+.dx-ins i{ font-style:normal; font-size:17px; line-height:1.3; }
+.dx-ins b{ color:var(--text); }
+.dx-ins.warn{ border-left-color:#d97706; } .dx-ins.bad{ border-left-color:#e11d48; } .dx-ins.good{ border-left-color:#059669; } .dx-ins.info{ border-left-color:#4338ca; }
+.dias-badge{ display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; color:#fff; white-space:nowrap; }
+.an-table th.r, .an-table td.r{ text-align:right; }
+.an-table td{ font-variant-numeric:tabular-nums; }
+/* coach C@P */
+.coach{ display:flex; gap:18px; padding:22px 24px; border-radius:16px; background:linear-gradient(135deg,#fffaf0 0%,#fbefd4 100%); border:1px solid #ecd9a8; margin-bottom:18px; box-shadow:0 10px 28px -20px rgba(120,80,10,.45); }
+.coach-av{ width:54px; height:54px; border-radius:15px; background:radial-gradient(120% 120% at 0% 0%,#3a2a08,#120e04); color:#e7c877; font-weight:800; font-size:14px; letter-spacing:.02em; display:grid; place-items:center; flex-shrink:0; box-shadow:0 8px 18px -8px rgba(0,0,0,.6); }
+.coach-body{ flex:1; min-width:0; }
+.coach-from{ font-size:10.5px; color:#9a7a2c; text-transform:uppercase; letter-spacing:.14em; font-weight:700; }
+.coach-hi{ font-size:19px; font-weight:750; color:var(--text); margin-top:4px; letter-spacing:-.01em; }
+.coach-msg p{ font-size:13.5px; color:var(--text2); line-height:1.65; margin-top:9px; }
+.coach-msg b{ color:var(--text); }
+.coach-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center; }
+.coach-chips > span:first-child{ font-size:11px; font-weight:700; color:#9a7a2c; text-transform:uppercase; letter-spacing:.08em; margin-right:4px; }
+.coach-chip{ font-size:12px; padding:6px 12px; border-radius:20px; background:#fff; border:1px solid #e3cf98; color:var(--text); cursor:pointer; transition:.15s; }
+.coach-chip:hover{ border-color:var(--gold); background:#fff7e3; }
+.coach-tip{ margin-top:16px; padding:13px 16px; background:linear-gradient(135deg,#1a1405,#2a2008); color:#efe2bf; border-radius:11px; font-size:13px; line-height:1.6; }
+.coach-tip b{ color:#e7c877; }
+/* funil */
+.fn-conv{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.fn-box{ padding:14px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface2); }
+.fn-box small{ display:block; font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; }
+.fn-box b{ display:block; font-size:25px; font-weight:750; color:var(--text); margin-top:6px; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+.fn-box p{ font-size:12px; color:var(--text3); margin-top:8px; line-height:1.45; }
+.fn-box em{ display:inline-block; margin-top:8px; font-style:normal; font-size:11px; font-weight:700; color:#e11d48; }
+.fn-box.gargalo{ border-color:#fda4af; background:#fff5f6; }
+@media(max-width:768px){
+  .dx-k4{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .fn-conv{ grid-template-columns:1fr; }
+  .coach{ flex-direction:column; padding:18px; }
+}
+
 </style>
 </head>
 <body>
@@ -639,7 +703,7 @@ th { font-weight:600; }
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo" style="padding:16px 14px;border-bottom:1px solid #3a3018;"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADhAOEDASIAAhEBAxEB/8QAHQABAAMBAQADAQAAAAAAAAAAAAcICQYFAQMEAv/EAFcQAAEDAwECCAgJBggMBwAAAAABAgMEBQYRBwgJEhMhMXWztDU3OEFRc3ayFCIyNmFxdIGxFTlCZXKGFhcjJidSYpEZJChDVFVXY2ahoqOChJKWwdHi/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ALlgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIp3mMvyjEMYsMmJVdJSXC6X2mtvK1NOkzWtl1TXir6F0X7j8n8Gd4PTxn4qn7vf/ALPw73vgLBfbO3e+pN4Hm41Bd6ex0UN+rYa66RxI2qqYIuSjlf53NZz8VF9B6QAAAAAAAAAAAAAAAAAA+qsbM+kmZTvayZWKkbnJqjXacyqnnTU+0AQ//BjeC/2n4r/7d6f+s+dhWTZvcs0znFc0u1BdajHqmmhiqKSjSna7lIuOvxdVXzonT5iX1IX2LePvbH1hQd2QCaAAAAAAAAAAAAAEIb3vgLBfbO3e+pN5CG974CwX2zt3vqTeAXoOKxnadiWRZxe8Kt9wcy/WaRY6mknj4iv06XRr0Pb9XOnNqnOdqvQZ8x1U1JwgqyQPVj3ZUsSqi/ov+K5PvRyoBfLIrzT2KzVF2q4qqWmpm8eVKeFZZEanS5Gt51ROnmRV5uZFP7x69WvILTTXazXGmuFBUt48M8D0cx6fQqHop0FOd3nLUwfewy/ZfTrydgu9yqX0sCfIgqGtWROKnmRWNVv/AIWAXGOfyrLrNjlVRUVdUufX18nJ0VBTs5SoqHf2WJz6Jz6uXRqac6oepe7hTWqz1l0rHpHTUcElRM9f0WMarnL/AHIpUncwvtftI28Z5tGvTllqm0UcFM17lVKeKWTVrGp0IiNhROb0u9KgWcy3N7FidTb2ZDPLQ01fKkMVbJH/AIuyVfkse9PkKui6K7RFXm115jo4no9iPa9r2qiKit6FT0nCbxFDS3DYZmlNWwMmi/I9RKjXJro9jFexyfSjmtVF8yohFW4DtAqsp2ZVmLXGV0tVjUkUML16VpZEdySa/wBlWPb9SNAlra1tSxbZfTWuryt9ZFS3KqWljmgh5RI1RvGVz01RUbp6Ecv0HqWnNbBd8hfZLRXJcqiKBk9Q+lTlIoGvTVnHenMiuTnRvOunPppzldOEmXXAcUVP9aSdkp2W4VaKSg3eaCugYiTXSuqqiod53ObIsSf9Maf3qBLNHmthqMxqMRkrHUt7ij5ZlJUMWN08WunKRKvNI39lVVPOiHSN506dSrnCDRvtOP4Vmttmkpb3arysVJURu0VvHjWT7/jQtXn+n0k7bGcwjz3ZfYMtja1rrhSo6ZrehkrVVkjU+p7XJ9wHS3SupLZb57hX1UNJS07FfLNK5GsY1OlVVTxbBl9uv+NSZFZoK+st+j3U7206tdVtb+lC12iuavmXm182pV3flzWqu+f4zsfpJXMt9VNTT3Pk3Kiyukl4scf1NRON9bm+gt7QU0VHRQ0lPG2OKCNsbGNTRGtamiIiejREA8jBsxx/NbN+Vcer0qoGvWOVitVksEidLJGO+MxyedFTU98pbd8x/i43+7pFTyLDar9LR0lwiTXiOdNBEqP09KSLrqvRxnekukAIX2LePvbH1hQ92aTQpC+xbx97Y+sKHuzQJoAAAAAAAAAAAAAQhve+AsF9s7d76k3kIb3vgLBfbO3e+pN4Begzzn/OAJ7XN95DQxTPOf8AOAJ7XN95ANDDOutqpaPfwWohXR6ZU1v3KqIv/JVNFEM5L35c7vauP32gX92hWF+U4Hf8ZjrPgbrtbp6JKjicfkuVjVnG4uqa6a9GqanLbBNkdj2R4k+zWuolrqupk5atrpWcV0z0TRNG6rxWonQmq+fnVV1JH0AHF7d+fYtmaemyVfZOKp8Go9yZXmMaKvFdQ06qn0pI/T8VLWbdvEvmXUlV2TiqPBq/O/MPsFP2jgOy4Sb5g4p1pJ2Skg7jXk1Y766s7zIR9wk3zBxTrSTslJC3G/Jpxv6ZazvUoHF8JAumyTH9On8vM0X/AMvMdtuP8+7NjHrKzvcpxPCQ+KXH+vm9hMdtuP8Akz4x6ys73KB+qr2EWe67fZNqt8ub69YkhWhtvII1kT42cVHvfqvH0XnRERNF6dSYUTRNNT50CgZx73znR73NyexVa5s9uVFTzKkEJo4Zxb4PlbXT1tu7vCaOgFIX2LePvbH1hQ92aTQpC+xbx97Y+sKHuzQJoAAAAAAAAAAAAAQhve+AsF9s7d76k3kIb3vgLBfbO3e+pN4BTPOdNeEBT2ub7yGhimekv5wJPa1PxQDQtOgzkvflzu9q4/faaNN+ShnLfObfmev/ABXH77QNG1VE6SGn7Ua7L9t8uzTBpIo6azxrUX+7PjR6sRrmpyECL8Xjq5yIrlRUTR2ic2pIe029y41s6yTIoGo+a2Wqqq4mKuiOfHE5zUX6FVEKlcG5NLV5VnVXVSOmqJYKZ8kr11c5zpJVcqr51VecC0e3bxL5l1JVdk4qjwavzvzD7BT9o4tdt28S+ZdSVXZOKo8Gr878w+wU/aOA7LhJ/mDinWknZKSFuN+TTjfrazvUpHvCT/MHFOtJOyUkHca8mrHfXVneZAOL4SLxT49163sJTt9x/wAmfGfWVne5ThuEi8VWOp+vE7CU7ncf8mfGfWVne5QOl297VLXsqxD8q1MDq651cnwe2UDFVHVEy+ZVToanSq/cmqrodLs7jydMWpajMK2nqL1UtSepjpoUjgp1ciLyUfSqtb0auVVXp16CmG+Jfam571uN2d8iupLU6gijj11ajpJkke7T0rq1F+hqF8E5k0Azj3wfK2unrrd3eE0dM4t8Hytrp663d3hNHQCkL7FvH3tj6woe7NJoUhfYt4+9sfWFD3ZoE0AAAAAAAAAAAAAIQ3vfAWC+2du99SbyEN73wFgvtnbvfUm8ApnpL+cCT2tT8UNC1M9ZOfhAk9rU/EDQlvyUM5b75cz/AGrj95po03mRDOS/eXK/2qj95oF4t4TxFZ11BW9i4q/waXh/NvstJ78pZ/eE8RWddQVnYuKwcGl4fzb7LSe/KBabbt4l8y6kquycVR4NX535h9gp+0cWu27eJfMupKrsnFUeDV+d+YfYKftHAdlwk3zBxTrSTslJB3GvJqx311Z3mQj7hJvmDinWknZKSDuNeTVjvrqzvMgHEcJGv9FmOJ+u07CQ7rcf8mfGfWVne5Tg+EkX+jDGm+m9a/8AYkO83H/Jnxn1lZ3uUCr+9Cv+WRF9ut34sNCzPPeh8smL7dbvxjNDAM498Hytrp623d3hNHTOLfB8ra6ett3d4TR0ApC+xbx97Y+sKHuzSaFIX2K+PvbJ1hQd1QCaAAAAAAAAAAAAAEIb3vgLBfbO3e+pN5CG974CwX2zt3vqTeAM9nfnA/3sT8TQlTPZ35wP97E/EDQkznuzOU363MXz5Wz3kNGDO+SFajf3SJE11ylq/wB2i/8AwBdXeE8ROddQVvYuKwcGl4fzb7LSe/KWf3g/ETnXUFZ2LisHBpeH82+y0nvygWm27eJfMupKrsnFUeDV+d+YfYKftHFrtu3iXzLqSq7JxVLg1fndmH2Cn7RwHZcJMn8wMVX9aydkpIG415NWO+urO8yEfcJMv8wcUT9aSdkpIW435NON/TLWd6lA4ThJPFnjPXK9i873cf8AJoxhP95Wd7lOA4SXxb4x1w7sXHf7j/k0Yx+3Wd7lAq9vQ+WTF9ut34xmhhnnvQeWTF9ut34xmhgGce+D5W109bbu7wmjpnFvg+VtdPW27u8Jo6AUhfYt4+9sfWFD3ZpNCkL7FvH3tj6woe7NAmgAAAAAAAAAAAABCG974CwX2zt3vqTeQhve+AsF9s7d76k3gDPZ6L/hAk9rE/E0JXoIEXdsoF28/wAayZZU8t+VUuPwD4E3i6/1OPxtdPp0AnrVOgpTsXxp+X78GUZRTI+S1WC4VU0k36KzK10LGfXrxnc39QuLkNDcK+0zUlsuzrVUypxfhbIUkfGi9KsRV0R3oVdURfMp4+zHAMc2d48llxymdHE56y1E8ruPNUyrprJI/pc5dP8A6A9XLLNTZDit2x6r4zaa6UM1FLxV0VGSxqxdF+pxUncJtNRiG1faHh15VIbtSQQosK9L2xyORz0T+r/KRrr/AG0LlrznFZHs4s9zzahzi3zTWfJaRvJOrqZqL8Kh88M7F5pGcyadCpomioB9W3+pgp9iOaTTSIxiWWqTVfSsaoifeqon3kL8HpgtZYcBuuYXCJ8UmQSRNpWu/wBHi46I5P2nPd9zUJy2k4FQ5/S0tpvtfVfkKOZs9VbYURra1zV4zGyv+VxEciO4rdNVRNVVOY6m30dLb6KChoqeKmpaeNsUMMTEayNjU0a1rU5kREREREAqtwk3zBxT6LpJ2Skg7jXk1Y766s7zIe9vEbHqbbDY7Xa6m+zWhLfVOqEfHTJNx9WK3RUVyafWe9sWwKDZns7t+HU1ykuUdG+V6VEkSRq/lJHPX4qKumnG06fMBA3CTL/R3i7fTdnr/wBlxIG4/wCTRjH7dZ3uU9veK2PUu2KwWy1VN9ms6W+qdUJJHTpLx9WK3TRXJp0ouup7+xfA4dmmzi24ZT3GS5R0LpnJUSRJGr+UldJ8lFXTTj6dPmAqxvtYlPZNuGKbRFbxbPXTUsVXMvyYZoZEXVy+ZFj0/wDS4urFIx8bXtX4rkRUX6NDyc0xaxZjjdXjuR0EVfbqpukkUidCouqORU52uRedFTRUPz4xjlbYMQbj9Pf6usdTxLDR1lZG2SaJmmjEeqaJIrebnXnXRNVVdVUKhZxhcu0Tf7rqCBjprfbZaGsuL052sjhp4VVq683O7Run0qXfOR2c4BZsIpax1FJPXXO4zLUXK6Vao6prJVX5T1RERETVdGoiInmQ64ApC+xbx97ZOsKDuqE0KQvsW8fe2PrCh7s0CaAAAAAAAAAAAAAEIb3vgLBfbO3e+pN5Eu8/iuV5Tili/gfaqe63G1X6luS0s1Q2FJGxKq6cZyonTon1anmJmu8WiaLsVsq/vLCBNoPNxie71Vgoam/W+K3XSSFrqulimSVkMmnO1Hp8pEXznpAAAAOayXPcMxu8U1ov2VWi119TpyNPVVTI3v1XROZV9PpOkcmvm1IjpnVmLXfMaK6YBdcgfebi+rgqKKljnjr4nsYjIZXPciRqzi8no/RvFRFRQJcVebVD8lBc6CtrK2jpayGaooZGx1UbHoroXOajkRyeZVaqL9SnzK9aS2vmjpnuWGFXNgjRFcuiczGonN9BBWxGxZ7YNoC36+4nJQx5XDPLep21qTubU8o+aBXsRP5JGRyPi01VE0amq8wE15PkNlxm1S3bILtR2u3xORr6ipkRjEVehNV86n22O8W2+2ynulnr6evoalnHhqKd6PjkT0o5OZehTj9tFufW2yyVEVHf5J7fdWVcFVZY4paiiekUrOVWKRFSVio9WK1EVfj6pppqnpbK5shmw6KXJ6NtLXLPPxW/Bm07pIuUdyckkTXORj3M0c5NelehOdEDoKi62+C601plrYGV9VFJNBTq9OUkZHxeO5G+dE47df2kP2t6OfnK95zatolVtdmzu24hLUQWSvpaW3yOrGtkfRM43wviQ6av5TlXaLxv80xUTzFhG9AHyAAAB9dUsqU0roGI+VGKrGquiOdpzIq+bUD7FIX2LePvbH1hQ92afQ/Md43VUTYzYfR844tF/wCZ+vYDj2d0mYZ1lec49TWOoyGpppYqWnrWVDW8nFxF+M1V9CLz+kCZAAAAAAAAAAAAAAAAAAAAAA+FTU+QAVNU0P5VnRzpp6ND+gB8cVD44vNzKf0AP5Viaeb+4/pE0TQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//Z" style="width:130px;display:block;margin:0 auto"></div>
+  <div class="sb-brand"><img id="sb-logo" class="sb-logo" alt="Dana Casa"><div class="sb-tag">Gestão Comercial</div></div>
   <nav class="nav">
     <div class="nav-group">Visão Geral</div>
     <div class="nav-item active" onclick="goPage('dashboard')"><span class="ico">📊</span> Dashboard</div>
@@ -653,6 +717,7 @@ th { font-weight:600; }
 
     <div class="nav-group">Comercial</div>
     <div class="nav-item" onclick="goPage('orcamentos')"><span class="ico">📄</span> Orçamentos</div>
+    <div class="nav-item" onclick="goPage('funil')"><span class="ico">🔻</span> Funil de Vendas</div>
     <div class="nav-item" onclick="goPage('diretoria')"><span class="ico">🏛️</span> Análise Diretoria</div>
     <div class="nav-item" onclick="goPage('aguardando')"><span class="ico">⏳</span> Aguardando Cliente</div>
     <div class="nav-item" onclick="goPage('reprovados')"><span class="ico">❌</span> Reprovados</div>
@@ -666,7 +731,13 @@ th { font-weight:600; }
     <div class="nav-item" onclick="goPage('empresa')"><span class="ico">🏢</span> Minha Empresa</div>
     <div class="nav-item" onclick="goPage('usuarios')"><span class="ico">👥</span> Usuários</div>
   </nav>
-  <div class="sidebar-bottom" style="display:flex;flex-direction:column;gap:8px"><span id="logged-name" style="color:#c9a84c;font-size:12px"></span><button onclick="doLogout()" style="background:transparent;border:1px solid #3a3018;color:#5a4e30;padding:6px;border-radius:5px;cursor:pointer;font-size:11px;font-family:Inter,sans-serif" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='#5a4e30'">Sair do Sistema</button></div>
+  <div class="sidebar-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-avatar">·</div>
+      <div style="flex:1;min-width:0"><div class="sb-user-name" id="logged-name"></div><div class="sb-user-role" id="logged-role"></div></div>
+      <button class="sb-logout" onclick="doLogout()" title="Sair do sistema">⏻</button>
+    </div>
+  </div>
 </aside>
 
 <!-- MAIN -->
@@ -855,6 +926,44 @@ th { font-weight:600; }
     </div>
   </div>
 
+  <!-- ===== FUNIL DE VENDAS ===== -->
+  <div class="page" id="page-funil">
+   <div class="dx-wrap">
+    <div class="dx-filters">
+      <div class="form-group"><label>Vendedor</label><select id="fun-filter-vend" onchange="renderFunil()" style="min-width:160px"><option value="">Todos</option></select></div>
+      <div class="form-group"><label>Criados de</label><input type="date" id="fun-filter-ini" onchange="renderFunil()"></div>
+      <div class="form-group"><label>Até</label><input type="date" id="fun-filter-fim" onchange="renderFunil()"></div>
+      <button class="btn btn-outline" onclick="limparFiltros(['fun-filter-vend','fun-filter-ini','fun-filter-fim'],renderFunil)">✕ Limpar</button>
+      <button class="btn btn-gold" onclick="gerarPdfFunil()">🖨️ Relatório PDF</button>
+    </div>
+    <div class="dx-kpis" id="fun-kpis"></div>
+    <div class="dx-row dx-r1">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">🔻 Funil de Vendas</div><div class="dx-card-s">Quantos orçamentos chegam a cada etapa e quanto valem</div></div></div>
+        <div id="fun-svg"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Onde Estão os Orçamentos Agora</div><div class="dx-card-s">Distribuição por status atual</div></div></div>
+        <div id="fun-status"></div>
+      </div>
+    </div>
+    <div class="dx-row dx-r2">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Conversão entre Etapas</div><div class="dx-card-s">O gargalo do funil aparece em destaque</div></div></div>
+        <div id="fun-conv"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">🧭 Leitura do Funil</div><div class="dx-card-s">O que fazer a partir dos números</div></div></div>
+        <div id="fun-insights"></div>
+      </div>
+    </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Funil por Vendedor</div><div class="dx-card-s">Etapas alcançadas e taxa de fechamento de cada vendedor</div></div></div>
+        <div id="fun-vend"></div>
+      </div>
+   </div>
+  </div>
+
   <!-- ===== DIRETORIA ===== -->
   <div class="page" id="page-diretoria">
     <div class="card">
@@ -868,16 +977,18 @@ th { font-weight:600; }
 
   <!-- ===== AGUARDANDO ===== -->
   <div class="page" id="page-aguardando">
+    <div id="ag-coach"></div>
+    <div class="dx-kpis dx-k4" id="ag-kpis" style="margin-bottom:18px"></div>
     <div class="card">
-      <div class="card-header"><span class="card-title">⏳ Aguardando Resposta do Cliente</span></div>
+      <div class="card-header"><span class="card-title">⏳ Aguardando Resposta do Cliente</span><span class="dx-card-s">Ordenado pelos mais antigos — priorize de cima para baixo</span></div>
       <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
         <input type="text" id="ag-search" placeholder="🔍 Buscar cliente..." oninput="renderAguardando()" style="flex:1">
-        <select id="ag-filter-vend" onchange="renderAguardando()" style="min-width:140px">
+        <select id="ag-filter-vend" onchange="renderAguardando()" style="min-width:160px">
           <option value="">Todos vendedores</option>
         </select>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th>Valor</th><th>Enviado em</th><th>Ações</th></tr></thead>
+        <table class="an-table"><thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th class="r">Valor</th><th>Enviado em</th><th>Validade</th><th>Aguardando</th><th>Ações</th></tr></thead>
         <tbody id="tbody-aguardando"></tbody></table>
       </div>
     </div>
@@ -903,36 +1014,51 @@ th { font-weight:600; }
 
   <!-- ===== REPROVADOS ===== -->
   <div class="page" id="page-reprovados">
-    <div style="display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:16px">
-      <div class="card">
-        <div class="card-header"><span class="card-title">📊 Motivos de Perda</span></div>
-        <div id="rep-chart-motivos" style="min-height:140px"></div>
+   <div class="dx-wrap">
+    <div class="dx-filters">
+      <div class="form-group" style="flex:1;min-width:180px"><label>Cliente</label><input type="text" id="rep-search" placeholder="🔍 Buscar cliente..." oninput="renderReprovados()"></div>
+      <div class="form-group"><label>Motivo</label><select id="rep-filter-motivo" onchange="renderReprovados()" style="min-width:190px"><option value="">Todos os motivos</option></select></div>
+      <div class="form-group"><label>Vendedor</label><select id="rep-filter-vend" onchange="renderReprovados()" style="min-width:150px"><option value="">Todos</option></select></div>
+      <div class="form-group"><label>De</label><input type="date" id="rep-filter-ini" onchange="renderReprovados()"></div>
+      <div class="form-group"><label>Até</label><input type="date" id="rep-filter-fim" onchange="renderReprovados()"></div>
+      <button class="btn btn-outline" onclick="limparFiltros(['rep-search','rep-filter-motivo','rep-filter-vend','rep-filter-ini','rep-filter-fim'],renderReprovados)">✕ Limpar</button>
+      <button class="btn btn-gold" onclick="gerarPdfReprovados()">🖨️ Relatório PDF</button>
+    </div>
+    <div class="dx-kpis" id="rep-kpis"></div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">🧭 Leitura para Tomada de Decisão</div><div class="dx-card-s">O que os números de perda estão dizendo</div></div></div>
+        <div id="rep-insights"></div>
       </div>
-      <div class="card" style="display:flex;flex-direction:column;gap:8px">
-        <div class="card-header" style="margin-bottom:0"><span class="card-title">📈 Total</span></div>
-        <div id="rep-kpi-total" style="font-family:inherit;font-size:36px;font-weight:700;letter-spacing:-.02em;color:var(--danger);text-align:center"></div>
-        <div id="rep-kpi-valor" style="font-size:13px;color:var(--text2);text-align:center"></div>
+    <div class="dx-row dx-r2">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Motivos de Perda</div><div class="dx-card-s">Quantidade, participação e valor perdido</div></div></div>
+        <div id="rep-chart-motivos"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Perdas por Vendedor</div><div class="dx-card-s">Valor perdido e taxa de perda (perdidos ÷ decididos)</div></div></div>
+        <div id="rep-vend"></div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-header"><span class="card-title">❌ Orçamentos Reprovados</span></div>
-      <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-        <input type="text" id="rep-search" placeholder="🔍 Buscar cliente..." oninput="renderReprovados()" style="flex:1">
-        <select id="rep-filter-motivo" onchange="renderReprovados()" style="min-width:180px">
-          <option value="">Todos os motivos</option>
-        </select>
-        <input type="date" id="rep-filter-ini" onchange="renderReprovados()" title="Data início">
-        <input type="date" id="rep-filter-fim" onchange="renderReprovados()" title="Data fim">
+    <div class="dx-row dx-r1">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Evolução Mensal das Perdas</div><div class="dx-card-s">Valor reprovado · últimos 12 meses</div></div></div>
+        <div id="rep-mensal"></div>
       </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Perdas por Faixa de Valor</div><div class="dx-card-s">Onde estão os maiores impactos</div></div></div>
+        <div id="rep-faixa"></div>
+      </div>
+    </div>
+    <div class="dx-card">
+      <div class="dx-card-h"><div><div class="dx-card-t">❌ Orçamentos Reprovados</div><div class="dx-card-s" id="rep-count"></div></div></div>
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>#</th><th>Cliente</th><th>Vendedor</th><th>Valor</th><th>Motivo</th><th>Data</th><th>Ações</th></tr>
-          </thead>
+        <table class="an-table">
+          <thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th class="r">Valor</th><th class="r">Margem Perdida</th><th>Motivo</th><th>Data</th><th>Ações</th></tr></thead>
           <tbody id="tbody-reprovados"></tbody>
         </table>
       </div>
     </div>
+   </div>
   </div>
 
   <!-- MODAL MOTIVO REPROVAÇÃO -->
@@ -979,30 +1105,63 @@ th { font-weight:600; }
   
   <!-- ===== PEDIDOS APROVADOS ===== -->
   <div class="page" id="page-pedidos">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px" id="pedidos-kpi"></div>
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">✅ Pedidos Aprovados e Pagos</span>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="search-pedidos" placeholder="Buscar cliente..." oninput="renderPedidos()" style="width:200px">
-        </div>
+   <div class="dx-wrap">
+    <div class="dx-filters">
+      <div class="form-group" style="flex:1;min-width:180px"><label>Cliente</label><input type="text" id="search-pedidos" placeholder="🔍 Buscar cliente..." oninput="renderPedidos()"></div>
+      <div class="form-group"><label>Vendedor</label><select id="pd-filter-vend" onchange="renderPedidos()" style="min-width:150px"><option value="">Todos</option></select></div>
+      <div class="form-group"><label>Pagamento</label><select id="pd-filter-pag" onchange="renderPedidos()" style="min-width:140px"><option value="">Todas</option></select></div>
+      <div class="form-group"><label>Pago de</label><input type="date" id="pd-filter-ini" onchange="renderPedidos()"></div>
+      <div class="form-group"><label>Até</label><input type="date" id="pd-filter-fim" onchange="renderPedidos()"></div>
+      <button class="btn btn-outline" onclick="limparFiltros(['search-pedidos','pd-filter-vend','pd-filter-pag','pd-filter-ini','pd-filter-fim'],renderPedidos)">✕ Limpar</button>
+      <button class="btn btn-gold" onclick="gerarPdfPedidos()">🖨️ Relatório PDF</button>
+    </div>
+    <div class="dx-kpis" id="pedidos-kpi"></div>
+    <div class="dx-row dx-r1">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Receita × Margem Mensal</div><div class="dx-card-s">Pedidos pagos · últimos 12 meses</div></div><div class="dx-leg"><span><i style="background:linear-gradient(135deg,#f3cf7a,#a8721e)"></i>Receita</span><span><i style="background:linear-gradient(135deg,#6ee7b7,#047857)"></i>Margem</span></div></div>
+        <div id="pd-mensal"></div>
       </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">🧭 Leitura para Tomada de Decisão</div><div class="dx-card-s">Resultado e pontos de atenção</div></div></div>
+        <div id="pd-insights"></div>
+      </div>
+    </div>
+    <div class="dx-row dx-r3">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Por Vendedor</div><div class="dx-card-s">Receita, pedidos e margem</div></div></div>
+        <div id="pd-vend"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Produtos Mais Vendidos</div><div class="dx-card-s">Por valor nos pedidos pagos</div></div></div>
+        <div id="pd-prod"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Formas de Pagamento</div><div class="dx-card-s">Participação na receita</div></div></div>
+        <div id="pd-pag"></div>
+      </div>
+    </div>
+    <div class="dx-row dx-r2">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">⚠️ Atenção à Margem</div><div class="dx-card-s">Pedidos com margem bruta abaixo de 30%</div></div></div>
+        <div id="pd-margem"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Principais Clientes</div><div class="dx-card-s">Concentração da receita</div></div></div>
+        <div id="pd-cli"></div>
+      </div>
+    </div>
+    <div class="dx-card">
+      <div class="dx-card-h"><div><div class="dx-card-t">✅ Pedidos Aprovados e Pagos</div><div class="dx-card-s" id="pd-count"></div></div></div>
       <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th><th>Cliente</th><th>Vendedor</th>
-              <th>Itens</th><th>Valor</th><th>Pagamento</th>
-              <th>Pago em</th><th>Ações</th>
-            </tr>
-          </thead>
+        <table class="an-table">
+          <thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th>Itens</th><th class="r">Valor</th><th class="r">Custo</th><th class="r">Margem</th><th>Pagamento</th><th>Pago em</th><th>Ações</th></tr></thead>
           <tbody id="tbody-pedidos"></tbody>
         </table>
       </div>
     </div>
+   </div>
   </div>
 
-  
   <!-- ===== USUÁRIOS ===== -->
   <!-- ===== USUÁRIOS ===== -->
   <div class="page" id="page-usuarios">
@@ -2050,6 +2209,7 @@ const pageConfig = {
   'dash-arq': { title:'Pontuação de Arquitetos' },
   empresa:    { title:'Configurações da Empresa' },
   usuarios:   { title:'Gerenciar Usuários' },
+  funil:      { title:'Funil de Vendas' },
 };
 
 
@@ -2126,6 +2286,7 @@ function goPage(page){
   document.getElementById('topbar-actions').innerHTML = '';
   const _c = e => console.error('render err:', page, e);
   if(page==='dashboard') renderDashboard().catch(_c);
+  if(page==='funil') renderFunil().catch(_c);
   if(page==='produtos')  renderProdutos().catch(_c);
   if(page==='clientes')  renderClientes().catch(_c);
   if(page==='vendedores') renderVendedores().catch(_c);
@@ -2163,7 +2324,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 // ===================== UTILS =====================
 const fmt = v => 'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const today = () => new Date().toISOString().split('T')[0];
-const fmtDate = d => d ? new Date(d+'T12:00').toLocaleDateString('pt-BR') : '—';
+const fmtDate = d => d ? new Date(String(d).slice(0,10)+'T12:00').toLocaleDateString('pt-BR') : '—';
 function uid(){ return Date.now()+Math.random().toString(36).slice(2,6); }
 
 // Normaliza texto: minúsculas + remove acentos, para busca tolerante
@@ -3606,77 +3767,6 @@ async function confirmarReprovacao(){
   setTimeout(()=>goPage('reprovados'), 50);
 }
 
-async function renderReprovados(){
-  let orcs = (await SUPA_DB.get('orcamentos')).filter(o=>o.status==='reprovado');
-  const clientes = await SUPA_DB.get('clientes');
-  const vends = await SUPA_DB.get('vendedores');
-
-  // Preencher select motivos
-  const motivoEl = document.getElementById('rep-filter-motivo');
-  if(motivoEl && motivoEl.options.length<=1){
-    const motivos = [...new Set(orcs.map(o=>o.motivoReprovacao).filter(Boolean))];
-    motivos.forEach(m=>{ const opt=document.createElement('option'); opt.value=m; opt.textContent=m; motivoEl.appendChild(opt); });
-  }
-
-  // Gráfico de motivos (sempre com todos os dados)
-  const motivoCounts = {};
-  orcs.forEach(o=>{ const m=o.motivoReprovacao||'Não informado'; motivoCounts[m]=(motivoCounts[m]||0)+1; });
-  const motivoSorted = Object.entries(motivoCounts).sort((a,b)=>b[1]-a[1]);
-  const maxM = Math.max(1,...Object.values(motivoCounts));
-  const cores = ['#c05040','#e08050','#c09020','#5080c0','#8050b0','#409060','#c04080'];
-  const chartEl = document.getElementById('rep-chart-motivos');
-  if(chartEl){
-    chartEl.innerHTML = '<div style="display:flex;align-items:flex-end;gap:10px;height:130px;padding:8px 0;overflow-x:auto">'
-      +motivoSorted.map(([m,v],i)=>`
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:80px;max-width:120px;flex:1;height:100%;justify-content:flex-end">
-          <div style="font-size:10px;font-weight:700;color:${cores[i%cores.length]}">${v}</div>
-          <div style="width:100%;background:${cores[i%cores.length]};border-radius:4px 4px 0 0;height:${Math.max(6,v/maxM*100)}px;transition:.4s"></div>
-          <div style="font-size:9px;color:var(--text3);text-align:center;line-height:1.2;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${m}">${m}</div>
-        </div>`).join('')+'</div>';
-  }
-  const totalRep = orcs.length;
-  const valorRep = orcs.reduce((s,o)=>s+o.valorFinal,0);
-  const kpiEl = document.getElementById('rep-kpi-total');
-  if(kpiEl) kpiEl.textContent = totalRep;
-  const kpiVal = document.getElementById('rep-kpi-valor');
-  if(kpiVal) kpiVal.innerHTML = `<span style="color:var(--danger)">${fmt(valorRep)}</span><br><small style="color:var(--text3)">valor total reprovado</small>`;
-
-  // Filtros
-  const qRep=(document.getElementById('rep-search')?.value||'').toLowerCase();
-  const motiF=document.getElementById('rep-filter-motivo')?.value||'';
-  const iniR=document.getElementById('rep-filter-ini')?.value||'';
-  const fimR=document.getElementById('rep-filter-fim')?.value||'';
-  if(qRep) orcs=orcs.filter(o=>{ const c=clientes.find(x=>x.id===o.clienteId); return c?.nome?.toLowerCase().includes(qRep); });
-  if(motiF) orcs=orcs.filter(o=>o.motivoReprovacao===motiF);
-  if(iniR) orcs=orcs.filter(o=>(o.reprovadoEm||o.atualizadoEm)>=iniR);
-  if(fimR) orcs=orcs.filter(o=>(o.reprovadoEm||o.atualizadoEm)<=fimR);
-
-  const tbody = document.getElementById('tbody-reprovados');
-  if(!orcs.length){
-    tbody.innerHTML=`<tr><td colspan="7"><div class="empty"><div class="empty-ico">❌</div><div class="empty-msg">Nenhum resultado com esses filtros</div></div></td></tr>`;
-    return;
-  }
-  tbody.innerHTML = orcs.slice().reverse().map(o=>{
-    const cli = clientes.find(c=>c.id===o.clienteId);
-    const vend = vends.find(v=>v.id===o.vendedorId);
-    return `<tr>
-      <td style="color:var(--text3)">#${String(o.id).padStart(3,'0')}</td>
-      <td><b>${cli?.nome||'—'}</b></td>
-      <td style="color:var(--text3)">${vend?.nome||'—'}</td>
-      <td style="color:var(--text3)">${fmt(o.valorFinal)}</td>
-      <td>
-        <span style="color:var(--danger);font-weight:500">${o.motivoReprovacao||'—'}</span>
-        ${o.obsReprovacao?`<br><small style="color:var(--text3)">${o.obsReprovacao}</small>`:''}
-      </td>
-      <td style="color:var(--text3)">${fmtDate(o.reprovadoEm||o.atualizadoEm)}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button>
-        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento reativado para Andamento.')" style="color:var(--warning)">↩️ Reverter</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
 function reativarOrcamento(id){ reverterStatus(id,'andamento','Orçamento reativado!'); }
 
 
@@ -3761,38 +3851,6 @@ async function mudarStatusDir(id, status){
   }
 }
 
-// ===================== AGUARDANDO =====================
-async function renderAguardando(){
-  let orcs=(await SUPA_DB.get('orcamentos')).filter(o=>o.status==='enviado');
-  const clientes=await SUPA_DB.get('clientes');
-  const vends=await SUPA_DB.get('vendedores');
-  // Preencher select
-  const vendEl=document.getElementById('ag-filter-vend');
-  if(vendEl && vendEl.options.length<=1) vends.forEach(v=>{ const o=document.createElement('option'); o.value=v.id; o.textContent=v.nome; vendEl.appendChild(o); });
-  const qAg=(document.getElementById('ag-search')?.value||'').toLowerCase();
-  const vendAg=document.getElementById('ag-filter-vend')?.value||'';
-  if(qAg) orcs=orcs.filter(o=>{ const c=clientes.find(x=>x.id===o.clienteId); return c?.nome?.toLowerCase().includes(qAg); });
-  if(vendAg) orcs=orcs.filter(o=>String(o.vendedorId)===vendAg);
-  const tbody=document.getElementById('tbody-aguardando');
-  if(!orcs.length){ tbody.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-ico">⏳</div><div class="empty-msg">Nenhum orçamento aguardando resposta</div></div></td></tr>`; return; }
-  tbody.innerHTML=orcs.map(o=>{
-    const cli=clientes.find(c=>c.id===o.clienteId);
-    const vend=vends.find(v=>v.id===o.vendedorId);
-    return `<tr>
-      <td>#${String(o.id).padStart(3,'0')}</td>
-      <td><b>${cli?.nome||'—'}</b></td>
-      <td>${vend?.nome||'—'}</td>
-      <td style="color:var(--gold)">${fmt(o.valorFinal)}</td>
-      <td style="color:var(--text3)">${fmtDate(o.atualizadoEm)}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
-        <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'aguardando')">❌ Reprovar</button>
-        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento devolvido para Andamento.')" title="Reverter para Em Andamento" style="color:var(--warning)">↩️ Reverter</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
 // ===================== COBRANÇA =====================
 function filterCob(btn, val){
   currentCobFilter=val;
@@ -3844,55 +3902,6 @@ async function marcarPago(id){
   setTimeout(()=>goPage('pedidos'), 50);
 }
 
-
-// ===================== PEDIDOS APROVADOS =====================
-async function renderPedidos(){
-  const q = (document.getElementById('search-pedidos')?.value||'').toLowerCase();
-  const orcs = (await SUPA_DB.get('orcamentos')).filter(o=>o.status==='pago');
-  const clientes = await SUPA_DB.get('clientes');
-  const vends = await SUPA_DB.get('vendedores');
-
-  // KPIs
-  const totalVal = orcs.reduce((s,o)=>s+o.valorFinal,0);
-  const totalCusto = orcs.reduce((s,o)=>s+o.custoTotal,0);
-  const lucro = totalVal - totalCusto;
-  document.getElementById('pedidos-kpi').innerHTML = `
-    <div class="kpi"><div class="kpi-val">${orcs.length}</div><div class="kpi-label">Pedidos Pagos</div></div>
-    <div class="kpi"><div class="kpi-val" style="font-size:22px">${fmt(totalVal)}</div><div class="kpi-label">Receita Total</div></div>
-    <div class="kpi"><div class="kpi-val" style="font-size:22px;color:var(--success)">${fmt(lucro)}</div><div class="kpi-label">Margem de Contribuição</div></div>
-  `;
-
-  const tbody = document.getElementById('tbody-pedidos');
-  const filtrado = orcs.filter(o=>{
-    if(!q) return true;
-    const cli = clientes.find(c=>c.id===o.clienteId);
-    return cli?.nome?.toLowerCase().includes(q);
-  });
-
-  if(!filtrado.length){
-    tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="empty-ico">✅</div><div class="empty-msg">Nenhum pedido pago encontrado</div></div></td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = filtrado.slice().reverse().map(o=>{
-    const cli = clientes.find(c=>c.id===o.clienteId);
-    const vend = vends.find(v=>v.id===o.vendedorId);
-    return `<tr>
-      <td style="color:var(--text3)">#${String(o.id).padStart(3,'0')}</td>
-      <td><b>${cli?.nome||'—'}</b><br><small style="color:var(--text3)">${cli?.email||''}</small></td>
-      <td style="color:var(--text3)">${vend?.nome||'—'}</td>
-      <td style="color:var(--text3)">${o.items?.length||0} itens</td>
-      <td style="color:var(--success);font-weight:700">${fmt(o.valorFinal)}</td>
-      <td style="color:var(--text3)">${o.pagamento||'—'}</td>
-      <td style="color:var(--text3)">${fmtDate(o.pagoEm||o.atualizadoEm)}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button>
-        <button class="btn btn-outline btn-sm" onclick="gerarPDF(${o.id})">🖨️</button>
-        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'cobranca','Pagamento estornado. Voltou para Cobrança.')" style="color:var(--danger);font-size:11px" title="Estornar pagamento">↩️ Estornar</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
 
 // ===================== DASHBOARD =====================
 
@@ -4488,6 +4497,7 @@ const TODAS_TELAS = [
   {id:'clientes',   label:'👤 Clientes'},
   {id:'vendedores', label:'🤝 Vendedores'},
   {id:'orcamentos', label:'📄 Orçamentos'},
+  {id:'funil',      label:'🔻 Funil de Vendas'},
   {id:'diretoria',  label:'🏛️ Análise Diretoria'},
   {id:'aguardando', label:'⏳ Aguardando Cliente'},
   {id:'reprovados', label:'❌ Reprovados'},
@@ -4502,8 +4512,8 @@ const TODAS_TELAS = [
 
 const PERFIL_TELAS = {
   admin:      TODAS_TELAS.map(t=>t.id),
-  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','aguardando','reprovados'],
-  diretoria:  ['dashboard','orcamentos','diretoria','reprovados'],
+  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','funil','aguardando','reprovados'],
+  diretoria:  ['dashboard','orcamentos','funil','diretoria','reprovados'],
   financeiro: ['dashboard','cobranca','pedidos'],
   custom:     [],
 };
@@ -4932,6 +4942,10 @@ async function doLogin(){
   localStorage.setItem('deco_session', JSON.stringify({user:found.user, nome:found.nome, perfil:found.perfil}));
   localStorage.setItem('deco_session_user', JSON.stringify({user:found.user}));
   document.getElementById('logged-name').textContent = found.nome;
+  try{
+    document.getElementById('sb-avatar').textContent = (found.nome||'?').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    document.getElementById('logged-role').textContent = PERFIL_LABEL[found.perfil]||found.perfil||'';
+  }catch(e){}
 
   // Aplicar permissões na sidebar
   aplicarPermissoesSidebar();
@@ -5609,8 +5623,674 @@ body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1500; -
   closeModal('modal-orc-detalhe');
 }
 
+// ======================================================================
+// ANÁLISES GERENCIAIS · Reprovados · Pedidos · Aguardando · Funil · PDFs
+// ======================================================================
+const GANHO_ST = ['aprovado','cobranca','pago'];
+const _sum = (arr,f)=>arr.reduce((t,o)=>t+(Number(f(o))||0),0);
+const _dt10 = d => String(d||'').slice(0,10);
+const _num = id => '#'+String(id).padStart(3,'0');
+const CORES_SERIE = [DX_G.rose,DX_G.amber,DX_G.violet,DX_G.sky,DX_G.teal,DX_G.indigo,DX_G.emerald,DX_G.gold];
+const MOTIVOS_PRECO = ['Preço acima do esperado','Fora do orçamento do cliente','Margem insuficiente para aprovação'];
+
+function limparFiltros(ids, fn){ ids.forEach(id=>{ const e=document.getElementById(id); if(e) e.value=''; }); fn(); }
+function _periodoTxt(ini,fim){
+  if(!ini && !fim) return 'Todo o período';
+  if(ini && fim) return 'De '+fmtDate(ini)+' até '+fmtDate(fim);
+  return ini ? 'A partir de '+fmtDate(ini) : 'Até '+fmtDate(fim);
+}
+function _popSelectVend(el, vends){
+  if(!el || el.options.length>1) return;
+  vends.forEach(v=>{ const o=document.createElement('option'); o.value=v.id; o.textContent=v.nome; el.appendChild(o); });
+}
+function dxKpi(k){
+  return `<div class="dx-kpi" style="--kg:${dxGrad(k.c)};--ks:${k.c[1]}">
+    <div class="dx-kpi-top"><span class="dx-kpi-ico">${k.ico}</span><span class="dx-kpi-label">${k.label}</span></div>
+    <div class="dx-kpi-val">${k.val}</div><div class="dx-kpi-sub">${k.sub||''}</div>
+    ${k.bar!=null?`<div class="dx-bar"><span style="width:${Math.min(100,Math.max(0,k.bar)*100)}%;background:${dxGrad(k.c,90)}"></span></div>`:''}</div>`;
+}
+function dxInsHtml(arr){
+  return arr.length ? `<div class="dx-insights">${arr.map(i=>`<div class="dx-ins ${i.k}"><i>${i.ico}</i><div>${i.txt}</div></div>`).join('')}</div>`
+                    : '<div class="dx-empty">Sem observações para o filtro atual</div>';
+}
+function dxMeses12(){
+  const MES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const h=new Date(), r=[];
+  for(let i=11;i>=0;i--){
+    const d=new Date(h.getFullYear(), h.getMonth()-i, 1);
+    r.push({k:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'), lbl:MES[d.getMonth()]+'/'+String(d.getFullYear()).slice(2)});
+  }
+  return r;
+}
+function dxColunas(meses, series, tip){
+  const mx=Math.max(1,...meses.flatMap(m=>series.map(s=>m[s.k]||0)));
+  const passos=[1,.75,.5,.25,0];
+  return `<div class="dx-plot">
+    <div class="dx-grid">${passos.map(p=>`<div style="top:${(1-p)*100}%"><span>${p?dxK(mx*p).replace('R$ ',''):'0'}</span></div>`).join('')}</div>
+    ${meses.map(m=>`<div class="dx-col"><div class="dx-tip">${tip(m)}</div>
+      <div class="dx-col-bars">${series.map(s=>`<span style="height:${Math.max(0,(m[s.k]||0))/mx*100}%;background:${dxGrad(s.c,180)}"></span>`).join('')}</div>
+      <div class="dx-col-lbl">${m.lbl}</div></div>`).join('')}
+  </div>`;
+}
+
+// ---------- PDF (retrato / paisagem, com logomarca) ----------
+const pdfKp  = arr => '<div class="kp">'+arr.map(k=>'<div><small>'+k.label+'</small><b>'+k.val+'</b>'+(k.sub?'<span>'+k.sub+'</span>':'')+'</div>').join('')+'</div>';
+const pdfIns = arr => arr.map(i=>'<div class="ins">'+i.ico+' '+i.txt+'</div>').join('');
+const pdfBar = p => '<div class="bar"><i style="width:'+Math.max(2,Math.min(100,(p||0)*100))+'%"></i></div>';
+function pdfTab(head, rows){
+  return '<table><thead><tr>'+head.map(h=>'<th class="'+(h.a||'')+'">'+h.t+'</th>').join('')+'</tr></thead><tbody>'
+    +(rows.length ? rows.map(r=>'<tr>'+r.map((c,i)=>'<td class="'+((head[i]&&head[i].a)||'')+'">'+c+'</td>').join('')+'</tr>').join('')
+                  : '<tr><td colspan="'+head.length+'" class="c">Sem dados</td></tr>')
+    +'</tbody></table>';
+}
+function abrirRelatorioPDF(opts){
+  const emp=getEmpresa();
+  const logo=emp.logo||DANA_LOGO_PDF;
+  const nomeEmp=emp.nome||'Dana Casa';
+  const ori=opts.orient||'landscape';
+  const w=window.open('','_blank','width=1150,height=820');
+  if(!w){ alertMsg('Permita popups para este site para gerar o PDF.','danger'); return; }
+  const css=`
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',Arial,sans-serif;color:#232018;background:#e9e4d8;-webkit-font-smoothing:antialiased}
+#tb{background:#1a1500;padding:10px 20px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:9}
+#tb .t{flex:1;color:#e7c877;font-size:13px;font-weight:600}
+#tb button{border:1px solid #4a3a18;background:transparent;color:#c9a84c;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12.5px;font-family:inherit}
+#tb button.on{background:#3a2e10;color:#f3d98c;border-color:#c9a84c}
+#tb button.pr{background:#c9a84c;color:#0a0800;border:none;font-weight:700}
+.sheet{background:#fff;margin:24px auto;padding:30px 36px;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+body.portrait .sheet{width:210mm;min-height:297mm}
+body.landscape .sheet{width:297mm;min-height:210mm}
+.hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:2px solid #b8960c;margin-bottom:14px}
+.hd img{height:96px}
+.hd .emp{text-align:right;font-size:10px;color:#6b6250;line-height:1.6}
+.hd .emp b{font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;color:#1a1500;font-weight:600;display:block}
+.tbar{background:linear-gradient(135deg,#1a1500,#2a2000);border-radius:8px;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.tbar h1{font-family:'Cormorant Garamond',Georgia,serif;color:#e7c877;font-size:23px;letter-spacing:.08em;font-weight:700}
+.tbar .s{color:#c6a55c;font-size:10.5px;text-align:right;line-height:1.7}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin-bottom:14px}
+.kp div{border:1px solid #ece3c4;border-radius:8px;padding:9px 11px;background:#fdf8ec}
+.kp small{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:#8a7a5a;font-weight:700}
+.kp b{display:block;font-size:16px;color:#1a1500;margin-top:4px;font-variant-numeric:tabular-nums}
+.kp span{display:block;font-size:9.5px;color:#7a7060;margin-top:2px;line-height:1.35}
+h2{font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:#8a6d12;border-bottom:1px solid #e8d898;padding-bottom:5px;margin:14px 0 8px;font-weight:700}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+body.portrait .cols{grid-template-columns:1fr}
+table{width:100%;border-collapse:collapse;font-size:10px}
+th{background:#1a1500;color:#e7c877;padding:6px 8px;text-align:left;font-size:8.5px;text-transform:uppercase;letter-spacing:.08em}
+td{padding:5px 8px;border-bottom:1px solid #efe6c0;font-variant-numeric:tabular-nums}
+tr:nth-child(even) td{background:#fdf8ec}
+.r{text-align:right}.c{text-align:center}
+.ins{font-size:10.5px;line-height:1.5;color:#3a3428;padding:6px 10px;border-left:3px solid #c9a84c;background:#fdf8ec;margin-bottom:5px;border-radius:0 6px 6px 0}
+.bar{height:7px;background:#efe6c0;border-radius:6px;overflow:hidden;min-width:60px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#f3cf7a,#a8721e)}
+.fsvg{max-width:640px;margin:0 auto}
+.ft{margin-top:20px;text-align:center;font-size:8.5px;color:#a8a08a;font-style:italic}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:#fff} #tb{display:none!important}
+  .sheet{margin:0;padding:0;box-shadow:none;width:auto!important;min-height:0!important}
+  thead{display:table-header-group} tr,.ins,.kp div{page-break-inside:avoid}
+}`;
+  const hdEmp=[emp.cnpj?'CNPJ '+emp.cnpj:'', [emp.cidade,emp.uf].filter(Boolean).join(' - '), emp.tel||'', emp.email||''].filter(Boolean).join('<br>');
+  const html='<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>'+opts.titulo+'</title>'
+    +'<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">'
+    +'<style>'+css+'</style><style id="pg">@page{size:A4 '+ori+';margin:10mm}</style></head><body class="'+ori+'">'
+    +'<div id="tb"><span class="t">'+opts.titulo+'</span>'
+    +'<button class="ori'+(ori==='portrait'?' on':'')+'" data-o="portrait" onclick="setOri(\'portrait\')">📄 Retrato</button>'
+    +'<button class="ori'+(ori==='landscape'?' on':'')+'" data-o="landscape" onclick="setOri(\'landscape\')">🖼️ Paisagem</button>'
+    +'<button class="pr" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>'
+    +'<button onclick="window.close()">✕</button></div>'
+    +'<div class="sheet"><div class="hd"><img src="'+logo+'" alt=""><div class="emp"><b>'+nomeEmp+'</b>'+hdEmp+'</div></div>'
+    +'<div class="tbar"><h1>'+opts.titulo.toUpperCase()+'</h1><div class="s">'+(opts.subtitulo||'')+'<br>Emitido em '+new Date().toLocaleString('pt-BR')+'</div></div>'
+    +opts.corpo
+    +'<div class="ft">'+nomeEmp+' · '+opts.titulo+' · documento gerado pelo sistema de orçamentos</div></div>'
+    +'<script>function setOri(o){document.getElementById("pg").textContent="@page{size:A4 "+o+";margin:10mm}";document.body.className=o;'
+    +'document.querySelectorAll(".ori").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-o")===o)});}<\/script></body></html>';
+  w.document.open(); w.document.write(html); w.document.close();
+}
+
+// ===================== REPROVADOS =====================
+let _repData=null;
+async function renderReprovados(){
+  const todos=await SUPA_DB.get('orcamentos');
+  const clientes=await SUPA_DB.get('clientes');
+  const vends=await SUPA_DB.get('vendedores');
+  const cliNome=id=>clientes.find(c=>c.id===id)?.nome||'—';
+  const vendNome=id=>vends.find(v=>v.id===id)?.nome||'Sem vendedor';
+
+  const motivoEl=document.getElementById('rep-filter-motivo');
+  if(motivoEl && motivoEl.options.length<=1){
+    [...new Set(todos.filter(o=>o.status==='reprovado').map(o=>o.motivoReprovacao||'Não informado'))].sort()
+      .forEach(m=>{ const op=document.createElement('option'); op.value=m; op.textContent=m; motivoEl.appendChild(op); });
+  }
+  _popSelectVend(document.getElementById('rep-filter-vend'), vends);
+
+  const q=(document.getElementById('rep-search')?.value||'').toLowerCase();
+  const motiF=motivoEl?.value||'';
+  const vendF=document.getElementById('rep-filter-vend')?.value||'';
+  const ini=document.getElementById('rep-filter-ini')?.value||'';
+  const fim=document.getElementById('rep-filter-fim')?.value||'';
+  const dRep=o=>_dt10(o.reprovadoEm||o.atualizadoEm||o.criadoEm);
+  const noPer=d=>(!ini||d>=ini)&&(!fim||d<=fim);
+
+  const base=todos.filter(o=>!vendF||String(o.vendedorId)===vendF);
+  let rep=base.filter(o=>o.status==='reprovado'&&noPer(dRep(o)));
+  if(motiF) rep=rep.filter(o=>(o.motivoReprovacao||'Não informado')===motiF);
+  if(q) rep=rep.filter(o=>cliNome(o.clienteId).toLowerCase().includes(q));
+  rep.sort((a,b)=>dRep(b).localeCompare(dRep(a))||b.id-a.id);
+
+  const ganhosB=base.filter(o=>GANHO_ST.includes(o.status)&&noPer(_dt10(o.criadoEm)));
+  const perdB=base.filter(o=>o.status==='reprovado'&&noPer(dRep(o)));
+  const margem=o=>(o.valorLiquido||o.valorFinal||0)-(o.custoTotal||0);
+  const n=rep.length;
+  const vPerd=_sum(rep,o=>o.valorFinal), mPerd=_sum(rep,margem), ticket=n?vPerd/n:0;
+  const vGanho=_sum(ganhosB,o=>o.valorFinal), vPerdB=_sum(perdB,o=>o.valorFinal);
+  const decid=ganhosB.length+perdB.length, taxa=decid?perdB.length/decid:0;
+  const semMot=rep.filter(o=>!o.motivoReprovacao).length;
+  const maior=rep.slice().sort((a,b)=>(b.valorFinal||0)-(a.valorFinal||0))[0];
+
+  const kpis=[
+    {ico:'❌',c:DX_G.rose,  label:'Orçamentos Perdidos', val:String(n), sub:`${perdB.length} perdidos × ${ganhosB.length} fechados no período`},
+    {ico:'💸',c:DX_G.amber, label:'Valor Perdido', val:dxK(vPerd), sub:`Ticket médio perdido: ${dxK(ticket)}`},
+    {ico:'📉',c:DX_G.violet,label:'Margem Bruta Perdida', val:dxK(mPerd), sub:'Lucro bruto que deixou de entrar (após RT)'},
+    {ico:'🎯',c:DX_G.rose,  label:'Taxa de Perda', val:dxPct(taxa), sub:`Sobre ${decid} orçamento(s) decidido(s)`, bar:taxa},
+    {ico:'⚖️',c:DX_G.sky,   label:'Perdido × Fechado', val:vGanho?(vPerdB/vGanho).toFixed(2).replace('.',',')+'×':'—', sub:`R$ perdido para cada R$ 1 fechado (${dxK(vGanho)} fechados)`},
+    {ico:'📝',c:DX_G.gold,  label:'Sem Motivo', val:String(semMot), sub:n?`${dxPct(semMot/n)} das perdas sem registro`:'—', bar:n?semMot/n:0},
+  ];
+  document.getElementById('rep-kpis').innerHTML=kpis.map(dxKpi).join('');
+
+  // Motivos
+  const motMap={};
+  rep.forEach(o=>{ const k=o.motivoReprovacao||'Não informado'; const r=motMap[k]||(motMap[k]={n:k,c:0,v:0}); r.c++; r.v+=o.valorFinal||0; });
+  const motivos=Object.values(motMap).sort((a,b)=>b.c-a.c||b.v-a.v);
+  document.getElementById('rep-chart-motivos').innerHTML=dxHBars(motivos.map((r,i)=>({n:r.n, v:r.c, vl:`${r.c}× · ${dxPct(r.c/n)}`, extra:dxK(r.v), c:CORES_SERIE[i%CORES_SERIE.length]})), DX_G.rose);
+
+  // Vendedores
+  const vm={};
+  base.forEach(o=>{
+    const isP=o.status==='reprovado'&&noPer(dRep(o));
+    const isG=GANHO_ST.includes(o.status)&&noPer(_dt10(o.criadoEm));
+    if(!isP&&!isG) return;
+    const k=o.vendedorId||0; const r=vm[k]||(vm[k]={n:vendNome(o.vendedorId),p:0,g:0,vp:0});
+    if(isP){ r.p++; r.vp+=o.valorFinal||0; } else r.g++;
+  });
+  const vendRows=Object.values(vm).filter(r=>r.p>0).map(r=>({...r,taxa:(r.p+r.g)?r.p/(r.p+r.g):0})).sort((a,b)=>b.vp-a.vp);
+  document.getElementById('rep-vend').innerHTML=dxHBars(vendRows.map((r,i)=>({n:r.n, v:r.vp, vl:dxK(r.vp), extra:`${r.p} perdido(s) · taxa ${dxPct(r.taxa)}`, c:CORES_SERIE[(i+2)%CORES_SERIE.length]})), DX_G.rose);
+
+  // Mensal
+  const meses=dxMeses12().map(m=>({...m,v:0,q:0}));
+  rep.forEach(o=>{ const m=meses.find(x=>x.k===dRep(o).slice(0,7)); if(m){ m.v+=o.valorFinal||0; m.q++; } });
+  document.getElementById('rep-mensal').innerHTML=dxColunas(meses,[{k:'v',c:DX_G.rose}],m=>`<b>${m.lbl}</b><br>${m.q} perdido(s)<br>${fmt(m.v)}`);
+
+  // Faixas
+  const FX=[{n:'Até R$ 5 mil',a:0,b:5000,c:DX_G.sky},{n:'R$ 5 mil a 20 mil',a:5000,b:20000,c:DX_G.violet},{n:'R$ 20 mil a 100 mil',a:20000,b:100000,c:DX_G.amber},{n:'Acima de R$ 100 mil',a:100000,b:Infinity,c:DX_G.rose}];
+  const fx=FX.map(f=>{ const l=rep.filter(o=>(o.valorFinal||0)>=f.a&&(o.valorFinal||0)<f.b); return {n:f.n,c:f.c,q:l.length,v:_sum(l,o=>o.valorFinal)}; }).filter(f=>f.q);
+  document.getElementById('rep-faixa').innerHTML=dxHBars(fx.map(f=>({n:f.n, v:f.v, vl:dxK(f.v), extra:`${f.q} orç. · ${dxPct(vPerd?f.v/vPerd:0)}`, c:f.c})), DX_G.rose);
+
+  // Leitura para decisão
+  const ins=[];
+  if(!n) ins.push({k:'good',ico:'✅',txt:'Nenhuma perda encontrada para os filtros selecionados.'});
+  else{
+    const comMot=motivos.filter(m=>m.n!=='Não informado');
+    if(comMot.length){ const t=comMot[0]; ins.push({k:'info',ico:'🔎',txt:`O principal motivo de perda é <b>${t.n}</b>: ${t.c} de ${n} orçamentos (${dxPct(t.c/n)}), somando <b>${fmt(t.v)}</b>.`}); }
+    const preco=rep.filter(o=>MOTIVOS_PRECO.includes(o.motivoReprovacao));
+    if(preco.length/n>=0.25) ins.push({k:'warn',ico:'💲',txt:`Preço e orçamento do cliente explicam <b>${dxPct(preco.length/n)}</b> das perdas (${fmt(_sum(preco,o=>o.valorFinal))}). Avalie revisar o multiplicador dos itens mais orçados, oferecer parcelamento e apresentar uma versão alternativa da proposta com produtos de menor custo.`});
+    const conc=rep.filter(o=>o.motivoReprovacao==='Cliente optou por concorrente');
+    if(conc.length/n>=0.2) ins.push({k:'warn',ico:'🏁',txt:`A concorrência levou <b>${conc.length}</b> negócio(s) (${dxPct(conc.length/n)} · ${fmt(_sum(conc,o=>o.valorFinal))}). Mapeie quais lojas estão ganhando e em quais produtos, e reforce os diferenciais: curadoria, prazo, montagem e pós-venda.`});
+    if(maior && n>1 && vPerd && (maior.valorFinal||0)/vPerd>=0.4) ins.push({k:'info',ico:'📌',txt:`Uma única proposta (${_num(maior.id)} · ${cliNome(maior.clienteId)}) concentra <b>${dxPct(maior.valorFinal/vPerd)}</b> do valor perdido (${fmt(maior.valorFinal)}). Sem ela, a perda seria de ${fmt(vPerd-maior.valorFinal)} — analise esse caso separadamente para não distorcer a leitura.`});
+    if(semMot) ins.push({k:'bad',ico:'📝',txt:`<b>${semMot}</b> reprovação(ões) estão sem motivo registrado. Isso tira a visibilidade da gestão — reprove sempre pelo botão ❌, que exige o motivo, em vez de mudar o status direto no formulário.`});
+    const pior=vendRows.filter(r=>r.p+r.g>=3).sort((a,b)=>b.taxa-a.taxa)[0];
+    if(pior && pior.taxa>=0.5) ins.push({k:'warn',ico:'👤',txt:`<b>${pior.n}</b> tem a maior taxa de perda (${dxPct(pior.taxa)} · ${pior.p} de ${pior.p+pior.g} decididos). Vale acompanhar as próximas propostas e revisar a abordagem de follow-up.`});
+    if(decid) ins.push(taxa>=0.5
+      ? {k:'bad',ico:'🚨',txt:`A taxa de perda está em <b>${dxPct(taxa)}</b>: mais da metade dos orçamentos decididos não vira venda.`}
+      : {k:'good',ico:'📈',txt:`A taxa de perda está em <b>${dxPct(taxa)}</b> — ${dxPct(1-taxa)} dos orçamentos decididos viram venda.`});
+  }
+  document.getElementById('rep-insights').innerHTML=dxInsHtml(ins);
+
+  // Tabela
+  document.getElementById('rep-count').textContent=`${n} orçamento(s) · ${fmt(vPerd)}`;
+  const tbody=document.getElementById('tbody-reprovados');
+  tbody.innerHTML = n ? rep.map(o=>`<tr>
+      <td style="color:var(--text3)">${_num(o.id)}</td>
+      <td><b>${cliNome(o.clienteId)}</b></td>
+      <td style="color:var(--text3)">${vendNome(o.vendedorId)}</td>
+      <td class="r" style="font-weight:600">${fmt(o.valorFinal)}</td>
+      <td class="r" style="color:var(--danger)">${fmt(margem(o))}</td>
+      <td>${o.motivoReprovacao?`<span style="color:var(--danger);font-weight:500">${o.motivoReprovacao}</span>`:'<span style="color:var(--text3);font-style:italic">Não informado</span>'}
+        ${o.obsReprovacao?`<br><small style="color:var(--text3)">${o.obsReprovacao}</small>`:''}</td>
+      <td style="color:var(--text3)">${fmtDate(dRep(o))}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button>
+        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento reativado para Andamento.')" style="color:var(--warning)">↩️ Reverter</button>
+      </td></tr>`).join('')
+    : `<tr><td colspan="8"><div class="empty"><div class="empty-ico">❌</div><div class="empty-msg">Nenhum resultado com esses filtros</div></div></td></tr>`;
+
+  _repData={kpis,ins,motivos,n,vendRows,fx,vPerd,rep,cliNome,vendNome,dRep,margem,
+    periodo:_periodoTxt(ini,fim), filtro:[vendF?vendNome(+vendF):'', motiF, q?'Cliente: '+q:''].filter(Boolean).join(' · ')};
+}
+
+async function gerarPdfReprovados(){
+  await renderReprovados();
+  const d=_repData;
+  const corpo = pdfKp(d.kpis)
+    +'<h2>Leitura para tomada de decisão</h2>'+pdfIns(d.ins)
+    +'<div class="cols"><div><h2>Motivos de perda</h2>'
+    +pdfTab([{t:'Motivo'},{t:'Qtd',a:'c'},{t:'%',a:'r'},{t:'Valor',a:'r'},{t:''}],
+      d.motivos.map(m=>[m.n,m.c,dxPct(d.n?m.c/d.n:0),fmt(m.v),pdfBar(m.c/(d.motivos[0]?.c||1))]))
+    +'</div><div><h2>Perdas por vendedor</h2>'
+    +pdfTab([{t:'Vendedor'},{t:'Perdidos',a:'c'},{t:'Fechados',a:'c'},{t:'Taxa perda',a:'r'},{t:'Valor perdido',a:'r'}],
+      d.vendRows.map(r=>[r.n,r.p,r.g,dxPct(r.taxa),fmt(r.vp)]))
+    +'<h2>Perdas por faixa de valor</h2>'
+    +pdfTab([{t:'Faixa'},{t:'Qtd',a:'c'},{t:'Valor',a:'r'},{t:'%',a:'r'}], d.fx.map(f=>[f.n,f.q,fmt(f.v),dxPct(d.vPerd?f.v/d.vPerd:0)]))
+    +'</div></div>'
+    +'<h2>Orçamentos reprovados ('+d.rep.length+')</h2>'
+    +pdfTab([{t:'#'},{t:'Cliente'},{t:'Vendedor'},{t:'Valor',a:'r'},{t:'Margem perdida',a:'r'},{t:'Motivo'},{t:'Data',a:'c'}],
+      d.rep.map(o=>[_num(o.id),d.cliNome(o.clienteId),d.vendNome(o.vendedorId),fmt(o.valorFinal),fmt(d.margem(o)),o.motivoReprovacao||'Não informado',fmtDate(d.dRep(o))]));
+  abrirRelatorioPDF({titulo:'Análise de Orçamentos Reprovados', subtitulo:d.periodo+(d.filtro?' · '+d.filtro:''), corpo});
+}
+
+// ===================== PEDIDOS APROVADOS =====================
+let _pedData=null;
+async function renderPedidos(){
+  const todos=await SUPA_DB.get('orcamentos');
+  const clientes=await SUPA_DB.get('clientes');
+  const vends=await SUPA_DB.get('vendedores');
+  const cliNome=id=>clientes.find(c=>c.id===id)?.nome||'—';
+  const vendNome=id=>vends.find(v=>v.id===id)?.nome||'Sem vendedor';
+  const dPag=o=>_dt10(o.pagoEm||o.atualizadoEm||o.criadoEm);
+  const pagosTodos=todos.filter(o=>o.status==='pago');
+
+  _popSelectVend(document.getElementById('pd-filter-vend'), vends);
+  const pagEl=document.getElementById('pd-filter-pag');
+  if(pagEl && pagEl.options.length<=1)
+    [...new Set(pagosTodos.map(o=>o.pagamento||'Não informado'))].sort().forEach(p=>{ const op=document.createElement('option'); op.value=p; op.textContent=p; pagEl.appendChild(op); });
+
+  const q=(document.getElementById('search-pedidos')?.value||'').toLowerCase();
+  const vendF=document.getElementById('pd-filter-vend')?.value||'';
+  const pagF=pagEl?.value||'';
+  const ini=document.getElementById('pd-filter-ini')?.value||'';
+  const fim=document.getElementById('pd-filter-fim')?.value||'';
+  const ped=pagosTodos.filter(o=>(!vendF||String(o.vendedorId)===vendF)
+      &&(!pagF||(o.pagamento||'Não informado')===pagF)
+      &&(!ini||dPag(o)>=ini)&&(!fim||dPag(o)<=fim)
+      &&(!q||cliNome(o.clienteId).toLowerCase().includes(q)))
+    .sort((a,b)=>dPag(b).localeCompare(dPag(a))||b.id-a.id);
+
+  const rec=o=>o.valorFinal||0, liq=o=>o.valorLiquido||o.valorFinal||0, cus=o=>o.custoTotal||0, mg=o=>liq(o)-cus(o);
+  const desc=o=>{ const d=o.desconto||0; return (d>0&&d<100)?rec(o)*d/(100-d):0; };
+  const LIM=0.30;
+  const n=ped.length, vRec=_sum(ped,rec), vCus=_sum(ped,cus), vMg=_sum(ped,mg), vRt=_sum(ped,o=>o.rtValor||0), vDesc=_sum(ped,desc);
+  const mPct=vRec?vMg/vRec:0, itens=_sum(ped,o=>(o.items||[]).length), nRt=ped.filter(o=>o.rt).length;
+
+  const kpis=[
+    {ico:'✅',c:DX_G.emerald,label:'Pedidos Pagos', val:String(n), sub:`${itens} item(ns) vendido(s)`},
+    {ico:'💰',c:DX_G.gold,   label:'Receita Total', val:dxK(vRec), sub:`Ticket médio: ${dxK(n?vRec/n:0)}`},
+    {ico:'📦',c:DX_G.sky,    label:'Custo dos Produtos', val:dxK(vCus), sub:`${dxPct(vRec?vCus/vRec:0)} da receita`, bar:vRec?vCus/vRec:0},
+    {ico:'📈',c:DX_G.teal,   label:'Margem Bruta', val:dxK(vMg), sub:`${dxPct(mPct)} sobre a receita (após RT)`, bar:Math.max(0,mPct)},
+    {ico:'📐',c:DX_G.violet, label:'Comissões RT', val:dxK(vRt), sub:`${nRt} pedido(s) com arquiteto`},
+    {ico:'🏷️',c:DX_G.amber,  label:'Descontos Concedidos', val:dxK(vDesc), sub:`${dxPct((vRec+vDesc)?vDesc/(vRec+vDesc):0)} sobre o valor bruto`},
+  ];
+  document.getElementById('pedidos-kpi').innerHTML=kpis.map(dxKpi).join('');
+
+  const meses=dxMeses12().map(m=>({...m,r:0,mg:0,q:0}));
+  ped.forEach(o=>{ const m=meses.find(x=>x.k===dPag(o).slice(0,7)); if(m){ m.r+=rec(o); m.mg+=mg(o); m.q++; } });
+  document.getElementById('pd-mensal').innerHTML=dxColunas(meses,[{k:'r',c:DX_G.gold},{k:'mg',c:DX_G.emerald}],
+    m=>`<b>${m.lbl}</b><br>${m.q} pedido(s)<br>Receita: ${fmt(m.r)}<br>Margem: ${fmt(m.mg)}`);
+
+  const gv={}; ped.forEach(o=>{ const k=o.vendedorId||0; const r=gv[k]||(gv[k]={n:vendNome(o.vendedorId),q:0,r:0,m:0}); r.q++; r.r+=rec(o); r.m+=mg(o); });
+  const vendRows=Object.values(gv).sort((a,b)=>b.r-a.r);
+  document.getElementById('pd-vend').innerHTML=dxHBars(vendRows.slice(0,6).map((r,i)=>({n:r.n,v:r.r,vl:dxK(r.r),extra:`${r.q} ped · margem ${dxPct(r.r?r.m/r.r:0)}`,c:CORES_SERIE[(i+5)%CORES_SERIE.length]})),DX_G.emerald);
+
+  const gp={}; ped.forEach(o=>(o.items||[]).forEach(it=>{ const k=it.nome||'—'; const r=gp[k]||(gp[k]={n:k,v:0,q:0}); r.v+=dxValorItem(it,o); r.q+=Number(it.qty)||0; }));
+  const prodRows=Object.values(gp).sort((a,b)=>b.v-a.v);
+  document.getElementById('pd-prod').innerHTML=dxHBars(prodRows.slice(0,6).map(r=>({n:r.n,v:r.v,vl:dxK(r.v),extra:`${r.q} un`})),DX_G.emerald);
+
+  const gpg={}; ped.forEach(o=>{ const k=o.pagamento||'Não informado'; const r=gpg[k]||(gpg[k]={n:k,q:0,v:0}); r.q++; r.v+=rec(o); });
+  const pagRows=Object.values(gpg).sort((a,b)=>b.v-a.v);
+  document.getElementById('pd-pag').innerHTML=dxHBars(pagRows.map((r,i)=>({n:r.n,v:r.v,vl:dxK(r.v),extra:`${r.q} ped · ${dxPct(vRec?r.v/vRec:0)}`,c:CORES_SERIE[(i+3)%CORES_SERIE.length]})),DX_G.sky);
+
+  const baixa=ped.filter(o=>rec(o)>0&&mg(o)/rec(o)<LIM).sort((a,b)=>mg(a)/rec(a)-mg(b)/rec(b));
+  document.getElementById('pd-margem').innerHTML = baixa.length
+    ? baixa.slice(0,6).map(o=>{ const p=mg(o)/rec(o); const c=p<0.15?DX_G.rose:DX_G.amber;
+        return `<div class="dx-alert" onclick="verOrcamento(${o.id})"><b>${_num(o.id)} · ${cliNome(o.clienteId)}</b>
+          <span class="dx-days" style="background:${dxGrad(c)}">${dxPct(p)}</span>
+          <small>${fmt(rec(o))} · margem ${fmt(mg(o))} · ${vendNome(o.vendedorId)}</small></div>`; }).join('')
+      + (baixa.length>6?`<div class="dx-card-s" style="text-align:center;margin-top:6px">+ ${baixa.length-6} outros</div>`:'')
+    : '<div class="dx-empty">✅ Todos os pedidos com margem acima de 30%</div>';
+
+  const gc={}; ped.forEach(o=>{ const k=o.clienteId||0; const r=gc[k]||(gc[k]={n:cliNome(o.clienteId),q:0,v:0}); r.q++; r.v+=rec(o); });
+  const cliRows=Object.values(gc).sort((a,b)=>b.v-a.v);
+  document.getElementById('pd-cli').innerHTML=dxHBars(cliRows.slice(0,6).map(r=>({n:r.n,v:r.v,vl:dxK(r.v),extra:`${r.q} ped · ${dxPct(vRec?r.v/vRec:0)}`})),DX_G.gold);
+
+  const ins=[];
+  if(!n) ins.push({k:'info',ico:'ℹ️',txt:'Nenhum pedido pago para os filtros selecionados.'});
+  else{
+    ins.push(mPct>=LIM
+      ? {k:'good',ico:'📈',txt:`Margem bruta média de <b>${dxPct(mPct)}</b> sobre a receita — ${fmt(vMg)} de resultado bruto em ${n} pedido(s).`}
+      : {k:'warn',ico:'📉',txt:`Margem bruta média de <b>${dxPct(mPct)}</b>, abaixo da referência de ${dxPct(LIM)}. Revise multiplicadores, descontos e comissões antes de aprovar novos pedidos.`});
+    const vmg=vendRows.filter(r=>r.q>=2&&r.r>0).map(r=>({...r,p:r.m/r.r})).sort((a,b)=>b.p-a.p);
+    if(vmg.length>=2) ins.push({k:'info',ico:'👤',txt:`Maior margem: <b>${vmg[0].n}</b> (${dxPct(vmg[0].p)}). Menor margem: <b>${vmg[vmg.length-1].n}</b> (${dxPct(vmg[vmg.length-1].p)}). Compare descontos e mix de produtos entre os dois.`});
+    if(prodRows[0]) ins.push({k:'info',ico:'🏆',txt:`Produto campeão: <b>${prodRows[0].n}</b> — ${fmt(prodRows[0].v)} vendidos (${prodRows[0].q} un). Garanta estoque e prazo com o fornecedor.`});
+    if(cliRows.length>1 && vRec && cliRows[0].v/vRec>=0.3) ins.push({k:'warn',ico:'📌',txt:`<b>${cliRows[0].n}</b> concentra ${dxPct(cliRows[0].v/vRec)} da receita. Alta dependência de um único cliente — busque diversificar a carteira.`});
+    if(vRt>0) ins.push({k:'info',ico:'📐',txt:`Comissões de RT somam <b>${fmt(vRt)}</b> (${dxPct(vRt/vRec)} da receita). Pedidos com arquiteto representam ${dxPct(_sum(ped.filter(o=>o.rt),rec)/vRec)} do faturamento.`});
+    if(vDesc>0){ const pd=vDesc/(vRec+vDesc); ins.push({k:pd>=0.08?'warn':'info',ico:'🏷️',txt:`Foram concedidos <b>${fmt(vDesc)}</b> em descontos (${dxPct(pd)} do valor bruto).${pd>=0.08?' Desconto alto: troque por contrapartidas (pagamento à vista, volume ou fechamento imediato).':''}`}); }
+    if(baixa.length) ins.push({k:'bad',ico:'⚠️',txt:`<b>${baixa.length}</b> pedido(s) fecharam com margem abaixo de ${dxPct(LIM)}. Veja a lista "Atenção à Margem".`});
+  }
+  document.getElementById('pd-insights').innerHTML=dxInsHtml(ins);
+
+  document.getElementById('pd-count').textContent=`${n} pedido(s) · ${fmt(vRec)}`;
+  const tbody=document.getElementById('tbody-pedidos');
+  tbody.innerHTML = n ? ped.map(o=>{ const p=rec(o)?mg(o)/rec(o):0; return `<tr>
+      <td style="color:var(--text3)">${_num(o.id)}</td>
+      <td><b>${cliNome(o.clienteId)}</b></td>
+      <td style="color:var(--text3)">${vendNome(o.vendedorId)}</td>
+      <td style="color:var(--text3)">${(o.items||[]).length}</td>
+      <td class="r" style="color:var(--success);font-weight:700">${fmt(rec(o))}</td>
+      <td class="r" style="color:var(--text3)">${fmt(cus(o))}</td>
+      <td class="r" style="font-weight:600;color:${p<LIM?'var(--danger)':'var(--success)'}">${fmt(mg(o))}<br><small style="font-weight:500">${dxPct(p)}</small></td>
+      <td style="color:var(--text3)">${o.pagamento||'—'}</td>
+      <td style="color:var(--text3)">${fmtDate(dPag(o))}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})">👁️</button>
+        <button class="btn btn-outline btn-sm" onclick="gerarPDF(${o.id})">🖨️</button>
+        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'cobranca','Pagamento estornado. Voltou para Cobrança.')" style="color:var(--danger);font-size:11px" title="Estornar pagamento">↩️ Estornar</button>
+      </td></tr>`; }).join('')
+    : `<tr><td colspan="10"><div class="empty"><div class="empty-ico">✅</div><div class="empty-msg">Nenhum pedido pago encontrado</div></div></td></tr>`;
+
+  _pedData={kpis,ins,vendRows,prodRows,pagRows,cliRows,baixa,ped,vRec,rec,cus,mg,dPag,cliNome,vendNome,
+    periodo:_periodoTxt(ini,fim), filtro:[vendF?vendNome(+vendF):'', pagF, q?'Cliente: '+q:''].filter(Boolean).join(' · ')};
+}
+
+async function gerarPdfPedidos(){
+  await renderPedidos();
+  const d=_pedData;
+  const corpo = pdfKp(d.kpis)
+    +'<h2>Leitura para tomada de decisão</h2>'+pdfIns(d.ins)
+    +'<div class="cols"><div><h2>Por vendedor</h2>'
+    +pdfTab([{t:'Vendedor'},{t:'Pedidos',a:'c'},{t:'Receita',a:'r'},{t:'Margem',a:'r'},{t:'Margem %',a:'r'}],
+      d.vendRows.map(r=>[r.n,r.q,fmt(r.r),fmt(r.m),dxPct(r.r?r.m/r.r:0)]))
+    +'<h2>Formas de pagamento</h2>'
+    +pdfTab([{t:'Forma'},{t:'Pedidos',a:'c'},{t:'Receita',a:'r'},{t:'%',a:'r'}], d.pagRows.map(r=>[r.n,r.q,fmt(r.v),dxPct(d.vRec?r.v/d.vRec:0)]))
+    +'</div><div><h2>Produtos mais vendidos</h2>'
+    +pdfTab([{t:'Produto'},{t:'Qtd',a:'c'},{t:'Valor',a:'r'},{t:''}], d.prodRows.slice(0,10).map(r=>[r.n,r.q,fmt(r.v),pdfBar(r.v/(d.prodRows[0]?.v||1))]))
+    +'<h2>Principais clientes</h2>'
+    +pdfTab([{t:'Cliente'},{t:'Pedidos',a:'c'},{t:'Receita',a:'r'},{t:'%',a:'r'}], d.cliRows.slice(0,8).map(r=>[r.n,r.q,fmt(r.v),dxPct(d.vRec?r.v/d.vRec:0)]))
+    +'</div></div>'
+    +'<h2>Pedidos pagos ('+d.ped.length+')</h2>'
+    +pdfTab([{t:'#'},{t:'Cliente'},{t:'Vendedor'},{t:'Valor',a:'r'},{t:'Custo',a:'r'},{t:'Margem',a:'r'},{t:'Margem %',a:'r'},{t:'Pagamento'},{t:'Pago em',a:'c'}],
+      d.ped.map(o=>[_num(o.id),d.cliNome(o.clienteId),d.vendNome(o.vendedorId),fmt(d.rec(o)),fmt(d.cus(o)),fmt(d.mg(o)),dxPct(d.rec(o)?d.mg(o)/d.rec(o):0),o.pagamento||'—',fmtDate(d.dPag(o))]));
+  abrirRelatorioPDF({titulo:'Análise de Pedidos Aprovados', subtitulo:d.periodo+(d.filtro?' · '+d.filtro:''), corpo});
+}
+
+// ===================== AGUARDANDO CLIENTE · DICAS C@P =====================
+const DICAS_CAP = [
+  'Follow-up não é cobrança, é serviço: ligue para tirar dúvidas, não para "saber se fechou". Pergunte o que ainda falta para o cliente se sentir seguro.',
+  'Retome a proposta pelo ambiente que mais encantou o cliente — emoção vende decoração; a planilha só confirma.',
+  'Ofereça sempre duas opções (ex.: à vista com condição especial ou parcelado). Escolher entre duas é mais fácil do que dizer sim ou não.',
+  'Use a validade da proposta como gancho real: "Consigo segurar estas condições até sexta". Urgência honesta acelera a decisão.',
+  'Se há arquiteto no projeto, envolva-o no follow-up. Ele costuma ser o maior aliado na decisão final.',
+  'Envie uma foto ou vídeo curto de um produto da proposta já montado em outro ambiente. Ver é crer.',
+  'Objeção de preço? Divida o valor por ambiente. R$ 12 mil assusta; R$ 3 mil por ambiente parece possível.',
+  'Registre sempre o motivo de uma perda. Sem esse dado, a gestão decide no escuro e os mesmos erros se repetem.',
+  'Os melhores horários de contato costumam ser fim de manhã e fim de tarde. Evite segunda bem cedo e sexta à tarde.',
+  'Depois de 3 tentativas sem resposta, mande uma mensagem de encerramento: "Vou arquivar sua proposta — posso ajudar em algo antes?". Ela costuma gerar resposta.',
+  'Orçamento com muitos itens geralmente fecha em etapas. Proponha começar pelo ambiente prioritário do cliente.',
+  'Antes de dar desconto, peça uma contrapartida: pagamento à vista, mais itens ou fechamento hoje. Desconto sem troca vira expectativa.',
+];
+const DICA_POR_MOTIVO = {
+  'Preço acima do esperado':'Antes de ligar, já leve uma alternativa pronta: parcelamento maior ou um item substituto de menor custo.',
+  'Fora do orçamento do cliente':'Pergunte qual valor o cliente tem em mente e monte uma versão da proposta por etapas.',
+  'Cliente optou por concorrente':'Pergunte com quem o cliente está comparando e destaque o que só a loja oferece: curadoria, montagem e pós-venda.',
+  'Prazo de entrega inadequado':'Confirme os prazos com os fornecedores antes do contato e ofereça entrega parcial dos itens disponíveis.',
+  'Produto não disponível':'Tenha opções similares separadas para sugerir na hora da conversa.',
+  'Cliente desistiu da compra':'Descubra em que momento está o projeto do cliente — muitas vezes é adiar, não desistir.',
+  'Margem insuficiente para aprovação':'Monte a proposta já respeitando a margem mínima para evitar retrabalho na aprovação.',
+};
+function _vendedorDaSessao(vends){
+  const s=getSessao(); const n=normalizeTxt(s.nome), u=normalizeTxt(s.user);
+  if(!n && !u) return null;
+  return vends.find(v=>normalizeTxt(v.nome)===n)
+    || vends.find(v=>{ const vn=normalizeTxt(v.nome); const p=vn.split(/\s+/)[0];
+         return (u && (vn.replace(/\s+/g,'')===u || p===u)) || (n && p===n.split(/\s+/)[0]); })
+    || null;
+}
+
+async function renderAguardando(){
+  const todos=await SUPA_DB.get('orcamentos');
+  const clientes=await SUPA_DB.get('clientes');
+  const vends=await SUPA_DB.get('vendedores');
+  const emp=getEmpresa(); const s=getSessao(); const meu=_vendedorDaSessao(vends);
+  const cli=id=>clientes.find(c=>c.id===id)||{};
+  const vendNome=id=>vends.find(v=>v.id===id)?.nome||'—';
+
+  const vendEl=document.getElementById('ag-filter-vend');
+  _popSelectVend(vendEl, vends);
+  // Personaliza pelo usuário logado: vendedor vê a própria carteira por padrão
+  if(vendEl && vendEl.dataset.sess!==(s.user||'')){
+    vendEl.dataset.sess=s.user||'';
+    vendEl.value=(meu && !['admin','diretoria'].includes(s.perfil)) ? String(meu.id) : '';
+  }
+  const vendF=vendEl?.value||'';
+  const escopo=vendF?vends.find(v=>String(v.id)===vendF):null;
+  const ehMeu=!!(escopo && meu && escopo.id===meu.id);
+  const doEsc=o=>!vendF||String(o.vendedorId)===vendF;
+  const diasAg=o=>dxDias(o.atualizadoEm||o.criadoEm);
+  const diasVal=o=>o.validade?Math.round((new Date(_dt10(o.validade)+'T12:00')-new Date(today()+'T12:00'))/864e5):null;
+
+  const ag=todos.filter(o=>o.status==='enviado'&&doEsc(o)).sort((a,b)=>diasAg(b)-diasAg(a));
+  const hist=todos.filter(doEsc);
+  const g=hist.filter(o=>GANHO_ST.includes(o.status)).length, pl=hist.filter(o=>o.status==='reprovado');
+  const conv=(g+pl.length)?g/(g+pl.length):null;
+  const vAg=_sum(ag,o=>o.valorFinal);
+  const urg=ag.filter(o=>diasAg(o)>=15), jan=ag.filter(o=>{ const d=diasAg(o); return d>=7&&d<15; }), novos=ag.filter(o=>diasAg(o)<7);
+  const venc=ag.filter(o=>{ const d=diasVal(o); return d!=null&&d<=5; });
+  const maior=ag.slice().sort((a,b)=>(b.valorFinal||0)-(a.valorFinal||0))[0];
+  const motTop=(()=>{ const m={}; pl.forEach(o=>{ if(o.motivoReprovacao) m[o.motivoReprovacao]=(m[o.motivoReprovacao]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1])[0]; })();
+  const prim=t=>(t||'').split(' ')[0];
+
+  // ---- Conversa C@P ----
+  const h=new Date().getHours(); const saud=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  const nomeSess=prim(s.nome); const nm=(nomeSess && !['administrador','diretoria','equipe'].includes(nomeSess.toLowerCase()))?', '+nomeSess:'';
+  const quemTem = ehMeu ? 'você tem' : escopo ? prim(escopo.nome)+' tem' : 'o time tem';
+  const pl2=(x,a,b)=>x===1?a:b;
+  const p=[];
+  if(!ag.length){
+    p.push(`Hoje ${quemTem} <b>nenhuma proposta</b> aguardando retorno do cliente. Ótimo momento para finalizar orçamentos em andamento, retomar contatos antigos e pedir indicações a quem já comprou.`);
+  } else {
+    p.push(`Hoje ${quemTem} <b>${ag.length} ${pl2(ag.length,'proposta','propostas')}</b> aguardando retorno, somando <b>${fmt(vAg)}</b> em negociação.`);
+    if(urg.length) p.push(`⚠️ <b>${urg.length}</b> ${pl2(urg.length,'está','estão')} há mais de 15 dias sem resposta (${fmt(_sum(urg,o=>o.valorFinal))}). Depois de duas semanas a chance de fechamento cai bastante — comece hoje por <b>${cli(urg[0].clienteId).nome||'—'}</b>, parada há ${diasAg(urg[0])} dias.`);
+    if(jan.length) p.push(`📞 <b>${jan.length}</b> ${pl2(jan.length,'está','estão')} na janela ideal de follow-up (7 a 14 dias). Um contato agora mostra atenção sem parecer pressão.`);
+    if(novos.length && !urg.length && !jan.length) p.push(`🌱 Todas as propostas foram enviadas há menos de 7 dias. Aproveite para mandar algo de valor — uma foto de ambiente, uma sugestão de composição — e manter o cliente aquecido.`);
+    if(venc.length) p.push(`⏰ A validade de <b>${venc.length}</b> ${pl2(venc.length,'proposta vence','propostas vence')} em até 5 dias (ou já venceu). Use isso como gancho: <i>"Consigo manter estas condições só até esta semana"</i>.`);
+    if(maior) p.push(`💎 A maior oportunidade é <b>${cli(maior.clienteId).nome||'—'}</b> — ${fmt(maior.valorFinal)}. Priorize esse contato e, se fizer sentido, envolva o arquiteto ou a diretoria.`);
+    if(conv!=null) p.push(`📊 ${ehMeu?'Sua':'A'} taxa de conversão histórica é de <b>${dxPct(conv)}</b>. Mantendo esse ritmo, as propostas em aberto podem virar cerca de <b>${fmt(vAg*conv)}</b> em vendas.`);
+    if(motTop) p.push(`🧭 O motivo de perda mais frequente ${ehMeu?'nas suas propostas':'nesta carteira'} tem sido <b>${motTop[0]}</b>. ${DICA_POR_MOTIVO[motTop[0]]||'Use esse aprendizado para antecipar a objeção no próximo contato.'}`);
+  }
+  const prio=[...urg,...jan].slice(0,4);
+  const doy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5);
+  const dica=DICAS_CAP[(doy+(escopo?escopo.id:0))%DICAS_CAP.length];
+  document.getElementById('ag-coach').innerHTML=`<div class="coach">
+    <div class="coach-av">C@P</div>
+    <div class="coach-body">
+      <div class="coach-from">Dicas de vendas · C@P Consultoria</div>
+      <div class="coach-hi">${saud}${nm}! 👋</div>
+      <div class="coach-msg">${p.map(x=>'<p>'+x+'</p>').join('')}</div>
+      ${prio.length?`<div class="coach-chips"><span>Prioridades de hoje</span>${prio.map(o=>`<span class="coach-chip" onclick="verOrcamento(${o.id})">${_num(o.id)} · ${cli(o.clienteId).nome||'—'} · ${diasAg(o)}d</span>`).join('')}</div>`:''}
+      <div class="coach-tip"><b>💡 Dica C@P do dia:</b> ${dica}</div>
+    </div></div>`;
+
+  document.getElementById('ag-kpis').innerHTML=[
+    {ico:'⏳',c:DX_G.amber,  label:'Aguardando Retorno', val:String(ag.length), sub:`${dxK(vAg)} em negociação`},
+    {ico:'🚨',c:DX_G.rose,   label:'Parados 15+ dias', val:String(urg.length), sub:dxK(_sum(urg,o=>o.valorFinal))+' em risco', bar:ag.length?urg.length/ag.length:0},
+    {ico:'📞',c:DX_G.sky,    label:'Janela de Follow-up', val:String(jan.length), sub:'Entre 7 e 14 dias — ligar agora'},
+    {ico:'🔮',c:DX_G.emerald,label:'Previsão de Fechamento', val:conv!=null?dxK(vAg*conv):'—', sub:conv!=null?`Aberto × conversão de ${dxPct(conv)}`:'Sem histórico suficiente'},
+  ].map(dxKpi).join('');
+
+  // ---- Tabela ----
+  const qAg=(document.getElementById('ag-search')?.value||'').toLowerCase();
+  const lista=qAg?ag.filter(o=>(cli(o.clienteId).nome||'').toLowerCase().includes(qAg)):ag;
+  const waLink=o=>{
+    const c=cli(o.clienteId); let d=String(c.tel||'').replace(/\D/g,'');
+    if(d.length<10) return '';
+    if(!(d.startsWith('55')&&d.length>=12)) d='55'+d;
+    const msg=`Olá ${prim(c.nome)}, tudo bem? Aqui é ${prim(vendNome(o.vendedorId))} da ${emp.nome||'Dana Casa'}. Passando para saber se ficou alguma dúvida sobre a proposta Nº ${String(o.id).padStart(4,'0')} — posso ajudar em algo?`;
+    return `<a class="btn btn-outline btn-sm" href="https://wa.me/${d}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" title="Follow-up pelo WhatsApp">💬</a>`;
+  };
+  const tbody=document.getElementById('tbody-aguardando');
+  tbody.innerHTML = lista.length ? lista.map(o=>{
+      const d=diasAg(o); const c=d>=15?DX_G.rose:d>=7?DX_G.amber:DX_G.sky;
+      const dv=diasVal(o);
+      const val=o.validade?`<span style="color:${dv<0?'var(--danger)':dv<=5?'var(--warning)':'var(--text3)'}">${fmtDate(o.validade)}${dv<0?' · vencida':dv<=5?' · '+dv+'d':''}</span>`:'<span style="color:var(--text3)">—</span>';
+      return `<tr>
+      <td>${_num(o.id)}</td>
+      <td><b>${cli(o.clienteId).nome||'—'}</b>${cli(o.clienteId).tel?`<br><small style="color:var(--text3)">${cli(o.clienteId).tel}</small>`:''}</td>
+      <td>${vendNome(o.vendedorId)}</td>
+      <td class="r" style="color:var(--gold);font-weight:600">${fmt(o.valorFinal)}</td>
+      <td style="color:var(--text3)">${fmtDate(o.atualizadoEm||o.criadoEm)}</td>
+      <td>${val}</td>
+      <td><span class="dias-badge" style="background:${dxGrad(c)}">${d} dia${d===1?'':'s'}</span></td>
+      <td style="display:flex;gap:6px;">
+        ${waLink(o)}
+        <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
+        <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'aguardando')">❌ Reprovar</button>
+        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento devolvido para Andamento.')" title="Reverter para Em Andamento" style="color:var(--warning)">↩️ Reverter</button>
+      </td></tr>`; }).join('')
+    : `<tr><td colspan="8"><div class="empty"><div class="empty-ico">⏳</div><div class="empty-msg">Nenhum orçamento aguardando resposta</div></div></td></tr>`;
+}
+
+// ===================== FUNIL DE VENDAS =====================
+function funilSVG(et){
+  const maxW=480, cx=260, h=62, gap=6, base=Math.max(1,et[0].count);
+  const ws=et.map(e=>Math.max(0.24,e.count/base)*maxW);
+  let y=0, defs='', g='';
+  const F='font-family="Inter,Arial,sans-serif"';
+  et.forEach((e,i)=>{
+    const wt=ws[i], wb=i<et.length-1?ws[i+1]:wt*0.8;
+    defs+=`<linearGradient id="fnl${i}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${e.c[1]}"/><stop offset=".5" stop-color="${e.c[0]}"/><stop offset="1" stop-color="${e.c[1]}"/></linearGradient>`;
+    g+=`<polygon points="${cx-wt/2},${y} ${cx+wt/2},${y} ${cx+wb/2},${y+h} ${cx-wb/2},${y+h}" fill="url(#fnl${i})"/>`;
+    g+=`<text x="${cx}" y="${y+28}" text-anchor="middle" ${F} font-size="21" font-weight="800" fill="#ffffff">${e.count}</text>`;
+    g+=`<text x="${cx}" y="${y+47}" text-anchor="middle" ${F} font-size="11.5" font-weight="600" fill="#ffffff" fill-opacity=".92">${dxK(e.valor)}</text>`;
+    const conv=i?(et[i-1].count?e.count/et[i-1].count:0):1;
+    g+=`<line x1="${cx+wt/2+6}" y1="${y+h/2}" x2="530" y2="${y+h/2}" stroke="#c8bfa8" stroke-dasharray="3 3"/>`;
+    g+=`<circle cx="530" cy="${y+h/2}" r="3.5" fill="${e.c[1]}"/>`;
+    g+=`<text x="542" y="${y+h/2-3}" ${F} font-size="13" font-weight="700" fill="#1a1500">${e.label}</text>`;
+    g+=`<text x="542" y="${y+h/2+14}" ${F} font-size="11" fill="#8a7a60">${i?dxPct(conv)+' da etapa anterior':'Base do funil · 100%'}</text>`;
+    y+=h+gap;
+  });
+  return `<svg viewBox="0 0 760 ${y-gap}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block"><defs>${defs}</defs>${g}</svg>`;
+}
+
+let _funData=null;
+async function renderFunil(){
+  const todos=await SUPA_DB.get('orcamentos');
+  const vends=await SUPA_DB.get('vendedores');
+  const vendNome=id=>vends.find(v=>v.id===id)?.nome||'Sem vendedor';
+  _popSelectVend(document.getElementById('fun-filter-vend'), vends);
+  const vendF=document.getElementById('fun-filter-vend')?.value||'';
+  const ini=document.getElementById('fun-filter-ini')?.value||'';
+  const fim=document.getElementById('fun-filter-fim')?.value||'';
+  const orcs=todos.filter(o=>{ const d=_dt10(o.criadoEm); return (!vendF||String(o.vendedorId)===vendF)&&(!ini||d>=ini)&&(!fim||d<=fim); });
+  const S=st=>orcs.filter(o=>st.includes(o.status));
+  const V=a=>_sum(a,o=>o.valorFinal);
+
+  const apres=orcs.filter(o=>o.status!=='andamento');
+  const ganhos=S(GANHO_ST), perd=S(['reprovado']), pagos=S(['pago']), decid=[...ganhos,...perd];
+  const aberto=S(['andamento','enviado','diretoria']), emDec=S(['enviado','diretoria']), andam=S(['andamento']), aRec=S(['aprovado','cobranca']);
+  const etapas=[
+    {label:'Orçamentos criados',     a:orcs,   c:DX_G.indigo},
+    {label:'Apresentados ao cliente',a:apres,  c:DX_G.sky},
+    {label:'Decididos pelo cliente', a:decid,  c:DX_G.violet},
+    {label:'Negócios fechados',      a:ganhos, c:DX_G.emerald},
+    {label:'Pagos',                  a:pagos,  c:DX_G.gold},
+  ].map(e=>({...e,count:e.a.length,valor:V(e.a)}));
+
+  const win=decid.length?ganhos.length/decid.length:0;
+  const vTot=V(orcs), vAb=V(aberto), vG=V(ganhos), vPago=V(pagos), prev=vAb*win;
+  const kpis=[
+    {ico:'📊',c:DX_G.indigo, label:'Valor no Funil', val:dxK(vTot), sub:`${orcs.length} orçamento(s)`},
+    {ico:'⏳',c:DX_G.amber,  label:'Pipeline em Aberto', val:dxK(vAb), sub:`${aberto.length} em elaboração ou negociação`, bar:vTot?vAb/vTot:0},
+    {ico:'🎯',c:DX_G.violet, label:'Taxa de Fechamento', val:dxPct(win), sub:`${ganhos.length} ganhos × ${perd.length} perdidos`, bar:win},
+    {ico:'🔮',c:DX_G.teal,   label:'Previsão de Vendas', val:dxK(prev), sub:'Pipeline aberto × taxa de fechamento'},
+    {ico:'✅',c:DX_G.emerald,label:'Valor Fechado', val:dxK(vG), sub:`Ticket médio ${dxK(ganhos.length?vG/ganhos.length:0)}`},
+    {ico:'💰',c:DX_G.gold,   label:'Já Recebido', val:dxK(vPago), sub:`${dxPct(vG?vPago/vG:0)} do valor fechado`, bar:vG?vPago/vG:0},
+  ];
+  document.getElementById('fun-kpis').innerHTML=kpis.map(dxKpi).join('');
+  document.getElementById('fun-svg').innerHTML=orcs.length?funilSVG(etapas):'<div class="dx-empty">Nenhum orçamento no período</div>';
+
+  const ordem=['andamento','enviado','diretoria','aprovado','cobranca','pago','reprovado'];
+  const stRows=ordem.map(st=>{ const l=orcs.filter(o=>o.status===st); return {st,n:DX_ST[st].lbl,q:l.length,v:V(l)}; });
+  document.getElementById('fun-status').innerHTML=orcs.length
+    ? dxHBars(stRows.filter(r=>r.q).map(r=>({n:r.n,v:r.q,vl:`${r.q} · ${dxK(r.v)}`,extra:dxPct(r.q/orcs.length),c:DX_ST[r.st].c})),DX_G.indigo)
+    : '<div class="dx-empty">Sem dados</div>';
+
+  const cv=[
+    {t:'Criado → Apresentado',  den:orcs.length,  p:orcs.length?apres.length/orcs.length:0, s:`${andam.length} ainda em elaboração (${dxK(V(andam))})`},
+    {t:'Apresentado → Decidido',den:apres.length, p:apres.length?decid.length/apres.length:0, s:`${emDec.length} aguardando decisão (${dxK(V(emDec))})`},
+    {t:'Decidido → Fechado',    den:decid.length, p:win, s:`${perd.length} perdido(s) (${dxK(V(perd))})`},
+    {t:'Fechado → Pago',        den:ganhos.length,p:ganhos.length?pagos.length/ganhos.length:0, s:`${aRec.length} a receber (${dxK(V(aRec))})`},
+  ];
+  let gIdx=-1, gMin=2; cv.forEach((c,i)=>{ if(c.den>0 && c.p<gMin){ gMin=c.p; gIdx=i; } });
+  document.getElementById('fun-conv').innerHTML=`<div class="fn-conv">${cv.map((c,i)=>`<div class="fn-box ${i===gIdx?'gargalo':''}">
+      <small>${c.t}</small><b>${c.den?dxPct(c.p):'—'}</b>
+      <div class="dx-bar"><span style="width:${Math.min(100,c.p*100)}%;background:${dxGrad(i===gIdx?DX_G.rose:DX_G.emerald,90)}"></span></div>
+      <p>${c.s}</p>${i===gIdx?'<em>⚠️ Gargalo do funil</em>':''}</div>`).join('')}</div>`;
+
+  const fv={};
+  orcs.forEach(o=>{ const k=o.vendedorId||0; const r=fv[k]||(fv[k]={n:vendNome(o.vendedorId),cr:0,ap:0,fe:0,pe:0,pa:0,vf:0,va:0});
+    r.cr++; if(o.status!=='andamento') r.ap++;
+    if(GANHO_ST.includes(o.status)){ r.fe++; r.vf+=o.valorFinal||0; }
+    if(o.status==='reprovado') r.pe++; if(o.status==='pago') r.pa++;
+    if(['andamento','enviado','diretoria'].includes(o.status)) r.va+=o.valorFinal||0; });
+  const fvRows=Object.values(fv).map(r=>({...r,w:(r.fe+r.pe)?r.fe/(r.fe+r.pe):null})).sort((a,b)=>b.vf-a.vf);
+  document.getElementById('fun-vend').innerHTML = fvRows.length ? `<div class="table-wrap"><table class="an-table">
+    <thead><tr><th>Vendedor</th><th class="r">Criados</th><th class="r">Apresentados</th><th class="r">Fechados</th><th class="r">Perdidos</th><th class="r">Pagos</th><th class="r">Taxa de fechamento</th><th class="r">Valor fechado</th><th class="r">Em aberto</th></tr></thead>
+    <tbody>${fvRows.map(r=>`<tr><td><b>${r.n}</b></td><td class="r">${r.cr}</td><td class="r">${r.ap}</td><td class="r" style="color:var(--success);font-weight:600">${r.fe}</td><td class="r" style="color:var(--danger)">${r.pe}</td><td class="r">${r.pa}</td>
+      <td class="r"><b>${r.w==null?'—':dxPct(r.w)}</b></td><td class="r" style="font-weight:600">${fmt(r.vf)}</td><td class="r" style="color:var(--text3)">${fmt(r.va)}</td></tr>`).join('')}</tbody></table></div>`
+    : '<div class="dx-empty">Sem dados</div>';
+
+  const GARG=[
+    'Muitos orçamentos ficam parados em elaboração. Defina um prazo máximo (ex.: 48h) para a proposta chegar ao cliente.',
+    'Os clientes estão demorando a decidir. Reforce a rotina de follow-up na tela Aguardando Cliente e use a validade da proposta como gatilho.',
+    'A conversão das decisões está baixa. Veja os motivos na tela Reprovados e ajuste preço, mix de produtos e argumentação.',
+    'Há vendas fechadas ainda sem pagamento. Acione o financeiro na tela Cobrança para transformar venda em caixa.',
+  ];
+  const ins=[];
+  if(!orcs.length) ins.push({k:'info',ico:'ℹ️',txt:'Nenhum orçamento para os filtros selecionados.'});
+  else{
+    if(gIdx>=0) ins.push({k:'bad',ico:'🚧',txt:`<b>Gargalo: ${cv[gIdx].t}</b> (${dxPct(cv[gIdx].p)}). ${GARG[gIdx]}`});
+    const esq=andam.filter(o=>dxDias(o.atualizadoEm||o.criadoEm)>=7);
+    if(esq.length) ins.push({k:'warn',ico:'🗂️',txt:`<b>${esq.length}</b> orçamento(s) estão em elaboração há 7 dias ou mais (${fmt(V(esq))}). Finalize e envie — proposta parada esfria o interesse do cliente.`});
+    if(win) ins.push({k:'info',ico:'🔮',txt:`Com a taxa de fechamento atual de <b>${dxPct(win)}</b>, o pipeline em aberto de ${fmt(vAb)} projeta cerca de <b>${fmt(prev)}</b> em novas vendas.`});
+    if(aRec.length) ins.push({k:'warn',ico:'💰',txt:`<b>${aRec.length}</b> venda(s) fechada(s) ainda não pagas somam <b>${fmt(V(aRec))}</b>. Acompanhe na tela Cobrança.`});
+    const melhor=fvRows.filter(r=>r.fe+r.pe>=3&&r.w!=null).sort((a,b)=>b.w-a.w)[0];
+    if(melhor && fvRows.length>1) ins.push({k:'good',ico:'🥇',txt:`Melhor taxa de fechamento: <b>${melhor.n}</b>, com ${dxPct(melhor.w)} dos orçamentos decididos convertidos. Compartilhe as práticas com o time.`});
+  }
+  document.getElementById('fun-insights').innerHTML=dxInsHtml(ins);
+
+  _funData={kpis,etapas,cv,gIdx,stRows,fvRows,ins,total:orcs.length,
+    periodo:_periodoTxt(ini,fim), filtro:vendF?vendNome(+vendF):''};
+}
+
+async function gerarPdfFunil(){
+  await renderFunil();
+  const d=_funData;
+  const corpo = pdfKp(d.kpis)
+    +'<div class="cols"><div><h2>Funil de vendas</h2><div class="fsvg">'+(d.total?funilSVG(d.etapas):'Sem dados')+'</div>'
+    +'<h2>Conversão entre etapas</h2>'
+    +pdfTab([{t:'Etapa'},{t:'Conversão',a:'r'},{t:'Situação'}], d.cv.map((c,i)=>[c.t+(i===d.gIdx?' ⚠️':''), c.den?dxPct(c.p):'—', c.s]))
+    +'</div><div><h2>Leitura do funil</h2>'+pdfIns(d.ins)
+    +'<h2>Distribuição por status</h2>'
+    +pdfTab([{t:'Status'},{t:'Qtd',a:'c'},{t:'%',a:'r'},{t:'Valor',a:'r'}], d.stRows.filter(r=>r.q).map(r=>[r.n,r.q,dxPct(d.total?r.q/d.total:0),fmt(r.v)]))
+    +'</div></div>'
+    +'<h2>Funil por vendedor</h2>'
+    +pdfTab([{t:'Vendedor'},{t:'Criados',a:'c'},{t:'Apresentados',a:'c'},{t:'Fechados',a:'c'},{t:'Perdidos',a:'c'},{t:'Pagos',a:'c'},{t:'Taxa fech.',a:'r'},{t:'Valor fechado',a:'r'},{t:'Em aberto',a:'r'}],
+      d.fvRows.map(r=>[r.n,r.cr,r.ap,r.fe,r.pe,r.pa,r.w==null?'—':dxPct(r.w),fmt(r.vf),fmt(r.va)]));
+  abrirRelatorioPDF({titulo:'Funil de Vendas', subtitulo:d.periodo+(d.filtro?' · '+d.filtro:''), corpo});
+}
+
 // ===================== INIT =====================
 // Inicialização feita no DOMContentLoaded acima
+try{ document.getElementById('sb-logo').src = DANA_LOGO_PDF; }catch(e){}
 
 // ===================== SIDEBAR MOBILE =====================
 function toggleSidebar(){
