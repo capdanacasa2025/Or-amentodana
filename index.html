@@ -129,6 +129,7 @@ textarea { resize:vertical; min-height:80px; }
 .badge-aguardando { background:#fdf3d8; color:#7a5808; border:1px solid #e8c870; font-weight:600; }
 .badge-cobranca { background:#d8eee0; color:#0e5c22; border:1px solid #88c8a0; font-weight:600; }
 .badge-pago { background:#b8e8c8; color:#0a4818; border:1px solid #60b880; font-weight:600; }
+.badge-futura { background:#e0f2fe; color:#075985; border:1px solid #7dd3fc; font-weight:600; }
 
 /* STATUS BAR */
 .status-bar { display:flex; gap:0; margin-bottom:20px; border-radius:var(--radius2); overflow:hidden; border:1px solid var(--border); }
@@ -663,6 +664,23 @@ th { font-weight:600; }
   .coach{ flex-direction:column; padding:18px; }
 }
 
+
+/* ===================== PADRÃO: Primeira Letra Maiúscula ===================== */
+label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-stat small, .sb-tag,
+.coach-from, .coach-chips > span:first-child, .fn-box small, .login-box h2, .login-divider em,
+.sidebar [style*="uppercase"], .main [style*="uppercase"], .modal [style*="uppercase"], #login-screen [style*="uppercase"]
+  { text-transform:none !important; letter-spacing:.01em !important; }
+.login-box h2 { font-size:14px; }
+/* Proposta (PDF) mantém o visual de documento */
+#pdf-doc label, #pdf-doc th, #pdf-doc [style*="uppercase"] { text-transform:uppercase !important; letter-spacing:.08em !important; }
+
+/* ===================== BOTÃO ATUALIZAR ===================== */
+.btn-atualizar { white-space:nowrap; }
+.btn-atualizar .ico-at { display:inline-block; }
+.btn-atualizar.girando .ico-at { animation:girarAt .8s linear infinite; }
+.btn-atualizar:disabled { opacity:.7; cursor:wait; }
+@keyframes girarAt { to { transform:rotate(360deg); } }
+@media(max-width:768px){ .btn-atualizar .lbl-at { display:none; } }
 </style>
 </head>
 <body>
@@ -720,6 +738,7 @@ th { font-weight:600; }
     <div class="nav-item" onclick="goPage('funil')"><span class="ico">🔻</span> Funil de Vendas</div>
     <div class="nav-item" onclick="goPage('diretoria')"><span class="ico">🏛️</span> Análise Diretoria</div>
     <div class="nav-item" onclick="goPage('aguardando')"><span class="ico">⏳</span> Aguardando Cliente</div>
+    <div class="nav-item" onclick="goPage('futura')"><span class="ico">📅</span> Venda Futura</div>
     <div class="nav-item" onclick="goPage('reprovados')"><span class="ico">❌</span> Reprovados</div>
 
     <div class="nav-group">Financeiro</div>
@@ -750,6 +769,7 @@ th { font-weight:600; }
     </button>
     <h1 id="page-title">Dashboard</h1>
     <div id="topbar-actions"></div>
+    <button class="btn btn-outline btn-atualizar" id="btn-atualizar" onclick="atualizarSistema()" title="Atualizar Dados do Sistema"><span class="ico-at">🔄</span><span class="lbl-at">Atualizar</span></button>
   </div>
 
   <!-- ===== DASHBOARD ===== -->
@@ -789,6 +809,7 @@ th { font-weight:600; }
             <option value="enviado">Enviado ao Cliente</option>
             <option value="diretoria">Análise Diretoria</option>
             <option value="aprovado">Aprovado</option>
+            <option value="futura">Venda Futura</option>
             <option value="reprovado">Reprovado</option>
             <option value="pago">Pago</option>
           </select>
@@ -990,6 +1011,50 @@ th { font-weight:600; }
       <div class="table-wrap">
         <table class="an-table"><thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th class="r">Valor</th><th>Enviado em</th><th>Validade</th><th>Aguardando</th><th>Ações</th></tr></thead>
         <tbody id="tbody-aguardando"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VENDA FUTURA ===== -->
+  <div class="page" id="page-futura">
+    <div class="dx-kpis dx-k4" id="vf-kpis" style="margin-bottom:18px"></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📅 Venda Futura</span><span class="dx-card-s">Clientes que decidiram comprar mais para frente — ordenado pela data prevista</span></div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <input type="text" id="vf-search" placeholder="🔍 Buscar cliente..." oninput="renderFutura()" style="flex:1;min-width:150px">
+        <select id="vf-filter-vend" onchange="renderFutura()" style="min-width:160px">
+          <option value="">Todos vendedores</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="an-table"><thead><tr><th>#</th><th>Cliente</th><th>Vendedor</th><th class="r">Valor</th><th>Previsão de Compra</th><th>Observação</th><th>Ações</th></tr></thead>
+        <tbody id="tbody-futura"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VENDA FUTURA -->
+  <div class="modal-overlay" id="modal-futura">
+    <div class="modal" style="width:460px">
+      <div class="modal-header">
+        <span class="modal-title">📅 Mover para Venda Futura</span>
+        <button class="modal-close" onclick="closeModal('modal-futura')">✕</button>
+      </div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px">
+        O cliente decidiu comprar mais para frente. Informe quando ele pretende comprar para lembrar de retomar o contato.
+      </p>
+      <div class="form-group" style="margin-bottom:14px">
+        <label>Previsão de Compra</label>
+        <input type="date" id="futura-previsao">
+      </div>
+      <div class="form-group">
+        <label>Observação</label>
+        <textarea id="futura-obs" rows="3" placeholder="Ex.: cliente vai comprar após a reforma da sala..."></textarea>
+      </div>
+      <input type="hidden" id="futura-orc-id">
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-futura')">Cancelar</button>
+        <button class="btn btn-gold" onclick="confirmarVendaFutura()">📅 Confirmar Venda Futura</button>
       </div>
     </div>
   </div>
@@ -1717,6 +1782,7 @@ th { font-weight:600; }
         <option value="enviado">Enviado ao Cliente</option>
         <option value="diretoria">Análise Diretoria</option>
         <option value="aprovado">Aprovado</option>
+        <option value="futura">Venda Futura</option>
         <option value="reprovado">Reprovado</option>
       </select>
     </div>
@@ -2201,6 +2267,7 @@ const pageConfig = {
   orcamentos: { title:'Orçamentos' },
   diretoria:  { title:'Análise da Diretoria' },
   aguardando: { title:'Aguardando Cliente' },
+  futura:     { title:'Venda Futura' },
   reprovados: { title:'Orçamentos Reprovados' },
   cobranca:   { title:'Cobrança Financeiro' },
   pedidos:    { title:'Pedidos Aprovados' },
@@ -2218,7 +2285,13 @@ function getSessao(){
   try{ return JSON.parse(localStorage.getItem('deco_session')||'{}'); }catch{ return {}; }
 }
 
-function getTelasPermitidas(){
+// Tela nova "Venda Futura": quem já acessa "Aguardando Cliente" passa a acessá-la
+function _comFutura(telas){
+  if(Array.isArray(telas) && telas.includes('aguardando') && !telas.includes('futura')) return [...telas,'futura'];
+  return telas;
+}
+function getTelasPermitidas(){ return _comFutura(_getTelasPermitidasBase()); }
+function _getTelasPermitidasBase(){
   const sess = getSessao();
   if(!sess.user) return [];
   if(sess.perfil === 'admin') return null; // null = acesso total
@@ -2293,6 +2366,7 @@ function goPage(page){
   if(page==='orcamentos') renderOrcamentos().catch(_c);
   if(page==='diretoria') renderDiretoria().catch(_c);
   if(page==='aguardando') renderAguardando().catch(_c);
+  if(page==='futura') renderFutura().catch(_c);
   if(page==='reprovados') renderReprovados().catch(_c);
   if(page==='cobranca') renderCobranca().catch(_c);
   if(page==='pedidos') renderPedidos().catch(_c);
@@ -2357,12 +2431,12 @@ function statusBadge(s){
   const map = {
     andamento:'badge-andamento', enviado:'badge-enviado', diretoria:'badge-diretoria',
     aprovado:'badge-aprovado', reprovado:'badge-reprovado', aguardando:'badge-aguardando',
-    cobranca:'badge-cobranca', pago:'badge-pago'
+    cobranca:'badge-cobranca', pago:'badge-pago', futura:'badge-futura'
   };
   const labels = {
     andamento:'Em Andamento', enviado:'Enviado ao Cliente', diretoria:'Análise Diretoria',
     aprovado:'Aprovado', reprovado:'Reprovado', aguardando:'Aguardando',
-    cobranca:'A Cobrar', pago:'Pago'
+    cobranca:'A Cobrar', pago:'Pago', futura:'Venda Futura'
   };
   return `<span class="badge ${map[s]||''}">${labels[s]||s}</span>`;
 }
@@ -2854,7 +2928,7 @@ async function openOrcamentoForm(id=null){
       const actBtns=document.getElementById('orc-action-btns');
       if(actBtns) actBtns.style.display='block';
       document.getElementById('orc-status').value=orc.status;
-      const statusLabelsMap={andamento:'Em Andamento',enviado:'Enviado ao Cliente',diretoria:'Análise Diretoria',aprovado:'Aprovado',reprovado:'Reprovado',cobranca:'Em Cobrança',pago:'Pago'};
+      const statusLabelsMap={andamento:'Em Andamento',enviado:'Enviado ao Cliente',diretoria:'Análise Diretoria',aprovado:'Aprovado',reprovado:'Reprovado',cobranca:'Em Cobrança',pago:'Pago',futura:'Venda Futura'};
       const lbl=document.getElementById('orc-status-label');
       if(lbl) lbl.textContent=statusLabelsMap[orc.status]||orc.status;
       document.getElementById('orc-cliente').value=orc.clienteId;
@@ -3538,6 +3612,7 @@ async function salvarOrcamento(){
   const redirMsg = {
     andamento: 'Orçamento salvo!',
     enviado:   'Orçamento enviado ao cliente!',
+    futura:    'Orçamento salvo em Venda Futura!',
     diretoria: 'Orçamento enviado para análise da Diretoria!',
     reprovado: 'Orçamento reprovado.',
     aprovado:  'Orçamento aprovado!',
@@ -3547,6 +3622,7 @@ async function salvarOrcamento(){
 
   setTimeout(function(){
     if     (status === 'enviado')   navegarSeguro('aguardando');
+    else if(status === 'futura')    navegarSeguro('futura');
     else if(status === 'diretoria') navegarSeguro('diretoria');
     else if(status === 'reprovado') navegarSeguro('reprovados');
     else if(status === 'aprovado')  navegarSeguro('cobranca');
@@ -3577,7 +3653,7 @@ async function renderOrcamentos(){
   if(vendEl && vendEl.options.length<=1) vends.forEach(v=>{ const o=document.createElement('option'); o.value=v.id; o.textContent=v.nome; vendEl.appendChild(o); });
 
   // Status que pertencem a outras telas — não aparecem em Orçamentos
-  const _outroStatus = ['enviado','diretoria','aprovado','reprovado','cobranca','pago'];
+  const _outroStatus = ['enviado','futura','diretoria','aprovado','reprovado','cobranca','pago'];
 
   let orcs=await SUPA_DB.get('orcamentos');
   if(currentOrcFilter==='all'){
@@ -3668,7 +3744,8 @@ async function verOrcamento(id){
   // Actions por status
   let actions=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe')">Fechar</button><button class="btn btn-gold" onclick="gerarPDF(${id})">🖨️ Gerar PDF</button><button class="btn btn-outline" onclick="gerarRelatorioInterno(${id})">📊 Relatório Interno</button><button class="btn btn-outline" onclick="gerarCatalogoCliente(${id})">🖼️ Catálogo p/ Cliente</button>`;
   if(orc.status==='andamento') actions+=`<button class="btn btn-outline" onclick="mudarStatus(${id},'enviado')">📤 Enviar ao Cliente</button><button class="btn btn-outline" onclick="mudarStatus(${id},'diretoria')">🏛️ Enviar à Diretoria</button>`;
-  if(orc.status==='enviado') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'orcamentos')">❌ Reprovar</button>`;
+  if(orc.status==='enviado') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-outline" onclick="abrirVendaFutura(${id})">📅 Venda Futura</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'orcamentos')">❌ Reprovar</button>`;
+  if(orc.status==='futura') actions+=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe');openOrcamentoForm(${id})">✏️ Editar</button><button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'futura')">❌ Reprovar</button>`;
   if(orc.status==='diretoria') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'diretoria')">❌ Reprovar</button>`;
   if(orc.status==='aprovado') actions+=`<button class="btn btn-gold" onclick="mudarStatus(${id},'cobranca')">💰 Enviar para Cobrança</button>`;
   document.getElementById('det-actions').innerHTML=actions;
@@ -3697,6 +3774,7 @@ async function mudarStatus(id, novoStatus){
 
   const msgs = {
     enviado:   'Orçamento enviado ao cliente!',
+    futura:    'Movido para Venda Futura!',
     aprovado:  'Orçamento aprovado! Movido para Cobrança.',
     diretoria: 'Enviado para análise da Diretoria!',
     cobranca:  'Enviado para Cobrança!',
@@ -3706,6 +3784,7 @@ async function mudarStatus(id, novoStatus){
   // Pequeno delay para garantir que modal fechou antes de navegar
   setTimeout(()=>{
     if(novoStatus==='enviado')        navegarSeguro('aguardando');
+    else if(novoStatus==='futura')    navegarSeguro('futura');
     else if(novoStatus==='diretoria') navegarSeguro('diretoria');
     else if(novoStatus==='aprovado')  navegarSeguro('cobranca');
     else if(novoStatus==='cobranca')  navegarSeguro('cobranca');
@@ -3774,7 +3853,7 @@ function reativarOrcamento(id){ reverterStatus(id,'andamento','Orçamento reativ
 async function reverterStatus(id, paraStatus, msg){
   const labels = {
     andamento:'Em Andamento', enviado:'Enviado ao Cliente',
-    diretoria:'Análise Diretoria', aprovado:'Aprovado', cobranca:'Cobrança'
+    diretoria:'Análise Diretoria', aprovado:'Aprovado', cobranca:'Cobrança', futura:'Venda Futura'
   };
   if(!confirm('Reverter este orçamento para "'+labels[paraStatus]+'"?')) return;
   const orcs = await SUPA_DB.get('orcamentos');
@@ -3799,6 +3878,7 @@ async function reverterStatus(id, paraStatus, msg){
   setTimeout(()=>{
     if(paraStatus==='andamento')  navegarSeguro('orcamentos');
     else if(paraStatus==='enviado')   navegarSeguro('aguardando');
+    else if(paraStatus==='futura')    navegarSeguro('futura');
     else if(paraStatus==='diretoria') navegarSeguro('diretoria');
     else if(paraStatus==='aprovado')  navegarSeguro('cobranca');
   }, 50);
@@ -4269,6 +4349,7 @@ function dashFiltrarPeriodo(orcs){
 const DX_ST = {
   andamento:{lbl:'Em Andamento',      c:['#60a5fa','#1d4ed8']},
   enviado:  {lbl:'Enviado ao Cliente',c:['#fcd34d','#d97706']},
+  futura:   {lbl:'Venda Futura',      c:['#7dd3fc','#0369a1']},
   diretoria:{lbl:'Análise Diretoria', c:['#d8b4fe','#7c3aed']},
   aprovado: {lbl:'Aprovado',          c:['#6ee7b7','#059669']},
   cobranca: {lbl:'Em Cobrança',       c:['#5eead4','#0f766e']},
@@ -4326,7 +4407,7 @@ async function renderDashboard(){
   const S   = st => orcs.filter(o=>st.includes(o.status));
   const sum = (arr,f=o=>o.valorFinal||0) => arr.reduce((t,o)=>t+(Number(f(o))||0),0);
   const GANHO = ['aprovado','cobranca','pago'];
-  const abertos  = S(['andamento','enviado','diretoria']);
+  const abertos  = S(['andamento','enviado','futura','diretoria']);
   const ganhos   = S(GANHO);
   const perdidos = S(['reprovado']);
   const aReceber = S(['aprovado','cobranca']);
@@ -4388,7 +4469,7 @@ async function renderDashboard(){
   </div>`;
 
   // ── Donut por status ──
-  const ordem = ['andamento','enviado','diretoria','aprovado','cobranca','pago','reprovado'];
+  const ordem = ['andamento','enviado','futura','diretoria','aprovado','cobranca','pago','reprovado'];
   const cont = ordem.map(st=>({st, n:orcs.filter(o=>o.status===st).length, v:sum(orcs.filter(o=>o.status===st))})).filter(x=>x.n>0);
   const R=70, C=2*Math.PI*R; let off=0;
   const defs = ordem.map(st=>`<linearGradient id="dxg-${st}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${DX_ST[st].c[0]}"/><stop offset="1" stop-color="${DX_ST[st].c[1]}"/></linearGradient>`).join('');
@@ -4500,6 +4581,7 @@ const TODAS_TELAS = [
   {id:'funil',      label:'🔻 Funil de Vendas'},
   {id:'diretoria',  label:'🏛️ Análise Diretoria'},
   {id:'aguardando', label:'⏳ Aguardando Cliente'},
+  {id:'futura',     label:'📅 Venda Futura'},
   {id:'reprovados', label:'❌ Reprovados'},
   {id:'cobranca',   label:'💰 Cobrança'},
   {id:'pedidos',    label:'✅ Pedidos Aprovados'},
@@ -4512,8 +4594,8 @@ const TODAS_TELAS = [
 
 const PERFIL_TELAS = {
   admin:      TODAS_TELAS.map(t=>t.id),
-  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','funil','aguardando','reprovados'],
-  diretoria:  ['dashboard','orcamentos','funil','diretoria','reprovados'],
+  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','funil','aguardando','futura','reprovados'],
+  diretoria:  ['dashboard','orcamentos','funil','diretoria','futura','reprovados'],
   financeiro: ['dashboard','cobranca','pedidos'],
   custom:     [],
 };
@@ -6152,10 +6234,96 @@ async function renderAguardando(){
       <td style="display:flex;gap:6px;">
         ${waLink(o)}
         <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirVendaFutura(${o.id})" title="Cliente vai comprar mais para frente" style="color:var(--info)">📅 Venda Futura</button>
         <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'aguardando')">❌ Reprovar</button>
         <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento devolvido para Andamento.')" title="Reverter para Em Andamento" style="color:var(--warning)">↩️ Reverter</button>
       </td></tr>`; }).join('')
     : `<tr><td colspan="8"><div class="empty"><div class="empty-ico">⏳</div><div class="empty-msg">Nenhum orçamento aguardando resposta</div></div></td></tr>`;
+}
+
+// ===================== VENDA FUTURA =====================
+// Dados extras (previsão de compra e observação) ficam na tabela "configuracoes"
+// (chave vendas_futuras), sem precisar alterar a estrutura da tabela orcamentos.
+function getVendasFuturas(){ try{ return JSON.parse(localStorage.getItem('deco_vendas_futuras')||'{}'); }catch{ return {}; } }
+function saveVendasFuturas(m){ localStorage.setItem('deco_vendas_futuras', JSON.stringify(m)); supaSetConfig('vendas_futuras', m); }
+async function syncVendasFuturasSupa(){
+  try{ const r=await supaGetConfig('vendas_futuras'); if(r && typeof r==='object') localStorage.setItem('deco_vendas_futuras', JSON.stringify(r)); }catch(e){}
+}
+
+async function abrirVendaFutura(id){
+  const info=getVendasFuturas()[id]||{};
+  document.getElementById('futura-orc-id').value=id;
+  let prev=info.previsao||'';
+  if(!prev){ const d=new Date(); d.setDate(d.getDate()+30); prev=d.toISOString().split('T')[0]; }
+  document.getElementById('futura-previsao').value=prev;
+  document.getElementById('futura-obs').value=info.obs||'';
+  closeModal('modal-orc-detalhe');
+  openModal('modal-futura');
+}
+
+async function confirmarVendaFutura(){
+  const id=parseInt(document.getElementById('futura-orc-id').value);
+  if(!id) return;
+  const previsao=document.getElementById('futura-previsao').value||'';
+  const obs=document.getElementById('futura-obs').value.trim();
+  const m=getVendasFuturas();
+  m[id]={previsao, obs, movidoEm:today(), por:(getSessao().nome||'')};
+  saveVendasFuturas(m);
+  closeModal('modal-futura');
+  await mudarStatus(id,'futura');
+}
+
+async function renderFutura(){
+  await syncVendasFuturasSupa();
+  const todos=await SUPA_DB.get('orcamentos');
+  const clientes=await SUPA_DB.get('clientes');
+  const vends=await SUPA_DB.get('vendedores');
+  const info=getVendasFuturas();
+  const cli=id=>clientes.find(c=>c.id===id)||{};
+  const vendNome=id=>vends.find(v=>v.id===id)?.nome||'—';
+  _popSelectVend(document.getElementById('vf-filter-vend'), vends);
+  const vendF=document.getElementById('vf-filter-vend')?.value||'';
+  const q=(document.getElementById('vf-search')?.value||'').toLowerCase();
+  const prevDe=o=>(info[o.id]&&info[o.id].previsao)||'';
+  const diasPara=o=>{ const p=prevDe(o); return p?Math.round((new Date(p+'T12:00')-new Date(today()+'T12:00'))/864e5):null; };
+
+  const base=todos.filter(o=>o.status==='futura' && (!vendF||String(o.vendedorId)===vendF));
+  const lista=base.filter(o=>!q||(cli(o.clienteId).nome||'').toLowerCase().includes(q))
+    .sort((a,b)=>(prevDe(a)||'9999').localeCompare(prevDe(b)||'9999')||a.id-b.id);
+
+  const vTot=_sum(base,o=>o.valorFinal);
+  const vencidas=base.filter(o=>{ const d=diasPara(o); return d!=null&&d<0; });
+  const prox=base.filter(o=>{ const d=diasPara(o); return d!=null&&d>=0&&d<=30; });
+  const semData=base.filter(o=>!prevDe(o));
+  document.getElementById('vf-kpis').innerHTML=[
+    {ico:'📅',c:DX_G.sky,    label:'Vendas Futuras', val:String(base.length), sub:`${dxK(vTot)} previstos`},
+    {ico:'⏰',c:DX_G.rose,   label:'Previsão Vencida', val:String(vencidas.length), sub:dxK(_sum(vencidas,o=>o.valorFinal))+' — retomar contato', bar:base.length?vencidas.length/base.length:0},
+    {ico:'📞',c:DX_G.amber,  label:'Próximos 30 dias', val:String(prox.length), sub:dxK(_sum(prox,o=>o.valorFinal))+' para contatar em breve'},
+    {ico:'❔',c:DX_G.violet, label:'Sem Data Prevista', val:String(semData.length), sub:'Defina uma previsão para não esquecer'},
+  ].map(dxKpi).join('');
+
+  const tbody=document.getElementById('tbody-futura');
+  tbody.innerHTML = lista.length ? lista.map(o=>{
+    const c=cli(o.clienteId); const p=prevDe(o); const d=diasPara(o);
+    const cor=d==null?DX_G.violet:d<0?DX_G.rose:d<=30?DX_G.amber:DX_G.sky;
+    const txt=d==null?'Sem data':d<0?`vencida há ${-d}d`:d===0?'hoje':`em ${d}d`;
+    const obs=(info[o.id]&&info[o.id].obs)||'';
+    return `<tr>
+      <td>${_num(o.id)}</td>
+      <td><b>${c.nome||'—'}</b>${c.tel?`<br><small style="color:var(--text3)">${c.tel}</small>`:''}</td>
+      <td>${vendNome(o.vendedorId)}</td>
+      <td class="r" style="color:var(--gold);font-weight:600">${fmt(o.valorFinal)}</td>
+      <td>${p?fmtDate(p)+'<br>':''}<span class="dias-badge" style="background:${dxGrad(cor)}">${txt}</span></td>
+      <td style="color:var(--text3);font-size:12px;max-width:220px">${obs||'—'}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})" title="Ver">👁️</button>
+        <button class="btn btn-outline btn-sm" onclick="openOrcamentoForm(${o.id})" title="Editar orçamento">✏️ Editar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirVendaFutura(${o.id})" title="Alterar previsão">📅</button>
+        <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
+        <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'futura')">❌ Reprovar</button>
+        <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'enviado','Voltou para Aguardando Cliente.')" title="Voltar para Aguardando Cliente" style="color:var(--warning)">↩️</button>
+      </td></tr>`; }).join('')
+    : `<tr><td colspan="7"><div class="empty"><div class="empty-ico">📅</div><div class="empty-msg">Nenhuma venda futura registrada</div></div></td></tr>`;
 }
 
 // ===================== FUNIL DE VENDAS =====================
@@ -6195,7 +6363,7 @@ async function renderFunil(){
 
   const apres=orcs.filter(o=>o.status!=='andamento');
   const ganhos=S(GANHO_ST), perd=S(['reprovado']), pagos=S(['pago']), decid=[...ganhos,...perd];
-  const aberto=S(['andamento','enviado','diretoria']), emDec=S(['enviado','diretoria']), andam=S(['andamento']), aRec=S(['aprovado','cobranca']);
+  const aberto=S(['andamento','enviado','futura','diretoria']), emDec=S(['enviado','futura','diretoria']), andam=S(['andamento']), aRec=S(['aprovado','cobranca']);
   const etapas=[
     {label:'Orçamentos criados',     a:orcs,   c:DX_G.indigo},
     {label:'Apresentados ao cliente',a:apres,  c:DX_G.sky},
@@ -6217,7 +6385,7 @@ async function renderFunil(){
   document.getElementById('fun-kpis').innerHTML=kpis.map(dxKpi).join('');
   document.getElementById('fun-svg').innerHTML=orcs.length?funilSVG(etapas):'<div class="dx-empty">Nenhum orçamento no período</div>';
 
-  const ordem=['andamento','enviado','diretoria','aprovado','cobranca','pago','reprovado'];
+  const ordem=['andamento','enviado','futura','diretoria','aprovado','cobranca','pago','reprovado'];
   const stRows=ordem.map(st=>{ const l=orcs.filter(o=>o.status===st); return {st,n:DX_ST[st].lbl,q:l.length,v:V(l)}; });
   document.getElementById('fun-status').innerHTML=orcs.length
     ? dxHBars(stRows.filter(r=>r.q).map(r=>({n:r.n,v:r.q,vl:`${r.q} · ${dxK(r.v)}`,extra:dxPct(r.q/orcs.length),c:DX_ST[r.st].c})),DX_G.indigo)
@@ -6240,7 +6408,7 @@ async function renderFunil(){
     r.cr++; if(o.status!=='andamento') r.ap++;
     if(GANHO_ST.includes(o.status)){ r.fe++; r.vf+=o.valorFinal||0; }
     if(o.status==='reprovado') r.pe++; if(o.status==='pago') r.pa++;
-    if(['andamento','enviado','diretoria'].includes(o.status)) r.va+=o.valorFinal||0; });
+    if(['andamento','enviado','futura','diretoria'].includes(o.status)) r.va+=o.valorFinal||0; });
   const fvRows=Object.values(fv).map(r=>({...r,w:(r.fe+r.pe)?r.fe/(r.fe+r.pe):null})).sort((a,b)=>b.vf-a.vf);
   document.getElementById('fun-vend').innerHTML = fvRows.length ? `<div class="table-wrap"><table class="an-table">
     <thead><tr><th>Vendedor</th><th class="r">Criados</th><th class="r">Apresentados</th><th class="r">Fechados</th><th class="r">Perdidos</th><th class="r">Pagos</th><th class="r">Taxa de fechamento</th><th class="r">Valor fechado</th><th class="r">Em aberto</th></tr></thead>
@@ -6287,6 +6455,136 @@ async function gerarPdfFunil(){
       d.fvRows.map(r=>[r.n,r.cr,r.ap,r.fe,r.pe,r.pa,r.w==null?'—':dxPct(r.w),fmt(r.vf),fmt(r.va)]));
   abrirRelatorioPDF({titulo:'Funil de Vendas', subtitulo:d.periodo+(d.filtro?' · '+d.filtro:''), corpo});
 }
+
+// ===================== ATUALIZAR SISTEMA =====================
+// Recarrega todos os dados do Supabase (orçamentos, cadastros, usuários,
+// permissões, empresa e vendas futuras) e redesenha a tela atual.
+function _refazerSelect(ids, pares){
+  ids.forEach(id=>{
+    const el=document.getElementById(id); if(!el || !el.options.length) return;
+    const v=el.value, primeira=el.options[0];
+    el.innerHTML=''; el.appendChild(primeira);
+    pares.forEach(([val,txt])=>{ const o=document.createElement('option'); o.value=val; o.textContent=txt; el.appendChild(o); });
+    el.value=[...el.options].some(o=>o.value===String(v))?String(v):primeira.value;
+  });
+}
+async function atualizarSistema(){
+  const btn=document.getElementById('btn-atualizar');
+  if(btn && btn.disabled) return;
+  if(btn){ btn.disabled=true; btn.classList.add('girando'); }
+  try{
+    Object.keys(_cache).forEach(k=>delete _cache[k]);
+    Object.keys(_fotoThumbCache).forEach(k=>delete _fotoThumbCache[k]);
+    _supaOnline=true;
+    await Promise.all([syncUsuariosSupa(),syncPermissoesSupa(),syncEmpresaSupa(),syncVendasFuturasSupa()].map(p=>Promise.resolve(p).catch(()=>{})));
+    const [orcs,vends,arqs]=await Promise.all([
+      SUPA_DB.get('orcamentos'),SUPA_DB.get('vendedores'),SUPA_DB.get('arquitetos'),
+      SUPA_DB.get('clientes'),SUPA_DB.get('produtos')
+    ]);
+    _refazerSelect(['dash-vendedor','orc-filter-vend','fun-filter-vend','rep-filter-vend','pd-filter-vend','ag-filter-vend','vf-filter-vend'],
+      vends.map(v=>[v.id,v.nome]));
+    _refazerSelect(['arq-filter-nome'], arqs.map(a=>[a.nome,a.nome]));
+    _refazerSelect(['rep-filter-motivo'], [...new Set(orcs.filter(o=>o.status==='reprovado').map(o=>o.motivoReprovacao||'Não informado'))].sort().map(m=>[m,m]));
+    _refazerSelect(['pd-filter-pag'], [...new Set(orcs.filter(o=>o.status==='pago').map(o=>o.pagamento||'Não informado'))].sort().map(m=>[m,m]));
+    aplicarPermissoesSidebar();
+    const ativa=document.querySelector('.page.active');
+    const pg=ativa?ativa.id.replace('page-',''):'dashboard';
+    navegarSeguro(pg);
+    if(_supaOnline){
+      const b=document.getElementById('offline-banner'); if(b) b.remove();
+      alertMsg('✅ Sistema atualizado!');
+    } else {
+      alertMsg('Sem conexão com o servidor — exibindo dados locais.','danger');
+    }
+  }catch(e){
+    alertMsg('Erro ao atualizar: '+e.message,'danger');
+  }finally{
+    setTimeout(()=>{ if(btn){ btn.disabled=false; btn.classList.remove('girando'); } }, 400);
+  }
+}
+
+// ===================== PADRÃO DE TEXTO: Primeira Letra Maiúscula =====================
+// Aplica "Primeira Letra Maiúscula de Cada Palavra" em títulos, menus, botões,
+// rótulos, cabeçalhos de tabela, opções fixas e placeholders — inclusive no
+// conteúdo gerado dinamicamente. Dados digitados (nomes, e-mails, produtos) não são alterados.
+const TC_MINUSC = new Set(['de','da','do','das','dos','e','em','no','na','nos','nas','a','o','as','os','à','às','ao','aos','com','por','para','pelo','pela','pelos','pelas','ou']);
+const TC_SIGLAS = new Set(['CNPJ','CREA','KPI','PDF','PIX','CPF','CAU','CEP','RT','UF','IE','SC','OK']);
+function tituloCase(str){
+  let primeira=true;
+  return String(str).replace(/\S+/g, tok=>{
+    const m=tok.match(/\p{L}/u);
+    if(!m) { if(/[:·—–|\/]$/.test(tok)) primeira=true; return tok; }
+    if(/^\d/.test(tok) || /@|\w\.\w|:\/\//.test(tok)){ primeira=false; return tok; }
+    const pre=tok.slice(0,m.index), resto=tok.slice(m.index);
+    const wm=resto.match(/^[\p{L}\-']+/u); const w=wm?wm[0]:''; const pos=resto.slice(w.length);
+    let novo=w;
+    const letras=w.replace(/[^\p{L}]/gu,'');
+    const ehInicio=primeira || pre.includes('(') || pre.includes('"');
+    if(letras.length>=2 && letras===letras.toUpperCase() && letras!==letras.toLowerCase()){
+      if(!(letras.length<=3 || TC_SIGLAS.has(letras))) novo=w.charAt(0)+w.slice(1).toLowerCase();
+    } else {
+      const low=w.toLowerCase();
+      if(!ehInicio && TC_MINUSC.has(low)) novo=low;
+      else novo=w.charAt(0).toUpperCase()+w.slice(1);
+    }
+    primeira=/[:·—–|]$/.test(tok);
+    return pre+novo+pos;
+  });
+}
+const TC_SEL = [
+  '.nav-item','.nav-group','.topbar h1','.card-title','.modal-title','label','th','button','.status-btn','.badge',
+  '.dx-card-t','.dx-card-s','.dx-kpi-label','.dx-kpi-sub','.kpi-label','.kpi-sub','.dx-hero-main small','.dx-hero-main span',
+  '.dx-hero-stat small','.dx-leg span','.total-row > span:first-child','.dx-fun-lbl','.fn-box small','.fn-box em',
+  '.coach-from','.coach-hi','.coach-chips > span:first-child','.sb-tag','.sb-user-role','.login-box h2','.login-footer',
+  '.empty-msg','.dx-empty','.dx-col-lbl','.dx-dl > span','.dx-donut text','.tl-label','#login-err','.dias-badge',
+  '.item-preco-auto','.card-header > span','.form-group > div:not([class]):not([id])','[style*="uppercase"]'
+].join(',');
+const TC_EXCLUI = '#pdf-doc, .login-saved-btn, .coach-msg, .dx-ins, [data-no-tc]';
+const TC_SELECTS = new Set(['dash-periodo','dash-status','orc-status','orc-pagamento','emp-pagamento-padrao','reprovar-motivo',
+  'u-perfil','orc-filter-rt','prod-unidade','arq-filter-mes-ini','arq-filter-mes-fim']);
+
+function _tcTexto(el){
+  if(el.closest(TC_EXCLUI)) return;
+  const w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  let n; while((n=w.nextNode())){
+    if(!n.nodeValue.trim()) continue;
+    const pe=n.parentElement; if(pe && (pe.closest(TC_EXCLUI) || pe.closest('select,option,input,textarea,script,style'))) continue;
+    const t=tituloCase(n.nodeValue); if(t!==n.nodeValue) n.nodeValue=t;
+  }
+}
+function _tcOpcao(o){
+  const sel=o.parentElement && o.closest('select'); if(!sel) return;
+  if(!(TC_SELECTS.has(sel.id) || o.value==='')) return;
+  if(!o.hasAttribute('value')) o.setAttribute('value', o.value); // preserva o valor gravado
+  const t=tituloCase(o.textContent); if(t!==o.textContent) o.textContent=t;
+}
+function _tcAtributos(el){
+  if(el.closest(TC_EXCLUI)) return;
+  if(el.hasAttribute('placeholder')){ const v=el.getAttribute('placeholder'), t=tituloCase(v); if(t!==v) el.setAttribute('placeholder',t); }
+  if(el.hasAttribute('title') && el.matches('button,input,select,textarea,.btn')){ const v=el.getAttribute('title'), t=tituloCase(v); if(t!==v) el.setAttribute('title',t); }
+}
+function aplicarTitulo(raiz){
+  if(!raiz || raiz.nodeType!==1) return;
+  const anc=raiz.closest(TC_SEL); if(anc) _tcTexto(anc);
+  raiz.querySelectorAll(TC_SEL).forEach(_tcTexto);
+  if(raiz.matches('option')) _tcOpcao(raiz);
+  raiz.querySelectorAll('option').forEach(_tcOpcao);
+  if(raiz.matches('[placeholder],[title]')) _tcAtributos(raiz);
+  raiz.querySelectorAll('[placeholder],[title]').forEach(_tcAtributos);
+}
+(function iniciarPadraoTexto(){
+  const pend=new Set(); let agendado=false;
+  const processar=()=>{ agendado=false; const lista=[...pend]; pend.clear(); lista.forEach(el=>{ if(el.isConnected) aplicarTitulo(el); }); };
+  const obs=new MutationObserver(muts=>{
+    muts.forEach(m=>{
+      if(m.type==='characterData'){ if(m.target.parentElement) pend.add(m.target.parentElement); }
+      else m.addedNodes.forEach(n=>{ if(n.nodeType===1) pend.add(n); else if(n.parentElement) pend.add(n.parentElement); });
+    });
+    if(pend.size && !agendado){ agendado=true; requestAnimationFrame(processar); }
+  });
+  const iniciar=()=>{ aplicarTitulo(document.body); obs.observe(document.body,{childList:true,subtree:true,characterData:true}); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+})();
 
 // ===================== INIT =====================
 // Inicialização feita no DOMContentLoaded acima
