@@ -728,6 +728,27 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
 @media(max-width:900px){ .us-perfis{grid-template-columns:repeat(2,minmax(0,1fr))} .us-grps{grid-template-columns:1fr 1fr} }
 @media(max-width:768px){ .us-toolbar{grid-template-columns:1fr} .us-grps{grid-template-columns:1fr} }
 
+/* ===================== BACKUP ===================== */
+.bk-inclui{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.bk-inclui span{font-size:11.5px;padding:4px 10px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);color:var(--text2)}
+.bk-prog{margin-top:14px}
+.bk-bar{height:8px;border-radius:8px;background:var(--surface3);overflow:hidden}
+.bk-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f3cf7a,#a8721e);transition:width .3s}
+.bk-prog small{display:block;font-size:11.5px;color:var(--text3);margin-top:5px}
+.bk-folder{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);flex-wrap:wrap}
+.bk-folder>span{font-size:24px}
+.bk-folder>div:nth-child(2){flex:1;min-width:180px}
+.bk-folder b{display:block;font-size:14px;color:var(--text)}
+.bk-folder small{display:block;font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.45}
+.bk-folder.ok{border-color:#90d0a8;background:#f2faf5}
+.bk-folder.warn{border-color:#f0d090;background:#fffaf0}
+.bk-folder-act{display:flex;gap:6px;flex-wrap:wrap}
+#bk-banner{position:fixed;top:68px;right:18px;z-index:9500;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:560px;
+  background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:12px;padding:12px 14px;box-shadow:0 14px 34px -14px rgba(0,0,0,.45)}
+#bk-banner div{flex:1;min-width:200px}
+#bk-banner b{display:block;font-size:13px;color:var(--text)}
+#bk-banner small{display:block;font-size:11.5px;color:var(--text3);margin-top:2px}
+
 /* ===================== FOLLOW-UP ===================== */
 .fu-grp{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text2);margin:16px 0 8px;letter-spacing:.02em}
 .fu-grp:first-child{margin-top:0}
@@ -855,6 +876,7 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
     <div class="nav-group">Sistema</div>
     <div class="nav-item" onclick="goPage('empresa')"><span class="ico">🏢</span> Minha Empresa</div>
     <div class="nav-item" onclick="goPage('usuarios')"><span class="ico">👥</span> Usuários</div>
+    <div class="nav-item" onclick="goPage('backup')"><span class="ico">🗄️</span> Backup</div>
   </nav>
   <div class="sidebar-bottom">
     <div class="sb-user">
@@ -1465,6 +1487,46 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
         <div id="perms-table-wrap"></div>
       </div>
     </div>
+   </div>
+  </div>
+
+  <!-- ===== BACKUP (SOMENTE ADMINISTRADOR) ===== -->
+  <div class="page" id="page-backup">
+   <div class="dx-wrap">
+    <div class="dx-kpis dx-k4" id="bk-kpis"></div>
+    <div class="dx-row dx-r2">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">💾 Backup Manual</div><div class="dx-card-s">Gera agora uma cópia completa de todos os dados do sistema</div></div></div>
+        <div class="bk-inclui">
+          <span>📄 Orçamentos</span><span>🪑 Produtos</span><span>👤 Clientes</span><span>🤝 Vendedores</span><span>📐 Arquitetos</span>
+          <span>🏠 Ambientes</span><span>📌 Follow-ups</span><span>📅 Vendas Futuras</span><span>👥 Usuários e Permissões</span><span>🏢 Dados da Empresa</span><span>🗄️ Histórico de Backups</span>
+        </div>
+        <label class="fu-check" data-no-tc><input type="checkbox" id="bk-fotos" checked> Incluir as fotos dos produtos (o arquivo fica maior)</label>
+        <div id="bk-prog" class="bk-prog" style="display:none"><div class="bk-bar"><span id="bk-bar"></span></div><small id="bk-prog-txt"></small></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn btn-gold bk-run" onclick="executarBackup('manual')">💾 Fazer Backup Agora</button>
+          <button class="btn btn-outline bk-run" onclick="executarBackup('download')">⬇️ Baixar Arquivo</button>
+        </div>
+        <div class="us-sec-sub" style="margin-top:10px">"Fazer Backup Agora" grava na pasta vinculada; sem pasta, o arquivo é baixado. "Baixar Arquivo" sempre baixa para a pasta Downloads.</div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">⏰ Backup Automático</div><div class="dx-card-s">Pasta de destino e periodicidade neste computador</div></div></div>
+        <div id="bk-pasta"></div>
+        <div class="form-grid" style="margin-top:14px">
+          <div class="form-group"><label>Periodicidade</label><select id="bk-freq">
+            <option value="off">Desativado</option><option value="diario">Diário</option><option value="semanal">Semanal</option><option value="quinzenal">Quinzenal</option><option value="mensal">Mensal</option></select></div>
+          <div class="form-group"><label>Manter na Pasta</label><select id="bk-manter">
+            <option value="5">Últimos 5 backups</option><option value="10">Últimos 10 backups</option><option value="30">Últimos 30 backups</option><option value="0">Todos (não apagar)</option></select></div>
+        </div>
+        <div style="margin-top:14px"><button class="btn btn-gold" onclick="salvarConfigBackup()">💾 Salvar Configuração</button></div>
+        <div class="us-sec-sub" style="margin-top:10px">O backup automático roda quando um Administrador está com o sistema aberto neste computador e o prazo da periodicidade vence. Os backups mais antigos que o limite acima são apagados da pasta.</div>
+      </div>
+    </div>
+    <div class="dx-card">
+      <div class="dx-card-h"><div><div class="dx-card-t">📜 Histórico de Backups</div><div class="dx-card-s">Últimos 40 backups feitos por qualquer administrador</div></div></div>
+      <div id="bk-hist"></div>
+    </div>
+    <div class="us-note">🔒 O arquivo de backup contém todos os dados de clientes e também os logins e senhas dos usuários. Guarde-o em local seguro e não compartilhe.</div>
    </div>
   </div>
 
@@ -2553,6 +2615,7 @@ const pageConfig = {
   futura:     { title:'Venda Futura' },
   followup:   { title:'Planejar Follow-up' },
   'dash-followup': { title:'Dashboard de Follow-up' },
+  backup:     { title:'Backup do Sistema' },
   reprovados: { title:'Orçamentos Reprovados' },
   cobranca:   { title:'Cobrança Financeiro' },
   pedidos:    { title:'Pedidos Aprovados' },
@@ -2602,6 +2665,7 @@ function _getTelasPermitidasBase(){
 }
 
 function temAcesso(page){
+  if(page==='backup') return getSessao().perfil==='admin'; // exclusivo do Administrador
   const telas = getTelasPermitidas();
   if(telas === null) return true; // admin: tudo
   return telas.includes(page);
@@ -2617,7 +2681,7 @@ function aplicarPermissoesSidebar(){
     const match = onclick.match(/goPage\('([^']+)'\)/);
     if(match){
       const page = match[1];
-      item.style.display = telas.includes(page) ? '' : 'none';
+      item.style.display = temAcesso(page) ? '' : 'none';
     }
   });
 }
@@ -2668,6 +2732,7 @@ function goPage(page){
   if(page==='dash-arq') renderDashArq().catch(_c);
   if(page==='empresa') renderEmpresa();
   if(page==='usuarios') renderUsuarios();
+  if(page==='backup') renderBackup().catch(_c);
 }
 
 // ===================== MODAIS =====================
@@ -4891,6 +4956,7 @@ const TODAS_TELAS = [
   {id:'dash-arq',   label:'🏆 Pontuação Arquitetos'},
   {id:'empresa',    label:'🏢 Minha Empresa'},
   {id:'usuarios',   label:'👥 Usuários'},
+  {id:'backup',     label:'🗄️ Backup'},
 ];
 
 const PERFIL_TELAS = {
@@ -4957,7 +5023,7 @@ const GRUPOS_TELAS=[
   {t:'Comercial',   ids:['orcamentos','funil','diretoria','aguardando','futura','reprovados']},
   {t:'Follow-up',   ids:['followup','dash-followup']},
   {t:'Financeiro',  ids:['cobranca','pedidos','dash-arq']},
-  {t:'Sistema',     ids:['empresa','usuarios']},
+  {t:'Sistema',     ids:['empresa','usuarios','backup']},
 ];
 const PERFIL_DESC={
   admin:'Acesso total ao sistema, incluindo usuários e configurações',
@@ -5064,7 +5130,7 @@ function perfilChanged(){
 function renderCustomPerms(ativas){
   document.getElementById('custom-perms-list').innerHTML=GRUPOS_TELAS.map(g=>`<div class="us-grp">
     <div class="us-grp-h"><span>${g.t}</span><a onclick="marcarGrupoCustom(${GRUPOS_TELAS.indexOf(g)})">Marcar grupo</a></div>
-    ${g.ids.map(id=>`<label class="us-ck" data-no-tc><input type="checkbox" id="cperm-${id}" ${ativas.includes(id)?'checked':''}> ${telaLabel(id)}</label>`).join('')}
+    ${g.ids.filter(id=>id!=='backup').map(id=>`<label class="us-ck" data-no-tc><input type="checkbox" id="cperm-${id}" ${ativas.includes(id)?'checked':''}> ${telaLabel(id)}</label>`).join('')}
   </div>`).join('');
 }
 function marcarGrupoCustom(i){
@@ -5229,7 +5295,7 @@ function renderPermissoes(){
       <a onclick="marcarColunaPerm('${p}')">Marcar / desmarcar todas</a></th>`).join('')+'</tr>';
   const body=GRUPOS_TELAS.map(g=>`<tr class="pm-grp"><td colspan="${PERFIS_MATRIZ.length+2}">${g.t}</td></tr>`
     +g.ids.map(id=>{
-      const soAdmin=id==='usuarios';
+      const soAdmin=id==='usuarios'||id==='backup';
       return `<tr><td class="pm-tela">${telaLabel(id)}${soAdmin?'<small>Exclusivo do Administrador</small>':''}</td>
         <td class="pm-col"><span class="pm-lock" title="Administrador tem acesso total">✓</span></td>`
         +PERFIS_MATRIZ.map(p=>soAdmin?`<td class="pm-col"><span class="pm-na">—</span></td>`
@@ -5360,6 +5426,7 @@ async function doLogin(){
 
   // Aplicar permissões na sidebar
   aplicarPermissoesSidebar();
+  if(found.perfil==='admin') setTimeout(()=>backupVerificarAgendado().catch(()=>{}), 4000);
 
   // Sincronizar configurações do Supabase
   syncEmpresaSupa().then(()=>renderEmpresa());
@@ -5408,6 +5475,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 function doLogout(){
   localStorage.removeItem('deco_session');
+  try{ bkFecharBanner(); }catch(e){}
   // Resetar sidebar — mostrar todos os itens
   document.querySelectorAll('.nav-item').forEach(item=>{ item.style.display=''; });
   document.getElementById('login-screen').style.display='flex';
@@ -7411,6 +7479,272 @@ async function renderDashFollowup(){
   if(real.length>=3 && crono.length<real.length/2) ins.push({k:'info',ico:'⏱️',txt:`Apenas ${crono.length} de ${real.length} contatos tiveram o tempo cronometrado. Use o ▶️ ao iniciar cada contato para medir quanto tempo o time investe em follow-up.`});
   if(tCan.length>1){ const lento=tCan.slice().sort((a,b)=>b.m-a.m)[0]; if(lento.q>=3 && lento.m>=tMed*1.5) ins.push({k:'info',ico:'⏳',txt:`Contatos por <b>${lento.n}</b> levam em média ${fuDur(lento.m)}, bem acima da média geral (${fuDur(tMed)}). Avalie usar esse canal só quando a negociação estiver mais madura.`}); }
   document.getElementById('dfu-insights').innerHTML=dxInsHtml(ins);
+}
+
+// ===================== BACKUP (SOMENTE ADMINISTRADOR) =====================
+// Gera um arquivo .json com TODOS os dados do sistema (todas as tabelas do
+// Supabase + dados locais). Pode salvar direto numa pasta vinculada deste
+// computador (Chrome/Edge) e rodar automaticamente na periodicidade escolhida.
+const BK_FREQ={off:0,diario:1,semanal:7,quinzenal:15,mensal:30};
+const BK_FREQ_LBL={off:'Desativado',diario:'Diário',semanal:'Semanal',quinzenal:'Quinzenal',mensal:'Mensal'};
+const BK_PREFIXO='backup-decoorca-';
+const bkSuporta=()=>typeof window.showDirectoryPicker==='function';
+const bkEhAdmin=()=>getSessao().perfil==='admin';
+function bkCfg(){ try{ return JSON.parse(localStorage.getItem('deco_backup_cfg')||'{}'); }catch{ return {}; } }
+function bkSalvarCfg(c){ try{ localStorage.setItem('deco_backup_cfg',JSON.stringify(c)); }catch(e){} }
+const bkBytes=b=>b>=1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':b>=1024?Math.round(b/1024)+' KB':b+' B';
+const bkDataHora=iso=>iso?new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+
+// IndexedDB guarda o "atalho" da pasta escolhida (só existe neste computador/navegador)
+function bkIdb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('decoorca_backup',1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('kv'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function bkIdbGet(k){ const db=await bkIdb(); return new Promise((res,rej)=>{ const q=db.transaction('kv').objectStore('kv').get(k); q.onsuccess=()=>res(q.result); q.onerror=()=>rej(q.error); }); }
+async function bkIdbSet(k,v){ const db=await bkIdb(); return new Promise((res,rej)=>{ const st=db.transaction('kv','readwrite').objectStore('kv');
+  const q=v===undefined?st.delete(k):st.put(v,k); q.onsuccess=()=>res(); q.onerror=()=>rej(q.error); }); }
+async function bkPasta(){ if(!bkSuporta()) return null; try{ return (await bkIdbGet('pasta'))||null; }catch(e){ return null; } }
+async function bkPermissao(dir, pedir){
+  try{
+    if((await dir.queryPermission({mode:'readwrite'}))==='granted') return true;
+    if(pedir) return (await dir.requestPermission({mode:'readwrite'}))==='granted';
+  }catch(e){}
+  return false;
+}
+
+// Histórico (compartilhado na nuvem)
+function bkHistorico(){ try{ const a=JSON.parse(localStorage.getItem('deco_backup_hist')||'[]'); return Array.isArray(a)?a.filter(h=>h&&h.data):[]; }catch{ return []; } }
+async function bkSyncHistorico(){ try{ const r=await supaGetConfig('backup_historico'); if(Array.isArray(r)) localStorage.setItem('deco_backup_hist',JSON.stringify(r)); }catch(e){} }
+async function bkRegistrar(item){
+  await bkSyncHistorico();
+  const h=[item,...bkHistorico()].slice(0,40);
+  try{ localStorage.setItem('deco_backup_hist',JSON.stringify(h)); }catch(e){}
+  await supaSetConfig('backup_historico',h);
+}
+
+// ---------- COLETA DOS DADOS ----------
+const bkEspera=ms=>new Promise(r=>setTimeout(r,ms));
+// Leitura com novas tentativas (o banco pode cancelar consultas pesadas por tempo — erro 57014)
+async function bkGet(tab, q, tentativas=3){
+  for(let i=1;;i++){
+    try{ return await SUPA.get(tab,q); }
+    catch(e){ if(i>=tentativas) throw e; await bkEspera(1500*i); }
+  }
+}
+// Lê tabelas grandes em páginas, para não estourar o tempo limite do banco
+async function bkGetPaginado(tab, select, prog, pIni, pFim, rotulo){
+  const out=[]; let pag=500;
+  for(let off=0;;){
+    let rows;
+    try{ rows=await bkGet(tab,`?order=id.asc&select=${select}&limit=${pag}&offset=${off}`,2); }
+    catch(e){ if(pag>25){ pag=Math.floor(pag/4); continue; } throw e; }
+    out.push(...rows); off+=rows.length;
+    prog(pIni+Math.min(pFim-pIni,Math.round(out.length/50)),`Lendo ${rotulo} (${out.length})...`);
+    if(rows.length<pag) return out;
+  }
+}
+// Fotos: lotes pequenos; se o lote demorar demais, divide ao meio até ler uma foto por vez
+async function bkFotosLote(ids, mapa, falhas){
+  try{
+    const rows=await bkGet('produtos','?id=in.('+ids.join(',')+')&select=id,foto',ids.length>1?1:3);
+    rows.forEach(r=>mapa[r.id]=r.foto||null);
+  }catch(e){
+    if(ids.length>1){ const m=Math.ceil(ids.length/2); await bkFotosLote(ids.slice(0,m),mapa,falhas); await bkFotosLote(ids.slice(m),mapa,falhas); }
+    else falhas.push(ids[0]);
+  }
+}
+async function bkColetar(fotos, prog){
+  const t={};
+  prog(4,'Lendo clientes...');     t.clientes=await bkGetPaginado('clientes','*',prog,4,10,'clientes');
+  prog(10,'Lendo vendedores...');  t.vendedores=await bkGetPaginado('vendedores','*',prog,10,12,'vendedores');
+  prog(12,'Lendo arquitetos...');  t.arquitetos=await bkGetPaginado('arquitetos','*',prog,12,15,'arquitetos');
+  prog(15,'Lendo orçamentos...');  t.orcamentos=await bkGetPaginado('orcamentos','*',prog,15,30,'orçamentos');
+  prog(30,'Lendo produtos...');
+  t.produtos=await bkGetPaginado('produtos','id,nome,codigo,categoria,unidade,descricao,custo,fornecedores,exibir_fornecedor,criado_em',prog,30,36,'produtos');
+  t._fotosFalhas=[];
+  if(fotos && t.produtos.length){
+    const ids=t.produtos.map(p=>p.id), mapa={}, LOTE=5;
+    for(let i=0;i<ids.length;i+=LOTE){
+      prog(36+Math.round(i/ids.length*48),`Lendo fotos dos produtos (${Math.min(i+LOTE,ids.length)} de ${ids.length})...`);
+      await bkFotosLote(ids.slice(i,i+LOTE),mapa,t._fotosFalhas);
+    }
+    t.produtos.forEach(p=>p.foto=mapa[p.id]??null);
+  }
+  prog(84,'Lendo configurações, usuários e follow-ups...');
+  t.configuracoes=await bkGet('configuracoes','?select=*');
+  t.ambientes=getAmbientes(); // cadastro de ambientes fica neste navegador
+  return t;
+}
+
+// ---------- EXECUÇÃO ----------
+let _bkRodando=false;
+function bkProg(p,txt){
+  const w=document.getElementById('bk-prog'); if(!w) return;
+  w.style.display='block';
+  document.getElementById('bk-bar').style.width=p+'%';
+  document.getElementById('bk-prog-txt').textContent=txt;
+}
+async function executarBackup(modo){ // 'manual' | 'download' | 'auto'
+  if(!bkEhAdmin()) return alertMsg('Somente o Administrador pode fazer backup.','danger');
+  if(_bkRodando) return alertMsg('Já existe um backup em andamento.','danger');
+  _bkRodando=true; bkFecharBanner();
+  const cfg=bkCfg(); const sess=getSessao();
+  const fEl=document.getElementById('bk-fotos');
+  const fotos=modo==='auto'?cfg.fotos!==false:(fEl?fEl.checked:true);
+  if(modo!=='auto'){ cfg.fotos=fotos; bkSalvarCfg(cfg); }
+  document.querySelectorAll('.bk-run').forEach(b=>b.disabled=true);
+  let destino='Downloads', nome='';
+  try{
+    let dir=null;
+    if(modo!=='download'){
+      dir=await bkPasta();
+      if(dir && !(await bkPermissao(dir, modo!=='auto'))){
+        if(modo==='auto') throw new Error('Sem permissão para gravar na pasta vinculada');
+        dir=null; alertMsg('Acesso à pasta não autorizado — o arquivo será baixado.','danger');
+      }
+    }
+    const tabelas=await bkColetar(fotos,bkProg);
+    const fotosFalhas=tabelas._fotosFalhas||[]; delete tabelas._fotosFalhas;
+    const contagens={}; Object.entries(tabelas).forEach(([k,v])=>contagens[k]=Array.isArray(v)?v.length:0);
+    const cfgMap={}; (tabelas.configuracoes||[]).forEach(r=>cfgMap[r.chave]=r.valor);
+    contagens.followups=Array.isArray(cfgMap.followups)?cfgMap.followups.length:0;
+    contagens.usuarios=Array.isArray(cfgMap.usuarios)?cfgMap.usuarios.length:0;
+    const emp=getEmpresa();
+    const pacote={sistema:'DecoOrça · Sistema de Orçamentos', empresa:emp.nome||'Dana Casa', versao:1,
+      geradoEm:new Date().toISOString(), geradoPor:sess.nome||sess.user||'', tipo:modo==='auto'?'Automático':'Manual',
+      incluiFotos:fotos, fotosNaoLidas:fotosFalhas, contagens, tabelas};
+    bkProg(92,'Gerando arquivo...');
+    const blob=new Blob([JSON.stringify(pacote)],{type:'application/json'});
+    const d=new Date(), pad=n=>String(n).padStart(2,'0');
+    nome=`${BK_PREFIXO}${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}.json`;
+    if(dir){
+      bkProg(96,'Gravando na pasta '+dir.name+'...');
+      const fh=await dir.getFileHandle(nome,{create:true});
+      const w=await fh.createWritable(); await w.write(blob); await w.close();
+      destino='Pasta: '+dir.name;
+      // Mantém só os últimos N backups na pasta
+      const manter=parseInt(cfg.manter??10);
+      if(manter>0){
+        const arqs=[]; for await (const [n,h] of dir.entries()) if(h.kind==='file'&&n.startsWith(BK_PREFIXO)&&n.endsWith('.json')) arqs.push(n);
+        arqs.sort().reverse().slice(manter).forEach(n=>dir.removeEntry(n).catch(()=>{}));
+      }
+    } else {
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nome;
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+    }
+    cfg.ultimo=new Date().toISOString(); delete cfg.adiadoAte; bkSalvarCfg(cfg);
+    const registros=Object.values(contagens).reduce((s,n)=>s+n,0);
+    await bkRegistrar({data:cfg.ultimo, tipo:pacote.tipo, por:pacote.geradoPor, destino, arquivo:nome, tamanho:blob.size, registros, fotos, ok:true, aviso:fotosFalhas.length?`${fotosFalhas.length} foto(s) não lida(s) por tempo esgotado`:''});
+    bkProg(100,'Backup concluído!');
+    alertMsg(`✅ Backup concluído (${bkBytes(blob.size)}) — ${destino}`+(fotosFalhas.length?` · ${fotosFalhas.length} foto(s) não lida(s)`:''));
+  }catch(e){
+    const msg=/57014|statement timeout/.test(e.message)?'O banco demorou demais para responder (tempo esgotado). Tente novamente em alguns minutos.':e.message;
+    await bkRegistrar({data:new Date().toISOString(), tipo:modo==='auto'?'Automático':'Manual', por:sess.nome||'', destino, arquivo:nome, ok:false, erro:msg}).catch(()=>{});
+    alertMsg('Falha no backup: '+msg,'danger');
+  }finally{
+    _bkRodando=false;
+    document.querySelectorAll('.bk-run').forEach(b=>b.disabled=false);
+    setTimeout(()=>{ const w=document.getElementById('bk-prog'); if(w) w.style.display='none'; },2500);
+    if(document.getElementById('page-backup')?.classList.contains('active')) renderBackup().catch(()=>{});
+  }
+}
+
+// ---------- AGENDAMENTO ----------
+function bkProximo(cfg){
+  const dias=BK_FREQ[cfg.freq]||0; if(!dias) return null;
+  if(!cfg.ultimo) return new Date();
+  return new Date(new Date(cfg.ultimo).getTime()+dias*864e5);
+}
+async function backupVerificarAgendado(){
+  if(!bkEhAdmin() || _bkRodando) return;
+  const cfg=bkCfg(); const prox=bkProximo(cfg);
+  if(!prox || Date.now()<prox.getTime()) return;
+  if(cfg.adiadoAte && Date.now()<cfg.adiadoAte) return;
+  const dir=await bkPasta();
+  if(dir && await bkPermissao(dir,false)){ await executarBackup('auto'); return; }
+  bkBanner(!bkSuporta()?'download':dir?'autorizar':'pasta');
+}
+function bkBanner(motivo){
+  if(document.getElementById('bk-banner')) return;
+  const txt={autorizar:'O navegador precisa da sua autorização para gravar na pasta de backup.',
+    pasta:'Nenhuma pasta vinculada neste computador — o arquivo será baixado.',
+    download:'O arquivo de backup será baixado para a pasta Downloads.'}[motivo];
+  const b=document.createElement('div'); b.id='bk-banner';
+  b.innerHTML=`<div><b>🗄️ Backup programado pendente</b><small>${txt}</small></div>
+    <button class="btn btn-gold btn-sm" onclick="executarBackup('manual')">${motivo==='autorizar'?'🔓 Autorizar e Fazer Backup':'💾 Fazer Backup Agora'}</button>
+    <button class="btn btn-outline btn-sm" onclick="adiarBackup()">Lembrar em 4h</button>`;
+  document.body.appendChild(b);
+}
+function bkFecharBanner(){ document.getElementById('bk-banner')?.remove(); }
+function adiarBackup(){ const c=bkCfg(); c.adiadoAte=Date.now()+4*3600e3; bkSalvarCfg(c); bkFecharBanner(); }
+setInterval(()=>{ try{ if(document.getElementById('login-screen')?.style.display==='none') backupVerificarAgendado().catch(()=>{}); }catch(e){} }, 15*60*1000);
+
+// ---------- PASTA ----------
+async function vincularPastaBackup(){
+  if(!bkSuporta()) return alertMsg('Seu navegador não permite vincular pastas. Use o Google Chrome ou o Microsoft Edge no computador.','danger');
+  try{
+    const h=await window.showDirectoryPicker({id:'decoorca-backup',mode:'readwrite'});
+    await bkIdbSet('pasta',h);
+    alertMsg('📁 Pasta "'+h.name+'" vinculada!');
+    renderBackup();
+  }catch(e){ if(e.name!=='AbortError') alertMsg('Não foi possível vincular a pasta: '+e.message,'danger'); }
+}
+async function autorizarPastaBackup(){
+  const d=await bkPasta(); if(!d) return;
+  if(await bkPermissao(d,true)) alertMsg('Acesso à pasta autorizado!'); else alertMsg('Acesso não autorizado.','danger');
+  renderBackup();
+}
+async function desvincularPastaBackup(){
+  if(!confirm('Desvincular a pasta de backup? Os arquivos já salvos nela não serão apagados.')) return;
+  await bkIdbSet('pasta',undefined); renderBackup(); alertMsg('Pasta desvinculada.');
+}
+function salvarConfigBackup(){
+  const c=bkCfg();
+  c.freq=document.getElementById('bk-freq').value;
+  c.manter=parseInt(document.getElementById('bk-manter').value);
+  c.fotos=document.getElementById('bk-fotos').checked;
+  delete c.adiadoAte; bkSalvarCfg(c);
+  alertMsg('Configuração de backup salva!');
+  renderBackup();
+}
+
+// ---------- TELA ----------
+async function renderBackup(){
+  if(!bkEhAdmin()) return;
+  await bkSyncHistorico();
+  const cfg=bkCfg(); const dir=await bkPasta();
+  const perm=dir?await bkPermissao(dir,false):false;
+  const hist=bkHistorico(); const ultOk=hist.find(h=>h.ok);
+  const prox=bkProximo(cfg);
+  const diasDesde=cfg.ultimo?Math.floor((Date.now()-new Date(cfg.ultimo))/864e5):null;
+
+  document.getElementById('bk-kpis').innerHTML=[
+    {ico:'🗄️',c:DX_G.emerald,label:'Último Backup (Este Computador)', val:cfg.ultimo?new Date(cfg.ultimo).toLocaleDateString('pt-BR'):'Nunca',
+      sub:cfg.ultimo?(diasDesde===0?'Hoje às '+new Date(cfg.ultimo).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):`Há ${diasDesde} dia(s)`):'Faça o primeiro backup agora'},
+    {ico:'⏰',c:DX_G.indigo,label:'Próximo Backup', val:!prox?'Desativado':prox<=new Date()?'Pendente':prox.toLocaleDateString('pt-BR'),
+      sub:`Periodicidade: ${BK_FREQ_LBL[cfg.freq||'off']}`},
+    {ico:'📁',c:DX_G.amber,label:'Pasta Vinculada', val:dir?dir.name:'Nenhuma', sub:!bkSuporta()?'Navegador sem suporte — usa Downloads':dir?(perm?'Acesso autorizado':'Precisa autorizar o acesso'):'Arquivos vão para Downloads'},
+    {ico:'📜',c:DX_G.violet,label:'Backups Registrados', val:String(hist.filter(h=>h.ok).length), sub:ultOk?`Último: ${bkBytes(ultOk.tamanho||0)} · ${(ultOk.registros||0).toLocaleString('pt-BR')} registros`:'Nenhum backup ainda'},
+  ].map(dxKpi).join('');
+
+  // Pasta
+  const pz=document.getElementById('bk-pasta');
+  if(!bkSuporta()) pz.innerHTML=`<div class="bk-folder warn"><span>⚠️</span><div><b>Navegador sem suporte a pastas</b><small>Para gravar direto numa pasta, abra o sistema no Google Chrome ou Microsoft Edge do computador. Aqui, os backups serão baixados para a pasta Downloads.</small></div></div>`;
+  else if(!dir) pz.innerHTML=`<div class="bk-folder"><span>📁</span><div><b>Nenhuma pasta vinculada</b><small>Escolha uma pasta do computador — de preferência sincronizada com Google Drive, OneDrive ou Dropbox — para guardar os backups.</small></div>
+      <button class="btn btn-gold btn-sm" onclick="vincularPastaBackup()">📁 Vincular Pasta</button></div>`;
+  else pz.innerHTML=`<div class="bk-folder ${perm?'ok':'warn'}"><span>${perm?'✅':'🔒'}</span><div><b>${usEsc(dir.name)}</b><small>${perm?'Acesso autorizado — os backups serão gravados nesta pasta.':'O navegador pede nova autorização a cada vez que o sistema é aberto.'}</small></div>
+      <div class="bk-folder-act">${perm?'':'<button class="btn btn-gold btn-sm" onclick="autorizarPastaBackup()">🔓 Autorizar</button>'}
+      <button class="btn btn-outline btn-sm" onclick="vincularPastaBackup()">Trocar</button>
+      <button class="btn btn-outline btn-sm" onclick="desvincularPastaBackup()" style="color:var(--danger)">Desvincular</button></div></div>`;
+  document.getElementById('bk-freq').value=cfg.freq||'off';
+  document.getElementById('bk-manter').value=String(cfg.manter??10);
+  document.getElementById('bk-fotos').checked=cfg.fotos!==false;
+
+  document.getElementById('bk-hist').innerHTML = hist.length ? `<div class="table-wrap"><table class="an-table">
+    <thead><tr><th>Data e Hora</th><th>Tipo</th><th>Usuário</th><th>Destino</th><th class="r">Registros</th><th class="r">Tamanho</th><th>Situação</th></tr></thead>
+    <tbody>${hist.map(h=>`<tr><td>${bkDataHora(h.data)}</td><td>${h.tipo==='Automático'?'⏰ ':'💾 '}${usEsc(h.tipo||'')}</td><td>${usEsc(h.por||'—')}</td>
+      <td title="${usEsc(h.arquivo||'')}">${usEsc(h.destino||'—')}</td><td class="r">${h.registros!=null?h.registros.toLocaleString('pt-BR'):'—'}</td>
+      <td class="r">${h.tamanho?bkBytes(h.tamanho):'—'}${h.ok&&h.fotos===false?'<br><small style="color:var(--text3)">sem fotos</small>':''}</td>
+      <td>${h.ok?'<span class="us-st on">Concluído</span>'+(h.aviso?`<br><small style="color:var(--warning)">⚠️ ${usEsc(h.aviso)}</small>`:''):`<span class="us-st off" style="color:#8a1810;background:#fde8e6" title="${usEsc(h.erro||'')}">Falhou</span><br><small style="color:var(--text3)">${usEsc(h.erro||'')}</small>`}</td></tr>`).join('')}</tbody></table></div>`
+    : '<div class="dx-empty">Nenhum backup registrado ainda.</div>';
 }
 
 // ===================== ATUALIZAR SISTEMA =====================
