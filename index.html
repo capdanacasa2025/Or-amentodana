@@ -674,6 +674,108 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
 /* Proposta (PDF) mantém o visual de documento */
 #pdf-doc label, #pdf-doc th, #pdf-doc [style*="uppercase"] { text-transform:uppercase !important; letter-spacing:.08em !important; }
 
+/* ===================== USUÁRIOS ===================== */
+.us-tabs{display:inline-flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;width:fit-content}
+.us-tabs button{padding:9px 18px;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.us-tabs button.on{background:linear-gradient(135deg,#f3cf7a,#a8721e);color:#1a1500;box-shadow:0 4px 12px -6px rgba(168,114,30,.7)}
+.us-toolbar{display:grid;grid-template-columns:1fr 200px 180px;gap:10px;margin-bottom:14px}
+.us-table td{vertical-align:middle}
+.us-user{display:flex;align-items:center;gap:12px}
+.us-av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;box-shadow:0 4px 10px -5px rgba(0,0,0,.4)}
+.us-user b{display:block;font-size:13.5px;color:var(--text)}
+.us-user small{display:block;font-size:11.5px;color:var(--text3)}
+.us-eu{font-size:10px;font-weight:700;background:var(--gold-dim);color:var(--gold);padding:1px 7px;border-radius:10px;margin-left:6px}
+.us-perfil{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid;white-space:nowrap}
+.us-telas{font-size:12px;color:var(--text2);border-bottom:1px dashed var(--border2);cursor:help}
+.us-st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px}
+.us-st::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor}
+.us-st.on{background:#d8f0e0;color:#145c28}.us-st.off{background:#f1f0ec;color:#8a7a60}
+.us-off td{opacity:.6}
+.us-act{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.us-note{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);font-size:12.5px;color:var(--text2);line-height:1.6}
+.us-sec{font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.04em;margin:22px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.modal .us-sec:first-of-type{margin-top:4px}
+.us-sec-sub{font-size:11.5px;color:var(--text3);margin-bottom:8px;line-height:1.5}
+.us-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px}
+.us-perfis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.us-pf{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:12px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);cursor:pointer;transition:.15s;font-family:inherit}
+.us-pf:hover{border-color:var(--pc)}
+.us-pf.on{border-color:var(--pc);background:var(--surface2);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 18%,transparent)}
+.us-pf-ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;margin-bottom:2px}
+.us-pf b{font-size:12.5px;color:var(--text)}
+.us-pf small{font-size:10.5px;color:var(--text3);line-height:1.35}
+.us-pf em{font-style:normal;font-size:10.5px;font-weight:700;color:var(--pc);margin-top:auto;padding-top:4px}
+.us-chips{display:flex;flex-wrap:wrap;gap:6px}
+.us-chips span{font-size:11.5px;padding:3px 10px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);color:var(--text2)}
+.us-grps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.us-grp{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--surface2)}
+.us-grp-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.us-grp-h span{font-size:11.5px;font-weight:800;color:var(--text2)}
+.us-grp-h a,.pm-col a{font-size:10.5px;color:var(--gold);cursor:pointer;text-decoration:underline}
+.us-ck{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text);padding:3px 0;cursor:pointer}
+.us-ck input{accent-color:var(--gold);width:14px;height:14px}
+.us-switch{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2);cursor:pointer;margin-top:6px}
+.pm-table th{background:var(--surface2);vertical-align:bottom}
+.pm-table .pm-col{text-align:center;min-width:140px}
+.pm-table th.pm-col small{display:block;font-weight:500;color:var(--text3);margin-top:2px}
+.pm-table th.pm-col a{display:block;margin-top:4px;font-weight:500}
+.pm-table td.pm-tela{font-weight:500;color:var(--text)}
+.pm-table td.pm-tela small{display:block;font-size:10.5px;color:var(--text3);font-weight:400}
+.pm-grp td{background:var(--surface2);font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.06em;padding:7px 14px}
+.pm-lock{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#f3cf7a,#a8721e);color:#1a1500;font-weight:800;font-size:12px}
+.pm-na{color:var(--text3)}
+.pm-table .perm-toggle{display:inline-block;vertical-align:middle}
+@media(max-width:900px){ .us-perfis{grid-template-columns:repeat(2,minmax(0,1fr))} .us-grps{grid-template-columns:1fr 1fr} }
+@media(max-width:768px){ .us-toolbar{grid-template-columns:1fr} .us-grps{grid-template-columns:1fr} }
+
+/* ===================== FOLLOW-UP ===================== */
+.fu-grp{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text2);margin:16px 0 8px;letter-spacing:.02em}
+.fu-grp:first-child{margin-top:0}
+.fu-grp b{font-size:11px;background:var(--surface3);color:var(--text2);padding:1px 8px;border-radius:20px}
+.fu-item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--border);border-left:4px solid var(--fc,#c8bfa8);border-radius:10px;background:var(--surface);margin-bottom:8px;transition:.15s}
+.fu-item:hover{box-shadow:0 6px 18px -12px rgba(26,21,0,.45)}
+.fu-date{text-align:center;border-radius:9px;background:var(--surface2);padding:6px 2px;line-height:1.15}
+.fu-date b{display:block;font-size:21px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.fu-date small{display:block;font-size:10px;color:var(--text3);font-weight:600}
+.fu-main{min-width:0}
+.fu-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.fu-top b{font-size:14px;color:var(--text)}
+.fu-orc{font-size:11.5px;color:var(--gold);cursor:pointer;font-variant-numeric:tabular-nums}
+.fu-orc:hover{text-decoration:underline}
+.fu-obj{font-size:12.5px;color:var(--text2);margin-top:3px;line-height:1.45}
+.fu-obj span{color:var(--text3)}
+.fu-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
+.fu-tag{font-size:11px;padding:2px 9px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);white-space:nowrap}
+.fu-late{background:#fde8e6;border-color:#f0a098;color:#8a1810;font-weight:700}
+.fu-vend{font-size:11px;color:var(--text3)}
+.fu-act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.fu-sug{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.fu-sug b{font-size:13px;color:var(--text)}
+.fu-sug small{display:block;font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.4}
+.fu-sug div:last-child{display:flex;gap:6px}
+.fu-info{padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.6}
+.fu-info b{color:var(--text)}
+.fu-check{display:flex;align-items:center;gap:8px;margin-top:14px;cursor:pointer;font-size:13px;color:var(--text2)}
+.fu-check input{accent-color:var(--gold);width:15px;height:15px}
+.fu-tipo{display:flex;gap:8px}
+.fu-tipo button{flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:.15s}
+.fu-tipo button.on{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);font-weight:700}
+.fu-arq{background:#f5e6f8;border-color:#ddb0ee;color:#6a1080;font-weight:600}
+.fu-run{background:linear-gradient(135deg,#fda4af,#e11d48);color:#fff;border:none;font-variant-numeric:tabular-nums;font-weight:700}
+#fu-timer{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9000;display:none;align-items:center;gap:14px;
+  background:linear-gradient(135deg,#1a1405,#2a2008);color:#efe2bf;padding:10px 12px 10px 16px;border-radius:14px;
+  box-shadow:0 14px 34px -10px rgba(0,0,0,.6);border:1px solid #4a3a18;max-width:calc(100vw - 24px)}
+#fu-timer small{display:block;font-size:10px;color:#b8994f;letter-spacing:.06em}
+#fu-timer b{display:block;font-size:13px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fu-timer-clk{font-size:22px;font-weight:800;color:#f3cf7a;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.fu-timer-dot{width:10px;height:10px;border-radius:50%;background:#e11d48;box-shadow:0 0 0 0 rgba(225,29,72,.6);animation:fuPulse 1.4s infinite;flex-shrink:0}
+@keyframes fuPulse{0%{box-shadow:0 0 0 0 rgba(225,29,72,.6)}70%{box-shadow:0 0 0 9px rgba(225,29,72,0)}100%{box-shadow:0 0 0 0 rgba(225,29,72,0)}}
+@media(max-width:768px){
+  #fu-timer{left:12px;right:12px;transform:none;flex-wrap:wrap;gap:8px}
+  .fu-item{grid-template-columns:52px 1fr}
+  .fu-act{grid-column:1/-1;justify-content:flex-start}
+}
+
 /* ===================== BOTÃO ATUALIZAR ===================== */
 .btn-atualizar { white-space:nowrap; }
 .btn-atualizar .ico-at { display:inline-block; }
@@ -740,6 +842,10 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
     <div class="nav-item" onclick="goPage('aguardando')"><span class="ico">⏳</span> Aguardando Cliente</div>
     <div class="nav-item" onclick="goPage('futura')"><span class="ico">📅</span> Venda Futura</div>
     <div class="nav-item" onclick="goPage('reprovados')"><span class="ico">❌</span> Reprovados</div>
+
+    <div class="nav-group">Follow-up</div>
+    <div class="nav-item" onclick="goPage('followup')"><span class="ico">📌</span> Planejar Follow-up</div>
+    <div class="nav-item" onclick="goPage('dash-followup')"><span class="ico">📈</span> Dashboard Follow-up</div>
 
     <div class="nav-group">Financeiro</div>
     <div class="nav-item" onclick="goPage('cobranca')"><span class="ico">💰</span> Cobrança</div>
@@ -1059,6 +1165,96 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
     </div>
   </div>
 
+  <!-- ===== PLANEJAR FOLLOW-UP ===== -->
+  <div class="page" id="page-followup">
+   <div class="dx-wrap">
+    <div class="dx-filters">
+      <div class="form-group" style="flex:1;min-width:170px"><label>Buscar</label><input type="text" id="fu-search" placeholder="🔍 Buscar cliente ou arquiteto..." oninput="renderFollowup()"></div>
+      <div class="form-group"><label>Vendedor</label><select id="fu-filter-vend" onchange="renderFollowup()" style="min-width:150px"><option value="">Todos</option></select></div>
+      <div class="form-group"><label>Contato</label><select id="fu-filter-tipo" onchange="renderFollowup()" style="min-width:130px"><option value="">Todos</option><option value="cliente">Clientes</option><option value="arquiteto">Arquitetos</option></select></div>
+      <div class="form-group"><label>Situação</label><select id="fu-filter-status" onchange="renderFollowup()" style="min-width:150px">
+        <option value="pendente">Pendentes (Agenda)</option><option value="realizado">Realizados</option><option value="cancelado">Cancelados</option><option value="todos">Todos</option></select></div>
+      <div class="form-group"><label>Canal</label><select id="fu-filter-canal" onchange="renderFollowup()" style="min-width:140px"><option value="">Todos</option>
+        <option value="whatsapp">WhatsApp</option><option value="ligacao">Ligação</option><option value="email">E-mail</option><option value="loja">Reunião na Loja</option><option value="visita">Visita ao Cliente</option></select></div>
+      <button class="btn btn-gold" onclick="novoFollowup()">+ Novo Follow-up</button>
+    </div>
+    <div class="dx-kpis" id="fu-kpis"></div>
+    <div class="dx-row dx-r1">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">📅 Agenda de Follow-up</div><div class="dx-card-s">Contatos planejados por data — comece pelos atrasados e pelos de hoje</div></div></div>
+        <div id="fu-agenda"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">💡 Sugestões C@P</div><div class="dx-card-s">Orçamentos em negociação sem contato agendado · maior valor primeiro</div></div></div>
+        <div id="fu-sug"></div>
+        <div class="coach-tip"><b>Cadência C@P:</b> 1º contato 2 dias após o envio (WhatsApp) · 2º contato 3 dias depois (ligação) · 3º contato 5 dias depois, lembrando a validade. Sem resposta após 3 tentativas, envie uma mensagem de encerramento — ela costuma gerar retorno.</div>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ===== DASHBOARD FOLLOW-UP ===== -->
+  <div class="page" id="page-dash-followup">
+   <div class="dx-wrap">
+    <div class="dx-filters">
+      <div class="form-group"><label>Vendedor</label><select id="dfu-filter-vend" onchange="renderDashFollowup()" style="min-width:160px"><option value="">Todos</option></select></div>
+      <div class="form-group"><label>Contato</label><select id="dfu-filter-tipo" onchange="renderDashFollowup()" style="min-width:130px"><option value="">Todos</option><option value="cliente">Clientes</option><option value="arquiteto">Arquitetos</option></select></div>
+      <div class="form-group"><label>De</label><input type="date" id="dfu-filter-ini" onchange="renderDashFollowup()"></div>
+      <div class="form-group"><label>Até</label><input type="date" id="dfu-filter-fim" onchange="renderDashFollowup()"></div>
+      <button class="btn btn-outline" onclick="limparFiltros(['dfu-filter-vend','dfu-filter-tipo','dfu-filter-ini','dfu-filter-fim'],renderDashFollowup)">✕ Limpar</button>
+      <button class="btn btn-gold" onclick="goPage('followup')">📌 Abrir Agenda</button>
+    </div>
+    <div class="dx-kpis" id="dfu-kpis"></div>
+    <div class="dx-card">
+      <div class="dx-card-h"><div><div class="dx-card-t">🧭 Leitura do Follow-up</div><div class="dx-card-s">O que os números de acompanhamento estão dizendo</div></div></div>
+      <div id="dfu-insights"></div>
+    </div>
+    <div class="dx-row dx-r1">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Contatos por Semana</div><div class="dx-card-s">Planejados × realizados · últimas 8 semanas</div></div>
+          <div class="dx-leg"><span><i style="background:linear-gradient(135deg,#a5b4fc,#4338ca)"></i>Planejados</span><span><i style="background:linear-gradient(135deg,#6ee7b7,#047857)"></i>Realizados</span></div></div>
+        <div id="dfu-semanas"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Resultado dos Contatos</div><div class="dx-card-s">Como os clientes responderam</div></div></div>
+        <div id="dfu-resultados"></div>
+      </div>
+    </div>
+    <div class="dx-row dx-r3">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Eficiência por Canal</div><div class="dx-card-s">Contatos realizados e taxa de resposta</div></div></div>
+        <div id="dfu-canal"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Temperatura do Pipeline</div><div class="dx-card-s">Valor em aberto pela última avaliação do cliente</div></div></div>
+        <div id="dfu-temp"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Cobertura de Follow-up</div><div class="dx-card-s">Orçamentos em negociação com e sem contato agendado</div></div></div>
+        <div id="dfu-cob"></div>
+      </div>
+    </div>
+    <div class="dx-row dx-r3">
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">⏱️ Tempo Investido em Follow-up</div><div class="dx-card-s">Medido pelo cronômetro ▶️ de cada contato</div></div></div>
+        <div id="dfu-tempo"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Tempo Médio por Canal</div><div class="dx-card-s">Duração média de cada contato</div></div></div>
+        <div id="dfu-tempo-canal"></div>
+      </div>
+      <div class="dx-card">
+        <div class="dx-card-h"><div><div class="dx-card-t">Tempo por Vendedor</div><div class="dx-card-s">Tempo total dedicado a follow-up</div></div></div>
+        <div id="dfu-tempo-vend"></div>
+      </div>
+    </div>
+    <div class="dx-card">
+      <div class="dx-card-h"><div><div class="dx-card-t">Desempenho por Vendedor</div><div class="dx-card-s">Disciplina de follow-up e resultado</div></div></div>
+      <div id="dfu-vend"></div>
+    </div>
+   </div>
+  </div>
+
   <!-- ===== COBRANÇA ===== -->
   <div class="page" id="page-cobranca">
     <div class="card">
@@ -1228,112 +1424,50 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
   </div>
 
   <!-- ===== USUÁRIOS ===== -->
-  <!-- ===== USUÁRIOS ===== -->
   <div class="page" id="page-usuarios">
-
-    <!-- ABAS -->
-    <div style="display:flex;gap:0;margin-bottom:20px;border-radius:8px;overflow:hidden;border:1px solid var(--border);width:fit-content">
-      <button id="tab-btn-users" onclick="switchUserTab('users')"
-        style="padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:Inter,sans-serif;background:var(--gold);color:#1a0;transition:.15s;color:#0a0800">
-        👥 Usuários
-      </button>
-      <button id="tab-btn-perms" onclick="switchUserTab('perms')"
-        style="padding:10px 22px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:Inter,sans-serif;background:var(--surface);color:var(--text2);border-left:1px solid var(--border);transition:.15s">
-        🔐 Permissões de Tela
-      </button>
+   <div class="dx-wrap">
+    <div class="us-tabs">
+      <button id="tab-btn-users" class="on" onclick="switchUserTab('users')">👥 Usuários</button>
+      <button id="tab-btn-perms" onclick="switchUserTab('perms')">🔐 Permissões por Perfil</button>
     </div>
 
     <!-- ABA: USUÁRIOS -->
     <div id="tab-users">
-      <div class="users-grid">
-
-        <!-- FORM -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title" id="user-form-title">➕ Novo Usuário</span>
-          </div>
-          <div class="form-grid">
-            <div class="form-group full">
-              <label>Nome de Exibição *</label>
-              <input type="text" id="u-nome" placeholder="Ex: João Silva">
-            </div>
-            <div class="form-group">
-              <label>Login (usuário) *</label>
-              <input type="text" id="u-user" placeholder="joaosilva" autocomplete="off" style="text-transform:lowercase">
-            </div>
-            <div class="form-group">
-              <label>Senha *</label>
-              <div style="position:relative">
-                <input type="password" id="u-pass" placeholder="Mínimo 6 caracteres" autocomplete="new-password" style="width:100%;padding-right:40px">
-                <button onclick="togglePassVis('u-pass','eye-u-pass')" type="button"
-                  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px" id="eye-u-pass">👁️</button>
-              </div>
-              <div id="u-pass-strength" style="margin-top:4px;height:4px;border-radius:2px;background:var(--border);overflow:hidden">
-                <div id="u-pass-bar" style="height:100%;width:0%;border-radius:2px;transition:all .3s"></div>
-              </div>
-              <div id="u-pass-hint" style="font-size:10px;color:var(--text3);margin-top:2px"></div>
-            </div>
-            <div class="form-group">
-              <label>Confirmar Senha</label>
-              <div style="position:relative">
-                <input type="password" id="u-pass2" placeholder="Repita a senha" autocomplete="new-password" style="width:100%;padding-right:40px" oninput="checkPassMatch()">
-                <button onclick="togglePassVis('u-pass2','eye-u-pass2')" type="button"
-                  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px" id="eye-u-pass2">👁️</button>
-              </div>
-              <div id="u-pass2-hint" style="font-size:10px;margin-top:2px"></div>
-            </div>
-            <div class="form-group full">
-              <label>Perfil Base</label>
-              <select id="u-perfil" onchange="perfilChanged()">
-                <option value="admin">👑 Administrador — acesso total</option>
-                <option value="vendas">🛒 Vendas — comercial e orçamentos</option>
-                <option value="diretoria">🏛️ Diretoria — aprovações</option>
-                <option value="financeiro">💰 Financeiro — cobrança e pedidos</option>
-                <option value="custom">⚙️ Personalizado — definir abaixo</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- PERMISSÕES INLINE (aparece quando perfil=custom) -->
-          <div id="custom-perms-wrap" style="display:none;margin-top:14px;padding:14px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)">
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px;font-weight:700">Telas Acessíveis</div>
-            <div id="custom-perms-list" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
-          </div>
-
-          <input type="hidden" id="u-edit-id">
-          <div class="form-actions" style="margin-top:18px">
-            <button class="btn btn-outline" onclick="cancelarEditUser()">Cancelar</button>
-            <button class="btn btn-gold" onclick="salvarUsuario()">💾 Salvar Usuário</button>
-          </div>
-          <div style="margin-top:14px;padding:10px 12px;background:#fdf8ec;border-radius:6px;border-left:3px solid var(--gold);font-size:11px;color:var(--text2)">
-            ⚠️ Usuários salvos localmente neste dispositivo. Anote as senhas.
-          </div>
+      <div class="dx-kpis" id="us-kpis" style="margin-bottom:18px"></div>
+      <div class="dx-card">
+        <div class="dx-card-h">
+          <div><div class="dx-card-t">Usuários do Sistema</div><div class="dx-card-s">Logins, perfis de acesso e vínculo com o cadastro de vendedores</div></div>
+          <button class="btn btn-gold" onclick="novoUsuario()">+ Novo Usuário</button>
         </div>
-
-        <!-- LISTA -->
-        <div class="card">
-          <div class="card-header"><span class="card-title">👥 Usuários Cadastrados</span></div>
-          <div id="lista-usuarios"></div>
+        <div class="us-toolbar">
+          <input type="text" id="us-search" placeholder="🔍 Buscar por nome ou login..." oninput="renderUsuarios()">
+          <select id="us-filter-perfil" onchange="renderUsuarios()"><option value="">Todos os perfis</option>
+            <option value="admin">👑 Administrador</option><option value="vendas">🛒 Vendas</option><option value="diretoria">🏛️ Diretoria</option><option value="financeiro">💰 Financeiro</option><option value="custom">⚙️ Personalizado</option></select>
+          <select id="us-filter-status" onchange="renderUsuarios()"><option value="">Ativos e inativos</option><option value="ativo">Somente ativos</option><option value="inativo">Somente inativos</option></select>
+        </div>
+        <div class="table-wrap">
+          <table class="us-table">
+            <thead><tr><th>Usuário</th><th>Perfil</th><th>Vendedor Vinculado</th><th>Acesso</th><th>Status</th><th style="text-align:right">Ações</th></tr></thead>
+            <tbody id="us-tbody"></tbody>
+          </table>
         </div>
       </div>
+      <div class="us-note">☁️ Os usuários ficam sincronizados na nuvem — qualquer alteração vale para todos os dispositivos a partir do próximo login. O <b>vendedor vinculado</b> define a carteira que o usuário vê em Aguardando Cliente e Follow-up.</div>
     </div>
 
     <!-- ABA: PERMISSÕES -->
     <div id="tab-perms" style="display:none">
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">🔐 Permissões de Tela por Perfil</span>
+      <div class="dx-card">
+        <div class="dx-card-h">
+          <div><div class="dx-card-t">🔐 Permissões de Tela por Perfil</div><div class="dx-card-s">Defina quais telas cada perfil pode acessar. Usuários com perfil Personalizado têm as telas definidas no próprio cadastro.</div></div>
           <button class="btn btn-gold" onclick="salvarPermissoes()">💾 Salvar Permissões</button>
         </div>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:20px">
-          Defina quais telas cada perfil pode acessar. O perfil <b>Administrador</b> sempre tem acesso total.
-        </p>
         <div id="perms-table-wrap"></div>
       </div>
     </div>
+   </div>
   </div>
 
-  
   <!-- ===== DASHBOARD (com filtros) ===== -->
 
   <!-- ===== ARQUITETOS ===== -->
@@ -1730,7 +1864,7 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
       <button class="modal-close" onclick="closeModal('modal-cliente')">✕</button>
     </div>
     <div class="form-grid">
-      <div class="form-group"><label>Nome Completo *</label><input type="text" id="cli-nome" placeholder="Nome do cliente"></div>
+      <div class="form-group"><label>Nome Completo *</label><input type="text" id="cli-nome" placeholder="Nome do cliente" onblur="this.value=formatarNomeProprio(this.value)"></div>
       <div class="form-group"><label>CPF / CNPJ</label><input type="text" id="cli-doc" placeholder="000.000.000-00"></div>
       <div class="form-group"><label>Email</label><input type="email" id="cli-email" placeholder="email@exemplo.com"></div>
       <div class="form-group"><label>Telefone</label><input type="text" id="cli-tel" placeholder="(47) 99999-9999"></div>
@@ -1740,7 +1874,7 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
       <div class="form-group full"><label>Observações</label><textarea id="cli-obs"></textarea></div>
     </div>
     <div class="form-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-cliente');_cliFromFu=false">Cancelar</button>
       <button class="btn btn-gold" onclick="salvarCliente()">💾 Salvar Cliente</button>
     </div>
   </div>
@@ -1910,6 +2044,142 @@ label, th, .nav-group, .kpi-label, .dx-kpi-label, .dx-hero-main small, .dx-hero-
   </div>
 </div>
 
+<!-- MODAL USUÁRIO -->
+<div class="modal-overlay" id="modal-usuario">
+  <div class="modal" style="width:760px">
+    <div class="modal-header">
+      <span class="modal-title" id="user-form-title">➕ Novo Usuário</span>
+      <button class="modal-close" onclick="cancelarEditUser()">✕</button>
+    </div>
+
+    <div class="us-sec">1 · Dados de Acesso</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Nome de Exibição *</label><input type="text" id="u-nome" placeholder="Ex.: João Silva"></div>
+      <div class="form-group"><label>Login (Usuário) *</label><input type="text" id="u-user" placeholder="joaosilva" autocomplete="off" style="text-transform:lowercase"></div>
+      <div class="form-group">
+        <label id="u-pass-lbl">Senha *</label>
+        <div style="position:relative">
+          <input type="password" id="u-pass" autocomplete="new-password" style="width:100%;padding-right:40px" oninput="avaliarSenha()">
+          <button onclick="togglePassVis('u-pass','eye-u-pass')" type="button" id="eye-u-pass" class="us-eye">👁️</button>
+        </div>
+        <div style="margin-top:5px;height:4px;border-radius:2px;background:var(--border);overflow:hidden"><div id="u-pass-bar" style="height:100%;width:0%;border-radius:2px;transition:all .3s"></div></div>
+        <div style="display:flex;justify-content:space-between;gap:8px;margin-top:3px"><span id="u-pass-hint" style="font-size:10.5px"></span></div>
+      </div>
+      <div class="form-group">
+        <label>Confirmar Senha</label>
+        <div style="position:relative">
+          <input type="password" id="u-pass2" autocomplete="new-password" style="width:100%;padding-right:40px" oninput="checkPassMatch()">
+          <button onclick="togglePassVis('u-pass2','eye-u-pass2')" type="button" id="eye-u-pass2" class="us-eye">👁️</button>
+        </div>
+        <div id="u-pass2-hint" style="font-size:10.5px;margin-top:8px"></div>
+      </div>
+      <div class="form-group full" style="flex-direction:row;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span id="u-pass-info" class="us-sec-sub" style="margin:0"></span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="gerarSenhaUsuario()">🎲 Gerar Senha Forte</button>
+      </div>
+    </div>
+
+    <div class="us-sec">2 · Perfil de Acesso</div>
+    <input type="hidden" id="u-perfil" value="vendas">
+    <div class="us-perfis" id="us-perfis"></div>
+    <div id="us-telas-prev" style="margin-top:12px"></div>
+    <div id="custom-perms-wrap" style="display:none;margin-top:12px">
+      <div class="us-sec-sub">Marque as telas que este usuário poderá acessar</div>
+      <div id="custom-perms-list" class="us-grps"></div>
+    </div>
+
+    <div class="us-sec">3 · Vínculo e Status</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Vendedor Vinculado</label><select id="u-vendedor"></select>
+        <div class="us-sec-sub" style="margin-top:4px">Define a carteira em Aguardando Cliente e Follow-up</div></div>
+      <div class="form-group"><label>Status do Acesso</label>
+        <label class="us-switch" data-no-tc><span class="perm-toggle"><input type="checkbox" id="u-ativo" checked><span class="perm-slider"></span></span> Usuário ativo (pode entrar no sistema)</label></div>
+    </div>
+
+    <input type="hidden" id="u-edit-id">
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="cancelarEditUser()">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarUsuario()">💾 Salvar Usuário</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOLLOW-UP (NOVO / EDITAR) -->
+<div class="modal-overlay" id="modal-followup">
+  <div class="modal" style="width:580px">
+    <div class="modal-header">
+      <span class="modal-title" id="fu-modal-title">📌 Novo Follow-up</span>
+      <button class="modal-close" onclick="closeModal('modal-followup')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full"><label>Follow-up com</label>
+        <div class="fu-tipo"><button type="button" id="fu-tipo-cli" class="on" onclick="fuSetTipo('cliente')">👤 Cliente</button><button type="button" id="fu-tipo-arq" onclick="fuSetTipo('arquiteto')">📐 Arquiteto</button></div>
+        <input type="hidden" id="fu-tipo" value="cliente"></div>
+      <div class="form-group full" id="fu-cli-wrap"><label>Cliente *</label>
+        <div style="display:flex;gap:6px"><select id="fu-cli" style="flex:1;min-width:0" onchange="fuAtualizarOrcs(null)"></select>
+        <button type="button" class="btn btn-outline btn-sm" onclick="novoClienteDoFu()" title="Cadastrar novo cliente" style="white-space:nowrap">+ Novo</button></div></div>
+      <div class="form-group full" id="fu-arq-wrap" style="display:none"><label>Arquiteto *</label>
+        <div style="display:flex;gap:6px"><select id="fu-arq" style="flex:1;min-width:0" onchange="fuAtualizarOrcs(null)"></select>
+        <button type="button" class="btn btn-outline btn-sm" onclick="novoArquitetoDoFu()" title="Cadastrar novo arquiteto" style="white-space:nowrap">+ Novo</button></div></div>
+      <div class="form-group"><label>Orçamento (Opcional)</label><select id="fu-orc" onchange="fuOrcChange()"></select></div>
+      <div class="form-group"><label>Vendedor Responsável</label><select id="fu-vend"></select></div>
+      <div class="form-group"><label>Data *</label><input type="date" id="fu-data"></div>
+      <div class="form-group"><label>Horário</label><input type="time" id="fu-hora"></div>
+      <div class="form-group"><label>Canal</label><select id="fu-canal">
+        <option value="whatsapp">💬 WhatsApp</option><option value="ligacao">📞 Ligação</option><option value="email">✉️ E-mail</option><option value="loja">🏬 Reunião na Loja</option><option value="visita">🚗 Visita ao Cliente</option></select></div>
+      <div class="form-group"><label>Temperatura do Cliente</label><select id="fu-temp">
+        <option value="">Não Avaliado</option><option value="quente">🔥 Quente</option><option value="morno">🌤️ Morno</option><option value="frio">❄️ Frio</option></select></div>
+      <div class="form-group full"><label>Objetivo do Contato</label><select id="fu-objetivo"></select></div>
+      <div class="form-group full"><label>Roteiro / Observações</label><textarea id="fu-notas" rows="3" placeholder="O que falar, dúvidas do cliente, o que levar..."></textarea></div>
+    </div>
+    <label class="fu-check" id="fu-cad-wrap" data-no-tc><input type="checkbox" id="fu-cadencia"> Criar cadência C@P: mais 2 contatos (+3 e +8 dias após esta data)</label>
+    <input type="hidden" id="fu-edit-id">
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-followup')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarFollowup()">💾 Salvar Follow-up</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR CONTATO -->
+<div class="modal-overlay" id="modal-fu-registro">
+  <div class="modal" style="width:560px">
+    <div class="modal-header">
+      <span class="modal-title">✅ Registrar Contato</span>
+      <button class="modal-close" onclick="closeModal('modal-fu-registro')">✕</button>
+    </div>
+    <div class="fu-info" id="fur-info" data-no-tc></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Resultado *</label><select id="fur-resultado" onchange="furResultadoChange()">
+        <option value="">Selecione...</option>
+        <option value="interessado">Interessado — Avançou</option>
+        <option value="analise">Respondeu — Em Análise</option>
+        <option value="ajuste">Pediu Ajuste na Proposta</option>
+        <option value="depois">Pediu para Falar Depois</option>
+        <option value="semresposta">Sem Resposta</option>
+        <option value="fechou">Fechou a Venda</option>
+        <option value="perdeu">Perdeu a Venda</option></select></div>
+      <div class="form-group"><label>Temperatura do Cliente</label><select id="fur-temp">
+        <option value="">Não Avaliado</option><option value="quente">🔥 Quente</option><option value="morno">🌤️ Morno</option><option value="frio">❄️ Frio</option></select></div>
+      <div class="form-group full"><label>Anotações do Contato</label><textarea id="fur-notas" rows="3" placeholder="O que o cliente disse, objeções, combinados..."></textarea></div>
+      <div class="form-group full"><label>Duração do Contato (Minutos)</label><input type="number" id="fur-dur" min="0" step="0.1" placeholder="Ex.: 5">
+        <div id="fur-dur-hint" style="font-size:11px;color:var(--text3);margin-top:3px"></div></div>
+      <div class="form-group full"><label>Próximo Passo</label><input type="text" id="fur-prox" placeholder="Ex.: enviar opção de sofá em linho"></div>
+    </div>
+    <label class="fu-check" data-no-tc><input type="checkbox" id="fur-agendar" onchange="furToggle()" checked> Agendar o próximo follow-up</label>
+    <div class="form-grid" id="fur-prox-wrap" style="margin-top:10px">
+      <div class="form-group"><label>Data do Próximo Contato</label><input type="date" id="fur-data"></div>
+      <div class="form-group"><label>Canal</label><select id="fur-canal">
+        <option value="whatsapp">💬 WhatsApp</option><option value="ligacao">📞 Ligação</option><option value="email">✉️ E-mail</option><option value="loja">🏬 Reunião na Loja</option><option value="visita">🚗 Visita ao Cliente</option></select></div>
+    </div>
+    <input type="hidden" id="fur-id">
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-fu-registro')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarRegistroFu()">💾 Registrar Contato</button>
+    </div>
+  </div>
+</div>
+
 <!-- DETALHES ORÇAMENTO -->
 <div class="modal-overlay" id="modal-orc-detalhe">
   <div class="modal" style="width:680px">
@@ -2054,8 +2324,21 @@ function toSupa_cliente(c){
     cidade:c.cidade||null, uf:c.uf||null, endereco:c.endereco||null,
     cep:c.cep||null, obs:c.obs||null };
 }
+// Padroniza nomes: Primeira Letra Maiúscula (conectivos da/de/do/das/dos/e em minúsculo)
+const NOME_MINUSC=new Set(['da','de','do','das','dos','e']);
+const NOME_SIGLAS=new Set(['LTDA','ME','EPP','EIRELI','SA','S/A','S.A.','MEI','II','III','IV']);
+function formatarNomeProprio(s){
+  if(!s) return s||'';
+  return String(s).trim().replace(/\s+/g,' ').split(' ').map((w,i)=>{
+    const up=w.toLocaleUpperCase('pt-BR');
+    if(NOME_SIGLAS.has(up.replace(/[,]$/,''))) return up;
+    const low=w.toLocaleLowerCase('pt-BR');
+    if(i>0 && NOME_MINUSC.has(low)) return low;
+    return low.replace(/(^|[-'’])(\p{L})/gu,(m,p,c)=>p+c.toLocaleUpperCase('pt-BR'));
+  }).join(' ');
+}
 function fromSupa_cliente(r){
-  return { id:r.id, nome:r.nome, doc:r.doc, email:r.email, tel:r.tel,
+  return { id:r.id, nome:formatarNomeProprio(r.nome), doc:r.doc, email:r.email, tel:r.tel,
     cidade:r.cidade, uf:r.uf, endereco:r.endereco, cep:r.cep, obs:r.obs, criadoEm:r.criado_em };
 }
 
@@ -2268,6 +2551,8 @@ const pageConfig = {
   diretoria:  { title:'Análise da Diretoria' },
   aguardando: { title:'Aguardando Cliente' },
   futura:     { title:'Venda Futura' },
+  followup:   { title:'Planejar Follow-up' },
+  'dash-followup': { title:'Dashboard de Follow-up' },
   reprovados: { title:'Orçamentos Reprovados' },
   cobranca:   { title:'Cobrança Financeiro' },
   pedidos:    { title:'Pedidos Aprovados' },
@@ -2287,8 +2572,14 @@ function getSessao(){
 
 // Tela nova "Venda Futura": quem já acessa "Aguardando Cliente" passa a acessá-la
 function _comFutura(telas){
-  if(Array.isArray(telas) && telas.includes('aguardando') && !telas.includes('futura')) return [...telas,'futura'];
-  return telas;
+  if(!Array.isArray(telas)) return telas;
+  let t=telas;
+  const add=x=>{ if(!t.includes(x)) t=[...t,x]; };
+  // Telas novas: Venda Futura e Follow-up para quem já acessa "Aguardando Cliente";
+  // Dashboard de Follow-up também para a Diretoria
+  if(t.includes('aguardando')){ add('futura'); add('followup'); add('dash-followup'); }
+  if(t.includes('diretoria')) add('dash-followup');
+  return t;
 }
 function getTelasPermitidas(){ return _comFutura(_getTelasPermitidasBase()); }
 function _getTelasPermitidasBase(){
@@ -2367,6 +2658,8 @@ function goPage(page){
   if(page==='diretoria') renderDiretoria().catch(_c);
   if(page==='aguardando') renderAguardando().catch(_c);
   if(page==='futura') renderFutura().catch(_c);
+  if(page==='followup') renderFollowup().catch(_c);
+  if(page==='dash-followup') renderDashFollowup().catch(_c);
   if(page==='reprovados') renderReprovados().catch(_c);
   if(page==='cobranca') renderCobranca().catch(_c);
   if(page==='pedidos') renderPedidos().catch(_c);
@@ -2384,7 +2677,7 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 // (evita fechar sozinho ao selecionar texto num campo e soltar o mouse fora da caixa).
 // Formulários de cadastro NÃO fecham pelo fundo — só pelo ✕ ou Cancelar,
 // para não perder o que já foi digitado.
-const MODAIS_SEM_FECHAR_NO_FUNDO = ['modal-orcamento','modal-produto','modal-cliente','modal-vendedor','modal-arquiteto','modal-ambiente','modal-item-edit'];
+const MODAIS_SEM_FECHAR_NO_FUNDO = ['modal-usuario','modal-followup','modal-fu-registro','modal-orcamento','modal-produto','modal-cliente','modal-vendedor','modal-arquiteto','modal-ambiente','modal-item-edit'];
 document.querySelectorAll('.modal-overlay').forEach(o=>{
   let pressStartNoFundo=false;
   o.addEventListener('mousedown',e=>{ pressStartNoFundo=(e.target===o); });
@@ -2793,7 +3086,7 @@ async function editCliente(id){
 }
 
 async function salvarCliente(){
-  const nome=document.getElementById('cli-nome').value.trim();
+  const nome=formatarNomeProprio(document.getElementById('cli-nome').value.trim());
   if(!nome) return alertMsg('Informe o nome do cliente','danger');
   const clientes=await SUPA_DB.get('clientes');
   const data={
@@ -2818,7 +3111,9 @@ async function salvarCliente(){
     SUPA_DB.invalidate('clientes');
     editCliId=null;
     closeModal('modal-cliente');
+    document.getElementById('modal-cliente').style.zIndex='';
     await renderClientes();
+    if(_cliFromFu){ _cliFromFu=false; await fuAposCadastro('cliente', data.nome); }
     alertMsg('Cliente salvo!');
   }catch(e){ alertMsg('Erro ao salvar cliente: '+e.message,'danger'); }
 }
@@ -3748,6 +4043,7 @@ async function verOrcamento(id){
   if(orc.status==='futura') actions+=`<button class="btn btn-outline" onclick="closeModal('modal-orc-detalhe');openOrcamentoForm(${id})">✏️ Editar</button><button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'futura')">❌ Reprovar</button>`;
   if(orc.status==='diretoria') actions+=`<button class="btn btn-success" onclick="mudarStatus(${id},'aprovado')">✅ Aprovar</button><button class="btn btn-danger" onclick="abrirReprovar(${id},'diretoria')">❌ Reprovar</button>`;
   if(orc.status==='aprovado') actions+=`<button class="btn btn-gold" onclick="mudarStatus(${id},'cobranca')">💰 Enviar para Cobrança</button>`;
+  if(orc.status!=='reprovado') actions+=`<button class="btn btn-outline" onclick="novoFollowup(${id})">📌 Agendar Follow-up</button>`;
   document.getElementById('det-actions').innerHTML=actions;
 
   openModal('modal-orc-detalhe');
@@ -4152,6 +4448,7 @@ async function salvarArquiteto(){
     }
     SUPA_DB.invalidate('arquitetos');
     const fromOrc = _arqFromOrc;
+    const fromFu = _arqFromFu;
     const nomeNovo = data.nome;
     closeModal('modal-arquiteto');
     limparFormArq(); // reseta z-index e a flag _arqFromOrc
@@ -4168,6 +4465,7 @@ async function salvarArquiteto(){
         calcTotais();
       }
     }
+    if(fromFu) await fuAposCadastro('arquiteto', nomeNovo);
     alertMsg('Arquiteto salvo!');
   }catch(e){ alertMsg('Erro: '+e.message,'danger'); }
 }
@@ -4216,6 +4514,7 @@ function limparFormArq(){
   document.getElementById('arq-modal-title').textContent='Novo Arquiteto';
   const m=document.getElementById('modal-arquiteto'); if(m) m.style.zIndex='';
   _arqFromOrc = false;
+  _arqFromFu = false;
 }
 
 // ===================== DASH ARQUITETOS =====================
@@ -4583,6 +4882,8 @@ const TODAS_TELAS = [
   {id:'aguardando', label:'⏳ Aguardando Cliente'},
   {id:'futura',     label:'📅 Venda Futura'},
   {id:'reprovados', label:'❌ Reprovados'},
+  {id:'followup',   label:'📌 Planejar Follow-up'},
+  {id:'dash-followup', label:'📈 Dashboard Follow-up'},
   {id:'cobranca',   label:'💰 Cobrança'},
   {id:'pedidos',    label:'✅ Pedidos Aprovados'},
   {id:'arquitetos', label:'📐 Arquitetos'},
@@ -4594,8 +4895,8 @@ const TODAS_TELAS = [
 
 const PERFIL_TELAS = {
   admin:      TODAS_TELAS.map(t=>t.id),
-  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','funil','aguardando','futura','reprovados'],
-  diretoria:  ['dashboard','orcamentos','funil','diretoria','futura','reprovados'],
+  vendas:     ['dashboard','produtos','clientes','vendedores','orcamentos','funil','aguardando','futura','reprovados','followup','dash-followup'],
+  diretoria:  ['dashboard','orcamentos','funil','diretoria','futura','reprovados','followup','dash-followup'],
   financeiro: ['dashboard','cobranca','pedidos'],
   custom:     [],
 };
@@ -4649,282 +4950,306 @@ function savePermissoes(p){
   supaSetConfig('permissoes', p); // grava na nuvem — dispara em segundo plano
 }
 
-// ─── ABAS ───────────────────────────────────────────
+// ─── GERENCIAR USUÁRIOS ──────────────────────────────
+const GRUPOS_TELAS=[
+  {t:'Visão Geral', ids:['dashboard']},
+  {t:'Cadastros',   ids:['produtos','clientes','vendedores','arquitetos','ambientes']},
+  {t:'Comercial',   ids:['orcamentos','funil','diretoria','aguardando','futura','reprovados']},
+  {t:'Follow-up',   ids:['followup','dash-followup']},
+  {t:'Financeiro',  ids:['cobranca','pedidos','dash-arq']},
+  {t:'Sistema',     ids:['empresa','usuarios']},
+];
+const PERFIL_DESC={
+  admin:'Acesso total ao sistema, incluindo usuários e configurações',
+  vendas:'Cadastros, orçamentos, acompanhamento do cliente e follow-up',
+  diretoria:'Aprovação de orçamentos e visão gerencial do comercial',
+  financeiro:'Cobrança e pedidos aprovados',
+  custom:'Você escolhe manualmente quais telas ficam liberadas',
+};
+const PERFIL_COR={admin:['#f3cf7a','#a8721e'],vendas:['#93c5fd','#1d4ed8'],diretoria:['#d8b4fe','#7c3aed'],financeiro:['#6ee7b7','#047857'],custom:['#cbd5e1','#475569']};
+const usEsc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const usIniciais=n=>(n||'?').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const telaLabel=id=>(TODAS_TELAS.find(t=>t.id===id)||{label:id}).label;
+function telasDoUsuario(u){
+  if(u.perfil==='admin') return TODAS_TELAS.map(t=>t.id);
+  if(u.perfil==='custom') return _comFutura(u.telas||[]);
+  const perms=getPermissoes();
+  return _comFutura(perms[u.perfil]||PERFIL_TELAS[u.perfil]||[]);
+}
+const adminsAtivos=users=>users.filter(u=>u.perfil==='admin'&&u.ativo!==false);
+
+// ─── ABAS ───
 function switchUserTab(tab){
-  document.getElementById('tab-users').style.display = tab==='users'?'block':'none';
-  document.getElementById('tab-perms').style.display = tab==='perms'?'block':'none';
-  document.getElementById('tab-btn-users').classList.toggle('tab-active', tab==='users');
-  document.getElementById('tab-btn-perms').classList.toggle('tab-active', tab==='perms');
-  document.getElementById('tab-btn-users').style.background = tab==='users'?'var(--gold)':'var(--surface)';
-  document.getElementById('tab-btn-users').style.color = tab==='users'?'#0a0800':'var(--text2)';
-  document.getElementById('tab-btn-perms').style.background = tab==='perms'?'var(--gold)':'var(--surface)';
-  document.getElementById('tab-btn-perms').style.color = tab==='perms'?'#0a0800':'var(--text2)';
+  document.getElementById('tab-users').style.display=tab==='users'?'block':'none';
+  document.getElementById('tab-perms').style.display=tab==='perms'?'block':'none';
+  document.getElementById('tab-btn-users').classList.toggle('on',tab==='users');
+  document.getElementById('tab-btn-perms').classList.toggle('on',tab==='perms');
   if(tab==='perms') renderPermissoes();
 }
 
-// ─── LISTA USUÁRIOS ──────────────────────────────────
-function renderUsuarios(){
-  const users = getUsuarios();
-  document.getElementById('u-edit-id').value='';
-  const sess = JSON.parse(localStorage.getItem('deco_session')||'{}');
-  document.getElementById('lista-usuarios').innerHTML = users.length ? users.map(u=>`
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);margin-bottom:8px;transition:.15s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${PERFIL_ICO[u.perfil]||'👤'}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:700;color:var(--text)">${u.nome} ${u.user===sess.user?'<span style="font-size:10px;background:var(--gold-dim);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:500">você</span>':''}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:1px">@${u.user} · ${PERFIL_LABEL[u.perfil]||u.perfil} · ${(u.telas||[]).length} telas</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
-        <button class="btn btn-outline btn-sm" onclick="editarUsuario(${u.id})" title="Editar">✏️ Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="deletarUsuario(${u.id})" title="Excluir">🗑️</button>
-      </div>
-    </div>
-  `).join('') : '<div class="empty" style="padding:24px"><div class="empty-ico">👥</div><div class="empty-msg">Nenhum usuário</div></div>';
+// ─── LISTA ───
+let _usVends=[];
+async function renderUsuarios(){
+  try{ _usVends=await SUPA_DB.get('vendedores'); }catch(e){ _usVends=[]; }
+  const users=getUsuarios();
+  const sess=getSessao();
+  const q=normalizeTxt(document.getElementById('us-search')?.value||'');
+  const pf=document.getElementById('us-filter-perfil')?.value||'';
+  const st=document.getElementById('us-filter-status')?.value||'';
+  const ativos=users.filter(u=>u.ativo!==false);
+  const cnt=p=>ativos.filter(u=>u.perfil===p).length;
+  document.getElementById('us-kpis').innerHTML=[
+    {ico:'👥',c:DX_G.indigo, label:'Usuários Ativos', val:String(ativos.length), sub:`${users.length} cadastrado(s) no total`},
+    {ico:'👑',c:DX_G.gold,   label:'Administradores', val:String(cnt('admin')), sub:'Acesso total'},
+    {ico:'🛒',c:DX_G.sky,    label:'Vendas', val:String(cnt('vendas')), sub:'Equipe comercial'},
+    {ico:'🏛️',c:DX_G.violet, label:'Diretoria', val:String(cnt('diretoria')), sub:'Aprovações'},
+    {ico:'💰',c:DX_G.emerald,label:'Financeiro', val:String(cnt('financeiro')), sub:cnt('custom')?`+ ${cnt('custom')} personalizado(s)`:'Cobrança e pedidos'},
+    {ico:'⏸️',c:DX_G.rose,   label:'Inativos', val:String(users.length-ativos.length), sub:'Sem acesso ao sistema'},
+  ].map(dxKpi).join('');
+
+  const lista=users.filter(u=>(!q||normalizeTxt(u.nome+' '+u.user).includes(q))&&(!pf||u.perfil===pf)
+      &&(!st||(st==='ativo'?u.ativo!==false:u.ativo===false)))
+    .sort((a,b)=>(a.ativo===false)-(b.ativo===false)||String(a.nome).localeCompare(String(b.nome),'pt-BR'));
+  const tbody=document.getElementById('us-tbody');
+  tbody.innerHTML = lista.length ? lista.map(u=>{
+    const c=PERFIL_COR[u.perfil]||PERFIL_COR.custom;
+    const telas=telasDoUsuario(u);
+    const v=_usVends.find(x=>x.id===u.vendedorId);
+    const eu=u.user===sess.user; const inativo=u.ativo===false;
+    return `<tr class="${inativo?'us-off':''}">
+      <td><div class="us-user"><span class="us-av" style="background:${dxGrad(c)}">${usIniciais(u.nome)}</span>
+        <div><b>${usEsc(u.nome)}${eu?'<span class="us-eu">Você</span>':''}</b><small>@${usEsc(u.user)}</small></div></div></td>
+      <td><span class="us-perfil" style="background:${c[0]}33;color:${c[1]};border-color:${c[0]}">${PERFIL_ICO[u.perfil]||'👤'} ${PERFIL_LABEL[u.perfil]||u.perfil}</span></td>
+      <td>${v?`🤝 ${usEsc(v.nome)}`:'<span style="color:var(--text3)">—</span>'}</td>
+      <td><span class="us-telas" title="${usEsc(telas.map(telaLabel).join(' · '))}">${u.perfil==='admin'?'Acesso total':telas.length+' tela(s)'}</span></td>
+      <td><span class="us-st ${inativo?'off':'on'}">${inativo?'Inativo':'Ativo'}</span></td>
+      <td><div class="us-act">
+        <button class="btn btn-outline btn-sm" onclick="editarUsuario(${u.id})" title="Editar usuário">✏️ Editar</button>
+        <button class="btn btn-outline btn-sm" onclick="editarUsuario(${u.id},true)" title="Redefinir senha">🔑</button>
+        ${eu?'':`<button class="btn btn-outline btn-sm" onclick="alternarStatusUsuario(${u.id})" title="${inativo?'Reativar acesso':'Desativar acesso'}">${inativo?'▶️':'⏸️'}</button>
+        <button class="btn btn-outline btn-sm" onclick="deletarUsuario(${u.id})" title="Excluir usuário" style="color:var(--danger)">🗑️</button>`}
+      </div></td></tr>`;
+  }).join('') : `<tr><td colspan="6"><div class="empty"><div class="empty-ico">👥</div><div class="empty-msg">Nenhum usuário encontrado</div></div></td></tr>`;
 }
 
-// ─── FORÇA DA SENHA ──────────────────────────────────
-document.addEventListener('DOMContentLoaded', ()=>{
-  const passEl = document.getElementById('u-pass');
-  if(passEl) passEl.addEventListener('input', ()=>{
-    const v = passEl.value;
-    let score = 0;
-    if(v.length>=6) score++;
-    if(v.length>=10) score++;
-    if(/[A-Z]/.test(v)) score++;
-    if(/[0-9]/.test(v)) score++;
-    if(/[^A-Za-z0-9]/.test(v)) score++;
-    const colors = ['','#c05040','#c08040','#a08030','#5a9060','#2e7040'];
-    const labels = ['','Muito fraca','Fraca','Média','Boa','Forte'];
-    const pct = score ? score/5*100 : 0;
-    document.getElementById('u-pass-bar').style.width = pct+'%';
-    document.getElementById('u-pass-bar').style.background = colors[score]||'';
-    document.getElementById('u-pass-hint').textContent = v ? labels[score]||'' : '';
-    document.getElementById('u-pass-hint').style.color = colors[score]||'';
-    checkPassMatch();
-  });
-});
+// ─── FORMULÁRIO (MODAL) ───
+function _usPreencherPerfis(sel){
+  document.getElementById('u-perfil').value=sel;
+  const perms=getPermissoes();
+  document.getElementById('us-perfis').innerHTML=['admin','vendas','diretoria','financeiro','custom'].map(p=>{
+    const c=PERFIL_COR[p]; const n=p==='admin'?TODAS_TELAS.length:p==='custom'?null:_comFutura(perms[p]||PERFIL_TELAS[p]||[]).length;
+    return `<button type="button" class="us-pf ${p===sel?'on':''}" style="--pc:${c[1]}" onclick="selecionarPerfil('${p}')">
+      <span class="us-pf-ico" style="background:${dxGrad(c)}">${PERFIL_ICO[p]}</span>
+      <b>${PERFIL_LABEL[p]}</b><small>${PERFIL_DESC[p]}</small>
+      <em>${p==='admin'?'Todas as telas':n==null?'Telas à escolha':n+' telas'}</em></button>`;
+  }).join('');
+}
+function selecionarPerfil(p){ _usPreencherPerfis(p); perfilChanged(); }
+function perfilChanged(){
+  const perfil=document.getElementById('u-perfil').value;
+  const wrap=document.getElementById('custom-perms-wrap');
+  const prev=document.getElementById('us-telas-prev');
+  if(perfil==='custom'){
+    wrap.style.display='block'; prev.style.display='none';
+    const editId=parseInt(document.getElementById('u-edit-id').value)||0;
+    const u=getUsuarios().find(x=>x.id===editId);
+    renderCustomPerms(u&&u.perfil==='custom'?(u.telas||[]):[]);
+  } else {
+    wrap.style.display='none'; prev.style.display='block';
+    const telas=perfil==='admin'?TODAS_TELAS.map(t=>t.id):_comFutura(getPermissoes()[perfil]||PERFIL_TELAS[perfil]||[]);
+    prev.innerHTML=`<div class="us-sec-sub">Telas liberadas por este perfil${perfil==='admin'?'':' — ajuste em <b>Permissões por Perfil</b>'}</div>
+      <div class="us-chips">${telas.map(id=>`<span>${telaLabel(id)}</span>`).join('')}</div>`;
+  }
+}
+function renderCustomPerms(ativas){
+  document.getElementById('custom-perms-list').innerHTML=GRUPOS_TELAS.map(g=>`<div class="us-grp">
+    <div class="us-grp-h"><span>${g.t}</span><a onclick="marcarGrupoCustom(${GRUPOS_TELAS.indexOf(g)})">Marcar grupo</a></div>
+    ${g.ids.map(id=>`<label class="us-ck" data-no-tc><input type="checkbox" id="cperm-${id}" ${ativas.includes(id)?'checked':''}> ${telaLabel(id)}</label>`).join('')}
+  </div>`).join('');
+}
+function marcarGrupoCustom(i){
+  const ids=GRUPOS_TELAS[i].ids; const els=ids.map(id=>document.getElementById('cperm-'+id)).filter(Boolean);
+  const todos=els.every(e=>e.checked); els.forEach(e=>e.checked=!todos);
+}
+function _usVendSelect(sel){
+  const el=document.getElementById('u-vendedor');
+  el.innerHTML='<option value="">Nenhum (não vende)</option>'+_usVends.map(v=>`<option value="${v.id}">${usEsc(v.nome)}</option>`).join('');
+  el.value=sel?String(sel):'';
+}
+function _usLimparSenha(){
+  ['u-pass','u-pass2'].forEach(id=>{ const e=document.getElementById(id); e.value=''; e.type='password'; });
+  ['eye-u-pass','eye-u-pass2'].forEach(id=>document.getElementById(id).textContent='👁️');
+  document.getElementById('u-pass-bar').style.width='0%';
+  document.getElementById('u-pass-hint').textContent='';
+  document.getElementById('u-pass2-hint').textContent='';
+}
+async function novoUsuario(){
+  try{ _usVends=await SUPA_DB.get('vendedores'); }catch(e){}
+  cancelarEditUser();
+  document.getElementById('user-form-title').textContent='➕ Novo Usuário';
+  document.getElementById('u-pass-lbl').textContent='Senha *';
+  document.getElementById('u-pass-info').textContent='Mínimo de 6 caracteres. Combine letras, números e símbolos.';
+  _usPreencherPerfis('vendas'); perfilChanged(); _usVendSelect('');
+  document.getElementById('u-ativo').checked=true;
+  openModal('modal-usuario');
+  setTimeout(()=>document.getElementById('u-nome').focus(),60);
+}
+async function editarUsuario(id, focoSenha){
+  try{ _usVends=await SUPA_DB.get('vendedores'); }catch(e){}
+  const u=getUsuarios().find(x=>x.id===id); if(!u) return;
+  document.getElementById('u-edit-id').value=id;
+  document.getElementById('u-nome').value=u.nome||'';
+  document.getElementById('u-user').value=u.user||'';
+  _usLimparSenha();
+  document.getElementById('user-form-title').textContent=(focoSenha?'🔑 Redefinir Senha · ':'✏️ Editar · ')+u.nome;
+  document.getElementById('u-pass-lbl').textContent='Nova Senha';
+  document.getElementById('u-pass-info').textContent='Deixe em branco para manter a senha atual.';
+  _usPreencherPerfis(u.perfil||'vendas'); perfilChanged(); _usVendSelect(u.vendedorId);
+  document.getElementById('u-ativo').checked=u.ativo!==false;
+  openModal('modal-usuario');
+  setTimeout(()=>document.getElementById(focoSenha?'u-pass':'u-nome').focus(),60);
+}
+function cancelarEditUser(){
+  document.getElementById('u-edit-id').value='';
+  ['u-nome','u-user'].forEach(id=>document.getElementById(id).value='');
+  _usLimparSenha();
+  closeModal('modal-usuario');
+}
 
+// ─── SENHA ───
+function avaliarSenha(){
+  const v=document.getElementById('u-pass').value;
+  let score=0;
+  if(v.length>=6) score++; if(v.length>=10) score++;
+  if(/[A-Z]/.test(v)) score++; if(/[0-9]/.test(v)) score++; if(/[^A-Za-z0-9]/.test(v)) score++;
+  const colors=['','#c05040','#c08040','#a08030','#5a9060','#2e7040'];
+  const labels=['','Muito fraca','Fraca','Média','Boa','Forte'];
+  document.getElementById('u-pass-bar').style.width=(score?score/5*100:0)+'%';
+  document.getElementById('u-pass-bar').style.background=colors[score]||'';
+  const h=document.getElementById('u-pass-hint'); h.textContent=v?labels[score]||'':''; h.style.color=colors[score]||'';
+  checkPassMatch();
+}
 function checkPassMatch(){
-  const p1 = document.getElementById('u-pass')?.value||'';
-  const p2 = document.getElementById('u-pass2')?.value||'';
-  const hint = document.getElementById('u-pass2-hint');
-  if(!hint) return;
+  const p1=document.getElementById('u-pass')?.value||'', p2=document.getElementById('u-pass2')?.value||'';
+  const hint=document.getElementById('u-pass2-hint'); if(!hint) return;
   if(!p2){ hint.textContent=''; return; }
   if(p1===p2){ hint.textContent='✓ Senhas conferem'; hint.style.color='var(--success)'; }
   else { hint.textContent='✗ Senhas diferentes'; hint.style.color='var(--danger)'; }
 }
-
 function togglePassVis(inputId, btnId){
-  const inp = document.getElementById(inputId);
-  const btn = document.getElementById(btnId);
+  const inp=document.getElementById(inputId), btn=document.getElementById(btnId);
   if(!inp) return;
-  if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈'; }
-  else { inp.type='password'; btn.textContent='👁️'; }
+  if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈'; } else { inp.type='password'; btn.textContent='👁️'; }
+}
+function gerarSenhaUsuario(){
+  const ch='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789', sb='@#$%&*!';
+  const arr=new Uint32Array(10); crypto.getRandomValues(arr);
+  let s=[...arr].slice(0,9).map(n=>ch[n%ch.length]).join('')+sb[arr[9]%sb.length];
+  ['u-pass','u-pass2'].forEach(id=>{ const e=document.getElementById(id); e.value=s; e.type='text'; });
+  ['eye-u-pass','eye-u-pass2'].forEach(id=>document.getElementById(id).textContent='🙈');
+  avaliarSenha();
+  alertMsg('Senha gerada — anote ou envie ao usuário antes de salvar.');
 }
 
-// ─── PERFIL CHANGED → mostrar custom perms ───────────
-function perfilChanged(){
-  const perfil = document.getElementById('u-perfil').value;
-  const wrap = document.getElementById('custom-perms-wrap');
-  wrap.style.display = perfil==='custom' ? 'block' : 'none';
-  if(perfil==='custom') renderCustomPerms([]);
-}
-
-function renderCustomPerms(ativas){
-  const list = document.getElementById('custom-perms-list');
-  list.innerHTML = TODAS_TELAS.map(t=>`
-    <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;background:var(--surface);border:1px solid var(--border)">
-      <input type="checkbox" id="cperm-${t.id}" ${ativas.includes(t.id)?'checked':''} style="accent-color:var(--gold)">
-      <span style="font-size:12px;color:var(--text)">${t.label}</span>
-    </label>
-  `).join('');
-}
-
-// ─── SALVAR USUÁRIO ──────────────────────────────────
+// ─── SALVAR / STATUS / EXCLUIR ───
 function salvarUsuario(){
-  const nome = document.getElementById('u-nome').value.trim();
-  const user = document.getElementById('u-user').value.trim().toLowerCase().replace(/\s+/g,'');
-  const pass = document.getElementById('u-pass').value;
-  const pass2 = document.getElementById('u-pass2').value;
-  const perfil = document.getElementById('u-perfil').value;
-  const editId = parseInt(document.getElementById('u-edit-id').value)||0;
+  const nome=document.getElementById('u-nome').value.trim().replace(/\s+/g,' ');
+  const user=document.getElementById('u-user').value.trim().toLowerCase().replace(/\s+/g,'');
+  const pass=document.getElementById('u-pass').value, pass2=document.getElementById('u-pass2').value;
+  const perfil=document.getElementById('u-perfil').value;
+  const editId=parseInt(document.getElementById('u-edit-id').value)||0;
+  const vendedorId=parseInt(document.getElementById('u-vendedor').value)||null;
+  const ativo=document.getElementById('u-ativo').checked;
+  const sess=getSessao();
 
   if(!nome) return alertMsg('Informe o nome de exibição','danger');
   if(!user) return alertMsg('Informe o login do usuário','danger');
-  if(!editId && pass.length < 6) return alertMsg('Senha precisa ter mínimo 6 caracteres','danger');
-  if(pass && pass !== pass2) return alertMsg('As senhas não conferem','danger');
+  if(!/^[a-z0-9._-]{3,}$/.test(user)) return alertMsg('Login deve ter ao menos 3 caracteres: letras, números, ponto, hífen ou sublinhado','danger');
+  if(!editId && pass.length<6) return alertMsg('A senha precisa ter no mínimo 6 caracteres','danger');
+  if(editId && pass && pass.length<6) return alertMsg('A nova senha precisa ter no mínimo 6 caracteres','danger');
+  if(pass && pass!==pass2) return alertMsg('As senhas não conferem','danger');
 
-  // Telas conforme perfil
   let telas;
   if(perfil==='custom'){
-    telas = TODAS_TELAS.map(t=>t.id).filter(id=>{
-      const el = document.getElementById('cperm-'+id);
-      return el && el.checked;
-    });
-    if(!telas.length) return alertMsg('Selecione pelo menos uma tela para acesso','danger');
-  } else {
-    const perms = getPermissoes();
-    telas = perms[perfil] || PERFIL_TELAS[perfil] || [];
-  }
+    telas=TODAS_TELAS.map(t=>t.id).filter(id=>document.getElementById('cperm-'+id)?.checked);
+    if(!telas.length) return alertMsg('Selecione pelo menos uma tela para o perfil personalizado','danger');
+  } else telas=getPermissoes()[perfil]||PERFIL_TELAS[perfil]||[];
 
-  const users = getUsuarios();
-  if(users.find(u=>u.user===user && u.id!==editId)) return alertMsg('Login já utilizado por outro usuário','danger');
+  const users=getUsuarios();
+  if(users.find(u=>u.user===user && u.id!==editId)) return alertMsg('Este login já é usado por outro usuário','danger');
+  const atual=users.find(u=>u.id===editId);
+  if(atual && atual.user===sess.user && (!ativo || perfil!=='admin') && sess.perfil==='admin')
+    return alertMsg('Você não pode remover o seu próprio acesso de administrador ou se desativar','danger');
+  const simulado=users.map(u=>u.id===editId?{...u,perfil,ativo}:u);
+  if(!editId) simulado.push({perfil,ativo});
+  if(!adminsAtivos(simulado).length) return alertMsg('O sistema precisa de pelo menos um administrador ativo','danger');
 
   if(editId){
-    const i = users.findIndex(u=>u.id===editId);
-    if(i<0) return;
-    users[i].nome = nome;
-    users[i].user = user;
-    users[i].perfil = perfil;
-    users[i].telas = telas;
-    if(pass) users[i].pass = pass;
-  } else {
-    users.push({ id: Date.now(), nome, user, pass, perfil, telas });
-  }
-
+    Object.assign(atual,{nome,user,perfil,telas,vendedorId,ativo});
+    if(pass) atual.pass=pass;
+  } else users.push({id:Date.now(),nome,user,pass,perfil,telas,vendedorId,ativo,criadoEm:today()});
   saveUsuarios(users);
+  // Se editou o próprio usuário, atualiza o nome exibido na barra lateral
+  if(atual && atual.user===sess.user){
+    localStorage.setItem('deco_session',JSON.stringify({...sess,user,nome,perfil}));
+    document.getElementById('logged-name').textContent=nome;
+    document.getElementById('sb-avatar').textContent=usIniciais(nome);
+  }
   cancelarEditUser();
   renderUsuarios();
-  alertMsg('Usuário salvo com sucesso!');
+  alertMsg(editId?'Usuário atualizado!':'Usuário criado com sucesso!');
 }
-
-function editarUsuario(id){
-  const users = getUsuarios();
-  const u = users.find(x=>x.id===id); if(!u) return;
-  document.getElementById('u-edit-id').value = id;
-  document.getElementById('u-nome').value = u.nome;
-  document.getElementById('u-user').value = u.user;
-  document.getElementById('u-pass').value = '';
-  document.getElementById('u-pass2').value = '';
-  document.getElementById('u-perfil').value = u.perfil;
-  document.getElementById('user-form-title').textContent = '✏️ Editar: '+u.nome;
-  // custom perms
-  const wrap = document.getElementById('custom-perms-wrap');
-  wrap.style.display = u.perfil==='custom' ? 'block' : 'none';
-  if(u.perfil==='custom') renderCustomPerms(u.telas||[]);
-  // limpar força de senha
-  document.getElementById('u-pass-bar').style.width='0%';
-  document.getElementById('u-pass-hint').textContent='';
-  document.getElementById('u-pass2-hint').textContent='';
-  // scroll ao form
-  document.getElementById('user-form-title').scrollIntoView({behavior:'smooth', block:'start'});
+function alternarStatusUsuario(id){
+  const users=getUsuarios(); const u=users.find(x=>x.id===id); if(!u) return;
+  const desativar=u.ativo!==false;
+  if(desativar && u.perfil==='admin' && adminsAtivos(users).length<=1) return alertMsg('O sistema precisa de pelo menos um administrador ativo','danger');
+  if(!confirm(desativar?`Desativar o acesso de "${u.nome}"? O usuário não conseguirá mais entrar, mas o histórico é mantido.`:`Reativar o acesso de "${u.nome}"?`)) return;
+  u.ativo=!desativar;
+  saveUsuarios(users); renderUsuarios();
+  alertMsg(desativar?'Usuário desativado':'Usuário reativado');
 }
-
 function deletarUsuario(id){
-  const sess = JSON.parse(localStorage.getItem('deco_session')||'{}');
-  const users = getUsuarios();
-  const u = users.find(x=>x.id===id);
-  if(u?.user === sess?.user) return alertMsg('Não é possível excluir o próprio usuário logado','danger');
-  if(users.length<=1) return alertMsg('O sistema precisa de pelo menos 1 usuário','danger');
-  if(!confirm('Excluir usuário "'+u?.nome+'"? Esta ação não pode ser desfeita.')) return;
+  const sess=getSessao(); const users=getUsuarios(); const u=users.find(x=>x.id===id);
+  if(!u) return;
+  if(u.user===sess.user) return alertMsg('Não é possível excluir o próprio usuário logado','danger');
+  if(u.perfil==='admin' && u.ativo!==false && adminsAtivos(users).length<=1) return alertMsg('O sistema precisa de pelo menos um administrador ativo','danger');
+  if(!confirm(`Excluir o usuário "${u.nome}"? Esta ação não pode ser desfeita.\n\nDica: para apenas bloquear o acesso, use ⏸️ Desativar.`)) return;
   saveUsuarios(users.filter(x=>x.id!==id));
   renderUsuarios();
   alertMsg('Usuário excluído');
 }
 
-function cancelarEditUser(){
-  document.getElementById('u-edit-id').value='';
-  document.getElementById('u-nome').value='';
-  document.getElementById('u-user').value='';
-  document.getElementById('u-pass').value='';
-  document.getElementById('u-pass2').value='';
-  document.getElementById('u-perfil').value='admin';
-  document.getElementById('user-form-title').textContent='➕ Novo Usuário';
-  document.getElementById('custom-perms-wrap').style.display='none';
-  document.getElementById('u-pass-bar').style.width='0%';
-  document.getElementById('u-pass-hint').textContent='';
-  document.getElementById('u-pass2-hint').textContent='';
-}
-
-// ─── TABELA DE PERMISSÕES POR PERFIL ─────────────────
+// ─── PERMISSÕES POR PERFIL ───
+const PERFIS_MATRIZ=['vendas','diretoria','financeiro'];
 function renderPermissoes(){
   initPermissoes();
-  const perms = getPermissoes();
-  const perfis = ['vendas','diretoria','financeiro','custom'];
-  const perfisLabel = {vendas:'🛒 Vendas', diretoria:'🏛️ Diretoria', financeiro:'💰 Financeiro', custom:'⚙️ Personalizado'};
-  const perfisColors = {vendas:'#2050a0', diretoria:'#6a1080', financeiro:'#1a5028', custom:'#7a5000'};
-
-  // Cores fixas para garantir visibilidade
-  const C = {
-    border: '#d0c8b8',
-    bg: '#ffffff',
-    bgAlt: '#f9f6f0',
-    bgHeader: '#2a2200',
-    textHeader: '#e8c96a',
-    textLabel: '#1a1500',
-    textSub: '#6a5a40',
-    textMuted: '#9a8a70',
-    bgCheckd: '#d8f0e0',
-  };
-
-  let html = `<div style="overflow-x:auto;border:1px solid ${C.border};border-radius:8px;overflow:hidden">`;
-  html += `<table style="width:100%;border-collapse:collapse;min-width:500px">`;
-
-  // HEADER
-  html += `<thead><tr>`;
-  html += `<th style="padding:12px 16px;background:${C.bgHeader};text-align:left;font-size:12px;font-weight:700;color:${C.textHeader};border-right:1px solid #4a3a10;white-space:nowrap">TELA</th>`;
-  perfis.forEach(p=>{
-    html += `<th style="padding:12px 10px;background:${C.bgHeader};text-align:center;font-size:12px;font-weight:700;color:${C.textHeader};border-right:1px solid #4a3a10;min-width:130px">${perfisLabel[p]}</th>`;
-  });
-  html += `</tr></thead><tbody>`;
-
-  // LINHAS
-  TODAS_TELAS.forEach((t,idx)=>{
-    const isAdminOnly = t.id==='usuarios';
-    const rowBg = idx%2===0 ? C.bg : C.bgAlt;
-    html += `<tr style="background:${rowBg}">`;
-    html += `<td style="padding:10px 16px;font-size:13px;font-weight:500;color:${C.textLabel};border-right:1px solid ${C.border};border-bottom:1px solid ${C.border};white-space:nowrap">${t.label}</td>`;
-    perfis.forEach(p=>{
-      const checked = isAdminOnly ? false : (perms[p]||[]).includes(t.id);
-      html += `<td style="padding:10px;text-align:center;border-right:1px solid ${C.border};border-bottom:1px solid ${C.border};background:${checked&&!isAdminOnly?C.bgCheckd:rowBg}">`;
-      if(isAdminOnly){
-        html += `<span style="font-size:13px;color:${C.textMuted}" title="Exclusivo do Administrador">—</span>`;
-      } else {
-        html += `<label style="display:inline-flex;align-items:center;cursor:pointer;gap:6px">`;
-        html += `<input type="checkbox" id="perm-${p}-${t.id}" ${checked?'checked':''} style="width:16px;height:16px;cursor:pointer;accent-color:#a8721e">`;
-        html += `<span style="font-size:11px;color:${checked?'#1a5028':C.textMuted}">${checked?'✓ Sim':'Não'}</span>`;
-        html += `</label>`;
-      }
-      html += `</td>`;
-    });
-    html += `</tr>`;
-  });
-
-  html += `</tbody></table></div>`;
-  html += `<p style="font-size:12px;color:${C.textSub};margin-top:10px">* Administrador sempre tem acesso total a todas as telas. Marque ✓ para liberar acesso.</p>`;
-
-  document.getElementById('perms-table-wrap').innerHTML = html;
-
-  // Listener para atualizar label ao clicar
-  document.querySelectorAll('#perms-table-wrap input[type=checkbox]').forEach(cb=>{
-    cb.addEventListener('change', function(){
-      const lbl = this.nextElementSibling;
-      if(lbl){
-        lbl.textContent = this.checked ? '✓ Sim' : 'Não';
-        lbl.style.color = this.checked ? '#1a5028' : '#9a8a70';
-        this.closest('td').style.background = this.checked ? '#d8f0e0' : '';
-      }
-    });
-  });
+  const perms=getPermissoes(); const users=getUsuarios().filter(u=>u.ativo!==false);
+  const head=`<tr><th class="pm-tela">Tela</th><th class="pm-col">👑 Administrador<small>${users.filter(u=>u.perfil==='admin').length} usuário(s)</small></th>`
+    +PERFIS_MATRIZ.map(p=>`<th class="pm-col">${PERFIL_ICO[p]} ${PERFIL_LABEL[p]}<small>${users.filter(u=>u.perfil===p).length} usuário(s)</small>
+      <a onclick="marcarColunaPerm('${p}')">Marcar / desmarcar todas</a></th>`).join('')+'</tr>';
+  const body=GRUPOS_TELAS.map(g=>`<tr class="pm-grp"><td colspan="${PERFIS_MATRIZ.length+2}">${g.t}</td></tr>`
+    +g.ids.map(id=>{
+      const soAdmin=id==='usuarios';
+      return `<tr><td class="pm-tela">${telaLabel(id)}${soAdmin?'<small>Exclusivo do Administrador</small>':''}</td>
+        <td class="pm-col"><span class="pm-lock" title="Administrador tem acesso total">✓</span></td>`
+        +PERFIS_MATRIZ.map(p=>soAdmin?`<td class="pm-col"><span class="pm-na">—</span></td>`
+          :`<td class="pm-col"><label class="perm-toggle" data-no-tc><input type="checkbox" id="perm-${p}-${id}" ${(perms[p]||[]).includes(id)?'checked':''}><span class="perm-slider"></span></label></td>`).join('')
+        +'</tr>';
+    }).join('')).join('');
+  document.getElementById('perms-table-wrap').innerHTML=`<div class="table-wrap"><table class="pm-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
-
+function marcarColunaPerm(p){
+  const els=TODAS_TELAS.map(t=>document.getElementById('perm-'+p+'-'+t.id)).filter(Boolean);
+  const todos=els.every(e=>e.checked); els.forEach(e=>e.checked=!todos);
+}
 function salvarPermissoes(){
-  const perms = getPermissoes();
-  const perfis = ['vendas','diretoria','financeiro','custom'];
-  perfis.forEach(p=>{
-    perms[p] = TODAS_TELAS.map(t=>t.id).filter(id=>{
-      const el = document.getElementById('perm-'+p+'-'+id);
-      return el && el.checked;
-    });
+  const perms=getPermissoes();
+  PERFIS_MATRIZ.forEach(p=>{
+    perms[p]=TODAS_TELAS.map(t=>t.id).filter(id=>document.getElementById('perm-'+p+'-'+id)?.checked);
   });
   savePermissoes(perms);
-  // Atualizar telas de usuários que usam esses perfis (não custom individual)
-  const users = getUsuarios();
-  users.forEach(u=>{
-    if(u.perfil!=='custom' && u.perfil!=='admin'){
-      u.telas = perms[u.perfil]||[];
-    }
-  });
+  const users=getUsuarios();
+  users.forEach(u=>{ if(u.perfil!=='custom' && u.perfil!=='admin') u.telas=perms[u.perfil]||[]; });
   saveUsuarios(users);
   alertMsg('Permissões salvas! Usuários atualizados.');
 }
@@ -5001,6 +5326,10 @@ async function doLogin(){
   const usuarios = getUsuarios();
   const found = usuarios.find(x=>x.user===u && x.pass===p);
 
+  if(found && found.ativo===false){
+    err.textContent='Usuário inativo. Fale com o administrador do sistema.';
+    return;
+  }
   if(!found){
     err.textContent='Usuário ou senha incorretos.';
     const box = document.querySelector('.login-box');
@@ -5601,6 +5930,7 @@ async function gerarCatalogoCliente(id){
       ? '<img src="'+item.foto+'" alt="">'
       : '<div class="sem-foto">Sem foto</div>';
     return '<div class="card"><div class="foto">'+img+'</div>'
+      +(item.ambiente ? '<div class="amb">🏠 '+item.ambiente+'</div>' : '')
       +'<div class="nome">'+item.nome+'</div>'
       +'<div class="vals">'
       +'<div><label>Qtd</label><span>'+item.qty+' '+(item.unidade||'Un')+'</span></div>'
@@ -5663,6 +5993,7 @@ body { font-family:'DM Sans',Arial,sans-serif; background:#fff; color:#1a1500; -
 .foto { aspect-ratio:1/1; background:#f7f3ea; display:flex; align-items:center; justify-content:center; }
 .foto img { width:100%; height:100%; object-fit:contain; }
 .sem-foto { font-size:12px; color:#b8b09a; }
+.amb { background:linear-gradient(135deg,#1a1500,#2a2000); color:#e7c877; text-align:center; padding:8px 10px; font-size:12.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
 .nome { padding:12px 14px 8px; font-size:14px; font-weight:500; text-align:center; border-top:1px solid #efe8da; }
 .vals { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; padding:8px 14px 12px; text-align:center; font-variant-numeric:tabular-nums; }
 .vals label { display:block; font-size:9px; color:#9a917d; text-transform:uppercase; letter-spacing:.09em; margin-bottom:2px; }
@@ -5744,11 +6075,11 @@ function dxMeses12(){
   }
   return r;
 }
-function dxColunas(meses, series, tip){
+function dxColunas(meses, series, tip, fy){
   const mx=Math.max(1,...meses.flatMap(m=>series.map(s=>m[s.k]||0)));
   const passos=[1,.75,.5,.25,0];
   return `<div class="dx-plot">
-    <div class="dx-grid">${passos.map(p=>`<div style="top:${(1-p)*100}%"><span>${p?dxK(mx*p).replace('R$ ',''):'0'}</span></div>`).join('')}</div>
+    <div class="dx-grid">${passos.map(p=>`<div style="top:${(1-p)*100}%"><span>${p?(fy?fy(mx*p):dxK(mx*p).replace('R$ ','')):'0'}</span></div>`).join('')}</div>
     ${meses.map(m=>`<div class="dx-col"><div class="dx-tip">${tip(m)}</div>
       <div class="dx-col-bars">${series.map(s=>`<span style="height:${Math.max(0,(m[s.k]||0))/mx*100}%;background:${dxGrad(s.c,180)}"></span>`).join('')}</div>
       <div class="dx-col-lbl">${m.lbl}</div></div>`).join('')}
@@ -6129,7 +6460,12 @@ const DICA_POR_MOTIVO = {
   'Margem insuficiente para aprovação':'Monte a proposta já respeitando a margem mínima para evitar retrabalho na aprovação.',
 };
 function _vendedorDaSessao(vends){
-  const s=getSessao(); const n=normalizeTxt(s.nome), u=normalizeTxt(s.user);
+  const s=getSessao();
+  // 1º: vínculo definido no cadastro do usuário
+  try{ const us=getUsuarios().find(x=>x.user===s.user);
+    if(us && us.vendedorId){ const v=vends.find(x=>x.id===us.vendedorId); if(v) return v; } }catch(e){}
+  // 2º: correspondência pelo nome (usuários sem vínculo definido)
+  const n=normalizeTxt(s.nome), u=normalizeTxt(s.user);
   if(!n && !u) return null;
   return vends.find(v=>normalizeTxt(v.nome)===n)
     || vends.find(v=>{ const vn=normalizeTxt(v.nome); const p=vn.split(/\s+/)[0];
@@ -6234,6 +6570,7 @@ async function renderAguardando(){
       <td style="display:flex;gap:6px;">
         ${waLink(o)}
         <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
+        <button class="btn btn-outline btn-sm" onclick="novoFollowup(${o.id})" title="Agendar follow-up">📌</button>
         <button class="btn btn-outline btn-sm" onclick="abrirVendaFutura(${o.id})" title="Cliente vai comprar mais para frente" style="color:var(--info)">📅 Venda Futura</button>
         <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'aguardando')">❌ Reprovar</button>
         <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'andamento','Orçamento devolvido para Andamento.')" title="Reverter para Em Andamento" style="color:var(--warning)">↩️ Reverter</button>
@@ -6319,6 +6656,7 @@ async function renderFutura(){
         <button class="btn btn-outline btn-sm" onclick="verOrcamento(${o.id})" title="Ver">👁️</button>
         <button class="btn btn-outline btn-sm" onclick="openOrcamentoForm(${o.id})" title="Editar orçamento">✏️ Editar</button>
         <button class="btn btn-outline btn-sm" onclick="abrirVendaFutura(${o.id})" title="Alterar previsão">📅</button>
+        <button class="btn btn-outline btn-sm" onclick="novoFollowup(${o.id},null,5)" title="Agendar follow-up">📌</button>
         <button class="btn btn-success btn-sm" onclick="mudarStatus(${o.id},'aprovado')">✅ Aprovar</button>
         <button class="btn btn-danger btn-sm" onclick="abrirReprovar(${o.id},'futura')">❌ Reprovar</button>
         <button class="btn btn-outline btn-sm" onclick="reverterStatus(${o.id},'enviado','Voltou para Aguardando Cliente.')" title="Voltar para Aguardando Cliente" style="color:var(--warning)">↩️</button>
@@ -6456,6 +6794,625 @@ async function gerarPdfFunil(){
   abrirRelatorioPDF({titulo:'Funil de Vendas', subtitulo:d.periodo+(d.filtro?' · '+d.filtro:''), corpo});
 }
 
+// ===================== FOLLOW-UP =====================
+// Registros ficam na tabela "configuracoes" (chave "followups"), sem alterar
+// a estrutura do banco. Cada gravação relê a nuvem antes, para não sobrescrever
+// o que outro vendedor acabou de lançar.
+const FU_CANAIS={whatsapp:{l:'WhatsApp',i:'💬'},ligacao:{l:'Ligação',i:'📞'},email:{l:'E-mail',i:'✉️'},loja:{l:'Reunião na Loja',i:'🏬'},visita:{l:'Visita ao Cliente',i:'🚗'}};
+const FU_OBJETIVOS=['Tirar Dúvidas da Proposta','Apresentar Alternativa ou Ajuste','Negociar Condição de Pagamento','Lembrar Validade da Proposta','Confirmar Decisão de Compra','Retomar Venda Futura','Convidar para Visitar a Loja','Dar Continuidade à Negociação','Pós-venda / Satisfação','Pedir Indicação','Outro'];
+const FU_OBJETIVOS_ARQ=['Relacionamento com Arquiteto','Apresentar Novidades e Lançamentos','Acompanhar Projeto em Andamento','Convidar para Visita ou Evento','Pontuação e Benefícios RT','Pedir Indicação','Dar Continuidade à Negociação','Outro'];
+const FU_RES={
+  interessado:{l:'Interessado — Avançou',  c:DX_G.emerald},
+  analise:    {l:'Respondeu — Em Análise', c:DX_G.sky},
+  ajuste:     {l:'Pediu Ajuste na Proposta',c:DX_G.violet},
+  depois:     {l:'Pediu para Falar Depois',c:DX_G.amber},
+  semresposta:{l:'Sem Resposta',           c:DX_G.rose},
+  fechou:     {l:'Fechou a Venda',         c:DX_G.gold},
+  perdeu:     {l:'Perdeu a Venda',         c:['#94a3b8','#475569']},
+};
+const FU_TEMP={quente:{l:'Quente',i:'🔥',c:DX_G.rose},morno:{l:'Morno',i:'🌤️',c:DX_G.amber},frio:{l:'Frio',i:'❄️',c:DX_G.sky}};
+const FU_CADENCIA=[{n:0,canal:'whatsapp',obj:'Tirar Dúvidas da Proposta'},{n:3,canal:'ligacao',obj:'Apresentar Alternativa ou Ajuste'},{n:8,canal:'whatsapp',obj:'Lembrar Validade da Proposta'}];
+const FU_ABERTOS=['andamento','enviado','futura','diretoria'];
+
+const fuEsc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fuIso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+const fuHoje=()=>fuIso(new Date());
+function fuAdd(iso,n){ const d=new Date((iso||fuHoje())+'T12:00'); d.setDate(d.getDate()+n); return fuIso(d); }
+function fuDias(iso){ return Math.round((new Date(iso+'T12:00')-new Date(fuHoje()+'T12:00'))/864e5); }
+function fuNovoId(){ return 'fu'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+function getFollowups(){ try{ const a=JSON.parse(localStorage.getItem('deco_followups')||'[]'); return Array.isArray(a)?a:[]; }catch{ return []; } }
+function _fuSetLocal(a){ try{ localStorage.setItem('deco_followups', JSON.stringify(a)); }catch(e){} }
+async function syncFollowupsSupa(){ try{ const r=await supaGetConfig('followups'); if(Array.isArray(r)) _fuSetLocal(r); }catch(e){} }
+async function fuMutar(fn){
+  await syncFollowupsSupa();
+  const arr=getFollowups();
+  fn(arr);
+  _fuSetLocal(arr);
+  const ok=await supaSetConfig('followups', arr);
+  if(!ok) alertMsg('Salvo apenas neste dispositivo — sem conexão com o servidor.','danger');
+  return arr;
+}
+async function fuCtx(){
+  const [orcs,clientes,vends,arqs]=await Promise.all([SUPA_DB.get('orcamentos'),SUPA_DB.get('clientes'),SUPA_DB.get('vendedores'),SUPA_DB.get('arquitetos')]);
+  const orcMap={}; orcs.forEach(o=>orcMap[o.id]=o);
+  return {orcs,clientes,vends,arqs,orcMap,meuVend:_vendedorDaSessao(vends),
+    cli:id=>clientes.find(c=>c.id===id)||{},
+    arq:id=>arqs.find(a=>a.id===id)||{},
+    vendNome:id=>vends.find(v=>v.id===id)?.nome||'Sem vendedor'};
+}
+// ---------- VISIBILIDADE POR USUÁRIO ----------
+// Administrador vê todos os follow-ups. Os demais usuários veem somente os
+// follow-ups que eles mesmos criaram (dono = login de quem cadastrou).
+const fuEhAdmin=()=>getSessao().perfil==='admin';
+function fuDoUsuario(f,ctx){
+  const s=getSessao();
+  if(s.perfil==='admin') return true;
+  if(f.usuario) return f.usuario===s.user;
+  // Registros antigos, criados antes desta regra (sem dono gravado)
+  if(f.criadoPor && normalizeTxt(f.criadoPor)===normalizeTxt(s.nome)) return true;
+  return !!(ctx.meuVend && f.vendedorId===ctx.meuVend.id);
+}
+const fuVisiveis=ctx=>getFollowups().filter(f=>fuDoUsuario(f,ctx));
+// Orçamentos usados nos indicadores e sugestões: admin vê todos; demais, só os do seu vendedor
+const fuOrcVisivel=(o,ctx)=>fuEhAdmin()||!!(ctx.meuVend&&o.vendedorId===ctx.meuVend.id);
+function fuFiltroVendedor(id){
+  const el=document.getElementById(id); if(!el) return '';
+  const adm=fuEhAdmin(); const g=el.closest('.form-group'); if(g) g.style.display=adm?'':'none';
+  if(!adm){ el.value=''; return ''; }
+  return el.value||'';
+}
+
+// Contato do follow-up: cliente ou arquiteto
+const fuEhArq=f=>f.tipo==='arquiteto';
+const fuPessoa=(f,ctx)=>fuEhArq(f)?ctx.arq(f.arquitetoId):ctx.cli(f.clienteId);
+const fuNome=(f,ctx)=>fuPessoa(f,ctx).nome||'—';
+
+// ---------- CRONÔMETRO DO CONTATO ----------
+function fuTimerGet(){ try{ return JSON.parse(localStorage.getItem('deco_fu_timer')||'null'); }catch{ return null; } }
+function fuTimerSeg(){ const t=fuTimerGet(); return t?Math.max(0,Math.floor((Date.now()-t.inicio)/1000)):0; }
+const fuClock=s=>{ s=Math.max(0,Math.round(s)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return (h?h+':'+String(m).padStart(2,'0'):String(m).padStart(2,'0'))+':'+String(x).padStart(2,'0'); };
+const fuDur=s=>{ s=Math.round(s||0); if(!s) return '0min'; const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return h?`${h}h ${String(m).padStart(2,'0')}min`:m?`${m}min${x?' '+String(x).padStart(2,'0')+'s':''}`:`${x}s`; };
+function fuTimerSet(t){
+  try{ if(t) localStorage.setItem('deco_fu_timer',JSON.stringify(t)); else localStorage.removeItem('deco_fu_timer'); }catch(e){}
+  fuTimerUI();
+}
+function iniciarTimerFu(id, nome){
+  const t=fuTimerGet();
+  if(t && t.id!==id && !confirm(`Já existe um cronômetro rodando para ${t.nome}. Descartar aquele tempo e iniciar este?`)) return;
+  fuTimerSet({id, nome:nome||'', inicio:Date.now()});
+  fuRefresh();
+}
+function pararTimerFu(){ const t=fuTimerGet(); if(t) abrirRegistroFu(t.id); }
+function descartarTimerFu(){
+  if(!confirm('Descartar o tempo cronometrado deste contato?')) return;
+  fuTimerSet(null); fuRefresh();
+}
+function fuTimerUI(){
+  const t=fuTimerGet();
+  let w=document.getElementById('fu-timer');
+  if(!t){ if(w) w.style.display='none'; return; }
+  if(!w){ w=document.createElement('div'); w.id='fu-timer'; document.body.appendChild(w); }
+  if(w.dataset.id!==t.id){
+    w.dataset.id=t.id;
+    w.innerHTML=`<span class="fu-timer-dot"></span><div><small>Contato em andamento</small><b data-no-tc>${fuEsc(t.nome||'Follow-up')}</b></div>
+      <span class="fu-timer-clk" id="fu-timer-clk">00:00</span>
+      <button class="btn btn-gold btn-sm" onclick="pararTimerFu()">⏹ Encerrar e Registrar</button>
+      <button class="btn btn-outline btn-sm" onclick="descartarTimerFu()" title="Descartar tempo" style="color:#e7c877;border-color:#4a3a18">✕</button>`;
+  }
+  w.style.display='flex';
+  fuTimerTick();
+}
+function fuTimerTick(){
+  const t=fuTimerGet(); if(!t) return;
+  const txt=fuClock(fuTimerSeg());
+  const c=document.getElementById('fu-timer-clk'); if(c) c.textContent=txt;
+  document.querySelectorAll('.fu-clk[data-id="'+t.id+'"]').forEach(e=>e.textContent=txt);
+}
+setInterval(fuTimerTick,1000);
+document.addEventListener('DOMContentLoaded',()=>{ try{ fuTimerUI(); }catch(e){} });
+function fuRefresh(){
+  const a=document.querySelector('.page.active'); const id=a?a.id.replace('page-',''):'';
+  const _c=e=>console.error(e);
+  if(id==='followup') renderFollowup().catch(_c);
+  else if(id==='dash-followup') renderDashFollowup().catch(_c);
+  else if(id==='aguardando') renderAguardando().catch(_c);
+  else if(id==='futura') renderFutura().catch(_c);
+}
+function fuWa(f,ctx){
+  const c=fuPessoa(f,ctx); let d=String(c.tel||'').replace(/\D/g,'');
+  if(d.length<10) return '';
+  if(!(d.startsWith('55')&&d.length>=12)) d='55'+d;
+  const emp=getEmpresa();
+  const msg=`Olá ${(c.nome||'').split(' ')[0]}, tudo bem? Aqui é ${ctx.vendNome(f.vendedorId).split(' ')[0]} da ${emp.nome||'Dana Casa'}. `
+    +(f.orcId?`Estou entrando em contato sobre a proposta Nº ${String(f.orcId).padStart(4,'0')}. `:'')
+    +(fuEhArq(f)?'Como estão os projetos? Posso ajudar com alguma seleção de produtos?':'Posso ajudar em algo?');
+  return `<a class="btn btn-outline btn-sm" href="https://wa.me/${d}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" title="Abrir WhatsApp">💬</a>`;
+}
+
+function fuItemHtml(f,ctx){
+  const o=ctx.orcMap[f.orcId]; const nome=fuNome(f,ctx);
+  const dt=new Date(f.data+'T12:00');
+  const dia=String(dt.getDate()).padStart(2,'0');
+  const mes=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][dt.getMonth()];
+  const sem=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dt.getDay()];
+  const dd=fuDias(f.data); const pend=f.status==='pendente';
+  const cor=!pend?(f.status==='realizado'?'#059669':'#94a3b8'):dd<0?'#e11d48':dd===0?'#d97706':'#4338ca';
+  const canal=FU_CANAIS[f.canal]||{l:f.canal||'—',i:'•'};
+  const temp=FU_TEMP[f.temp]; const res=FU_RES[f.resultado];
+  const pill=(c,t)=>`<span class="fu-tag" style="background:${dxGrad(c)};color:#fff;border:none">${t}</span>`;
+  const tags=[`<span class="fu-tag">${canal.i} ${canal.l}</span>`,
+    temp?pill(temp.c,temp.i+' '+temp.l):'',
+    pend&&dd<0?`<span class="fu-tag fu-late">Atrasado ${-dd}d</span>`:'',
+    f.status==='realizado'&&res?pill(res.c,res.l):'',
+    f.status==='realizado'&&f.realizadoEm?`<span class="fu-tag">✔ Feito em ${fmtDate(f.realizadoEm)}</span>`:'',
+    f.status==='realizado'&&f.duracaoSeg?`<span class="fu-tag">⏱️ ${fuDur(f.duracaoSeg)}</span>`:'',
+    f.status==='cancelado'?'<span class="fu-tag">Cancelado</span>':''].join('');
+  const tm=fuTimerGet(); const rodando=tm&&tm.id===f.id;
+  const play=rodando
+    ? `<button class="btn btn-sm fu-run" onclick="pararTimerFu()" title="Encerrar cronômetro e registrar">⏹ <span class="fu-clk" data-id="${f.id}">${fuClock(fuTimerSeg())}</span></button>`
+    : `<button class="btn btn-outline btn-sm" data-n="${fuEsc(nome)}" onclick="iniciarTimerFu('${f.id}',this.dataset.n)" title="Iniciar cronômetro do contato">▶️</button>`;
+  const acts=pend
+    ? `${play}${fuWa(f,ctx)}<button class="btn btn-success btn-sm" onclick="abrirRegistroFu('${f.id}')">✅ Registrar</button>
+       <button class="btn btn-outline btn-sm" onclick="editarFollowup('${f.id}')" title="Editar / Reagendar">✏️</button>
+       <button class="btn btn-outline btn-sm" onclick="cancelarFollowup('${f.id}')" title="Cancelar follow-up" style="color:var(--danger)">✕</button>`
+    : `<button class="btn btn-outline btn-sm" onclick="editarFollowup('${f.id}')" title="Ver / Editar">✏️</button>`;
+  return `<div class="fu-item" style="--fc:${cor}">
+    <div class="fu-date"><small>${sem}</small><b>${dia}</b><small>${mes}${f.hora?' · '+f.hora:''}</small></div>
+    <div class="fu-main">
+      <div class="fu-top"><b>${fuEhArq(f)?'📐 ':''}${fuEsc(nome)}</b>${fuEhArq(f)?'<span class="fu-tag fu-arq">Arquiteto</span>':''}${o?`<span class="fu-orc" onclick="verOrcamento(${o.id})">${_num(o.id)} · ${fmt(o.valorFinal)} · ${DX_ST[o.status]?.lbl||o.status}</span>`:''}</div>
+      <div class="fu-obj">🎯 ${fuEsc(f.objetivo||'—')}${f.notas?` — <span>${fuEsc(f.notas)}</span>`:''}</div>
+      ${f.status==='realizado'&&(f.notasResultado||f.proximoPasso)?`<div class="fu-obj">📝 ${fuEsc(f.notasResultado||'')}${f.proximoPasso?` · <b>Próximo passo:</b> ${fuEsc(f.proximoPasso)}`:''}</div>`:''}
+      <div class="fu-tags">${tags}<span class="fu-vend">👤 ${fuEsc(ctx.vendNome(f.vendedorId))}</span></div>
+    </div>
+    <div class="fu-act">${acts}</div>
+  </div>`;
+}
+
+// ---------- TELA: PLANEJAR FOLLOW-UP ----------
+async function renderFollowup(){
+  await syncFollowupsSupa();
+  const ctx=await fuCtx(); const s=getSessao();
+  _popSelectVend(document.getElementById('fu-filter-vend'), ctx.vends);
+  const vendF=fuFiltroVendedor('fu-filter-vend');
+  const stF=document.getElementById('fu-filter-status')?.value||'pendente';
+  const canF=document.getElementById('fu-filter-canal')?.value||'';
+  const tipoF=document.getElementById('fu-filter-tipo')?.value||'';
+  const q=(document.getElementById('fu-search')?.value||'').toLowerCase();
+  const hoje=fuHoje();
+  const all=fuVisiveis(ctx).filter(f=>(!vendF||String(f.vendedorId)===vendF)&&(!tipoF||(f.tipo||'cliente')===tipoF));
+  const fil=all.filter(f=>(!canF||f.canal===canF)&&(!q||fuNome(f,ctx).toLowerCase().includes(q)));
+  const pend=all.filter(f=>f.status==='pendente');
+  const atr=pend.filter(f=>f.data<hoje), hj=pend.filter(f=>f.data===hoje), prox=pend.filter(f=>f.data>hoje&&f.data<=fuAdd(hoje,7));
+  const realMes=all.filter(f=>f.status==='realizado'&&String(f.realizadoEm||'').slice(0,7)===hoje.slice(0,7));
+  const idsPend=new Set(pend.map(f=>f.orcId));
+  const valOrcs=ids=>_sum([...ids].map(id=>ctx.orcMap[id]).filter(Boolean),o=>o.valorFinal);
+  const abertos=ctx.orcs.filter(o=>['enviado','futura','diretoria'].includes(o.status)&&fuOrcVisivel(o,ctx)&&(!vendF||String(o.vendedorId)===vendF));
+  const semFu=abertos.filter(o=>!idsPend.has(o.id));
+  const respMes=realMes.length?realMes.filter(f=>f.resultado!=='semresposta').length/realMes.length:null;
+
+  document.getElementById('fu-kpis').innerHTML=[
+    {ico:'🚨',c:DX_G.rose,   label:'Atrasados', val:String(atr.length), sub:atr.length?dxK(valOrcs(new Set(atr.map(f=>f.orcId))))+' em negociação':'Nenhum contato vencido'},
+    {ico:'📍',c:DX_G.amber,  label:'Para Hoje', val:String(hj.length), sub:hj.length?'Contatos agendados para hoje':'Agenda de hoje livre'},
+    {ico:'🗓️',c:DX_G.indigo, label:'Próximos 7 Dias', val:String(prox.length), sub:'Contatos já planejados'},
+    {ico:'✅',c:DX_G.emerald,label:'Realizados no Mês', val:String(realMes.length), sub:respMes!=null?`Taxa de resposta ${dxPct(respMes)}`:'Nenhum contato registrado ainda'},
+    {ico:'💼',c:DX_G.gold,   label:'Valor em Acompanhamento', val:dxK(valOrcs(idsPend)), sub:`${[...idsPend].filter(Boolean).length} orçamento(s) com contato agendado`},
+    {ico:'⚠️',c:DX_G.violet, label:'Sem Follow-up', val:String(semFu.length), sub:dxK(_sum(semFu,o=>o.valorFinal))+' sem próximo contato', bar:abertos.length?semFu.length/abertos.length:0},
+  ].map(dxKpi).join('');
+
+  // Agenda
+  let html='';
+  if(stF==='pendente'){
+    const lista=fil.filter(f=>f.status==='pendente').sort((a,b)=>(a.data+(a.hora||'99')).localeCompare(b.data+(b.hora||'99')));
+    const amanha=fuAdd(hoje,1), lim=fuAdd(hoje,7);
+    const grupos=[
+      {t:'🚨 Atrasados',f:x=>x.data<hoje},{t:'📍 Hoje',f:x=>x.data===hoje},{t:'Amanhã',f:x=>x.data===amanha},
+      {t:'Próximos 7 Dias',f:x=>x.data>amanha&&x.data<=lim},{t:'Mais Adiante',f:x=>x.data>lim}];
+    html=grupos.map(g=>{ const l=lista.filter(g.f); return l.length?`<div class="fu-grp">${g.t}<b>${l.length}</b></div>`+l.map(f=>fuItemHtml(f,ctx)).join(''):''; }).join('');
+    if(!lista.length) html='<div class="dx-empty">✅ Nenhum follow-up pendente. Use as sugestões ao lado para planejar os próximos contatos.</div>';
+  } else {
+    const lista=fil.filter(f=>stF==='todos'||f.status===stF).sort((a,b)=>String(b.realizadoEm||b.data).localeCompare(String(a.realizadoEm||a.data)));
+    html=lista.length ? lista.slice(0,60).map(f=>fuItemHtml(f,ctx)).join('')+(lista.length>60?`<div class="dx-card-s" style="text-align:center">+ ${lista.length-60} registros</div>`:'')
+                      : '<div class="dx-empty">Nenhum registro encontrado</div>';
+  }
+  document.getElementById('fu-agenda').innerHTML=html;
+
+  // Sugestões C@P
+  const vf=getVendasFuturas();
+  const sug=semFu.map(o=>{
+    let data=hoje, obj=0, motivo='';
+    const dias=dxDias(o.atualizadoEm||o.criadoEm);
+    if(o.status==='enviado'){
+      if(dias<2){ data=fuAdd(hoje,2-dias); motivo=`Enviado há ${dias} dia(s) — 1º contato em ${fmtDate(data)}`; }
+      else { motivo=`Enviado há ${dias} dias sem follow-up`; obj=dias>=10?3:0; }
+    } else if(o.status==='futura'){
+      obj=5; const p=vf[o.id]?.previsao;
+      if(p){ const d=fuAdd(p,-7); data=d>hoje?d:hoje; motivo=`Venda futura · previsão ${fmtDate(p)}`; } else motivo='Venda futura sem data prevista';
+    } else { obj=4; motivo='Em análise da diretoria'; }
+    return {o,data,obj,motivo,prio:(o.valorFinal||0)*(o.status==='enviado'&&dias>=7?2:1)};
+  }).sort((a,b)=>b.prio-a.prio);
+  document.getElementById('fu-sug').innerHTML = sug.length
+    ? sug.slice(0,8).map(x=>`<div class="fu-sug">
+        <div><b>${fuEsc(ctx.cli(x.o.clienteId).nome||'—')}</b><small>${_num(x.o.id)} · ${fmt(x.o.valorFinal)} · ${fuEsc(ctx.vendNome(x.o.vendedorId))}<br>${x.motivo}</small></div>
+        <div><button class="btn btn-gold btn-sm" onclick="novoFollowup(${x.o.id},'${x.data}',${x.obj})" title="Agendar um contato">📌 Agendar</button>
+        ${x.o.status==='enviado'?`<button class="btn btn-outline btn-sm" onclick="gerarCadenciaFu(${x.o.id},'${x.data}')" title="Criar os 3 contatos da cadência C@P">⚡</button>`:''}</div>
+      </div>`).join('')+(sug.length>8?`<div class="dx-card-s" style="text-align:center;margin-top:6px">+ ${sug.length-8} outros · ${fmt(_sum(sug.slice(8),x=>x.o.valorFinal))}</div>`:'')
+    : (!fuEhAdmin()&&!ctx.meuVend
+        ? '<div class="dx-empty">Seu usuário não está vinculado a um vendedor. Peça ao administrador para definir o vendedor vinculado em Usuários.</div>'
+        : '<div class="dx-empty">✅ Todos os orçamentos em negociação têm follow-up agendado</div>');
+}
+
+// ---------- FORMULÁRIO ----------
+// Formulário: tipo de contato (cliente ou arquiteto) → pessoa → orçamento (opcional) → vendedor
+let _fuCtx=null;
+const _fuOrd=(a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR');
+function fuSetTipo(tipo){
+  document.getElementById('fu-tipo').value=tipo;
+  const arq=tipo==='arquiteto';
+  document.getElementById('fu-tipo-cli').classList.toggle('on',!arq);
+  document.getElementById('fu-tipo-arq').classList.toggle('on',arq);
+  document.getElementById('fu-cli-wrap').style.display=arq?'none':'';
+  document.getElementById('fu-arq-wrap').style.display=arq?'':'none';
+  const objEl=document.getElementById('fu-objetivo'); const atual=objEl.value;
+  const lista=arq?FU_OBJETIVOS_ARQ:FU_OBJETIVOS;
+  objEl.innerHTML=lista.map(t=>`<option>${t}</option>`).join('');
+  objEl.value=lista.includes(atual)?atual:lista[0];
+  fuAtualizarOrcs();
+}
+function fuPreencherPessoas(ctx){
+  _fuCtx=ctx;
+  const cEl=document.getElementById('fu-cli'), aEl=document.getElementById('fu-arq'), vEl=document.getElementById('fu-vend');
+  cEl.innerHTML='<option value="">Selecione o cliente...</option>'+ctx.clientes.slice().sort(_fuOrd).map(c=>`<option value="${c.id}">${fuEsc(c.nome||'—')}${c.cidade?' · '+fuEsc(c.cidade):''}</option>`).join('');
+  aEl.innerHTML='<option value="">Selecione o arquiteto...</option>'+ctx.arqs.slice().sort(_fuOrd).map(a=>`<option value="${a.id}">${fuEsc(a.nome||'—')}${a.empresa?' · '+fuEsc(a.empresa):''}</option>`).join('');
+  vEl.innerHTML='<option value="">Sem vendedor</option>'+ctx.vends.map(v=>`<option value="${v.id}">${fuEsc(v.nome)}</option>`).join('');
+}
+// Lista só os orçamentos do cliente escolhido (ou com RT do arquiteto escolhido)
+function fuAtualizarOrcs(sel){
+  const ctx=_fuCtx; if(!ctx) return;
+  const arq=document.getElementById('fu-tipo').value==='arquiteto';
+  const el=document.getElementById('fu-orc');
+  const atual=sel!==undefined?sel:parseInt(el.value)||null;
+  let ops=[];
+  if(arq){ const a=ctx.arq(parseInt(document.getElementById('fu-arq').value)); if(a.nome) ops=ctx.orcs.filter(o=>o.rt&&o.rtNome===a.nome); }
+  else { const cid=parseInt(document.getElementById('fu-cli').value); if(cid) ops=ctx.orcs.filter(o=>o.clienteId===cid); }
+  ops=ops.filter(o=>o.status!=='reprovado'||o.id===atual).sort((a,b)=>((FU_ABERTOS.includes(a.status)?0:1)-(FU_ABERTOS.includes(b.status)?0:1))||b.id-a.id);
+  el.innerHTML='<option value="">Sem orçamento vinculado</option>'+ops.map(o=>`<option value="${o.id}">${_num(o.id)} · ${fmt(o.valorFinal)} · ${DX_ST[o.status]?.lbl||o.status}${arq?' · '+fuEsc(ctx.cli(o.clienteId).nome||''):''}</option>`).join('');
+  if(atual && ops.some(o=>o.id===atual)) el.value=String(atual);
+  else { const ab=ops.filter(o=>FU_ABERTOS.includes(o.status)); el.value=(!arq&&ab.length===1)?String(ab[0].id):''; }
+  fuOrcChange();
+}
+function fuOrcChange(){
+  const o=_fuCtx?.orcMap[parseInt(document.getElementById('fu-orc').value)];
+  if(o && o.vendedorId) document.getElementById('fu-vend').value=String(o.vendedorId);
+}
+function _fuVendPadrao(ctx){ const m=_vendedorDaSessao(ctx.vends); return m?String(m.id):''; }
+function _fuSetObjetivo(v){
+  const el=document.getElementById('fu-objetivo');
+  if(v && ![...el.options].some(o=>o.value===v)){ const op=document.createElement('option'); op.textContent=v; el.appendChild(op); }
+  if(v) el.value=v;
+}
+// Cadastro rápido de cliente/arquiteto direto do formulário de follow-up
+let _cliFromFu=false;
+function novoClienteDoFu(){
+  editCliId=null; _cliFromFu=true;
+  ['cli-nome','cli-doc','cli-email','cli-tel','cli-cidade','cli-uf','cli-endereco','cli-obs'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=''; });
+  document.getElementById('modal-cliente').style.zIndex='300';
+  openModal('modal-cliente');
+  setTimeout(()=>document.getElementById('cli-nome')?.focus(),60);
+}
+let _arqFromFu=false;
+function novoArquitetoDoFu(){
+  limparFormArq(); _arqFromFu=true;
+  document.getElementById('modal-arquiteto').style.zIndex='300';
+  openModal('modal-arquiteto');
+  setTimeout(()=>document.getElementById('arq-nome')?.focus(),60);
+}
+async function fuAposCadastro(tipo, nome){
+  const ctx=await fuCtx(); fuPreencherPessoas(ctx);
+  const lista=tipo==='arquiteto'?ctx.arqs:ctx.clientes;
+  const novo=lista.filter(x=>x.nome===nome).sort((a,b)=>b.id-a.id)[0];
+  fuSetTipo(tipo);
+  if(novo) document.getElementById(tipo==='arquiteto'?'fu-arq':'fu-cli').value=String(novo.id);
+  fuAtualizarOrcs(null);
+}
+async function novoFollowup(orcId=null, data=null, objIdx=null){
+  const ctx=await fuCtx();
+  fuPreencherPessoas(ctx);
+  const o=orcId?ctx.orcMap[orcId]:null;
+  document.getElementById('fu-cli').value=o?String(o.clienteId):'';
+  document.getElementById('fu-arq').value='';
+  document.getElementById('fu-vend').value=o?.vendedorId?String(o.vendedorId):_fuVendPadrao(ctx);
+  fuSetTipo('cliente');
+  fuAtualizarOrcs(orcId);
+  document.getElementById('fu-modal-title').textContent='📌 Novo Follow-up';
+  document.getElementById('fu-edit-id').value='';
+  document.getElementById('fu-data').value=data||fuAdd(fuHoje(),1);
+  document.getElementById('fu-hora').value='';
+  document.getElementById('fu-canal').value='whatsapp';
+  document.getElementById('fu-temp').value='';
+  _fuSetObjetivo(FU_OBJETIVOS[objIdx]||FU_OBJETIVOS[0]);
+  document.getElementById('fu-notas').value='';
+  document.getElementById('fu-cadencia').checked=false;
+  document.getElementById('fu-cad-wrap').style.display='flex';
+  closeModal('modal-orc-detalhe');
+  openModal('modal-followup');
+}
+async function editarFollowup(id){
+  const f=getFollowups().find(x=>x.id===id); if(!f) return;
+  const ctx=await fuCtx();
+  fuPreencherPessoas(ctx);
+  document.getElementById('fu-cli').value=f.clienteId?String(f.clienteId):'';
+  document.getElementById('fu-arq').value=f.arquitetoId?String(f.arquitetoId):'';
+  fuSetTipo(f.tipo||'cliente');
+  fuAtualizarOrcs(f.orcId||null);
+  document.getElementById('fu-vend').value=f.vendedorId?String(f.vendedorId):'';
+  document.getElementById('fu-modal-title').textContent=f.status==='pendente'?'✏️ Editar / Reagendar Follow-up':'✏️ Follow-up '+(f.status==='realizado'?'Realizado':'Cancelado');
+  document.getElementById('fu-edit-id').value=id;
+  document.getElementById('fu-data').value=f.data||'';
+  document.getElementById('fu-hora').value=f.hora||'';
+  document.getElementById('fu-canal').value=f.canal||'whatsapp';
+  document.getElementById('fu-temp').value=f.temp||'';
+  _fuSetObjetivo(f.objetivo);
+  document.getElementById('fu-notas').value=f.notas||'';
+  document.getElementById('fu-cad-wrap').style.display='none';
+  openModal('modal-followup');
+}
+async function salvarFollowup(){
+  const tipo=document.getElementById('fu-tipo').value||'cliente';
+  const clienteId=parseInt(document.getElementById('fu-cli').value)||null;
+  const arquitetoId=parseInt(document.getElementById('fu-arq').value)||null;
+  if(tipo==='cliente' && !clienteId) return alertMsg('Selecione o cliente (ou cadastre um novo em "+ Novo")','danger');
+  if(tipo==='arquiteto' && !arquitetoId) return alertMsg('Selecione o arquiteto (ou cadastre um novo em "+ Novo")','danger');
+  const orcId=parseInt(document.getElementById('fu-orc').value)||null;
+  const data=document.getElementById('fu-data').value;
+  if(!data) return alertMsg('Informe a data do contato','danger');
+  const agora=new Date().toISOString(), quem=getSessao().nome||'';
+  const base={tipo, orcId, clienteId:tipo==='cliente'?clienteId:(_fuCtx?.orcMap[orcId]?.clienteId||null),
+    arquitetoId:tipo==='arquiteto'?arquitetoId:null,
+    vendedorId:parseInt(document.getElementById('fu-vend').value)||null, data,
+    hora:document.getElementById('fu-hora').value, canal:document.getElementById('fu-canal').value,
+    objetivo:document.getElementById('fu-objetivo').value, temp:document.getElementById('fu-temp').value,
+    notas:document.getElementById('fu-notas').value.trim(), atualizadoEm:agora};
+  const editId=document.getElementById('fu-edit-id').value;
+  const cad=!editId && document.getElementById('fu-cadencia').checked;
+  await fuMutar(arr=>{
+    if(editId){ const f=arr.find(x=>x.id===editId); if(f) Object.assign(f,base); return; }
+    arr.push({...base,id:fuNovoId(),status:'pendente',criadoEm:fuHoje(),criadoPor:quem,usuario:getSessao().user||''});
+    if(cad) FU_CADENCIA.slice(1).forEach(c=>arr.push({...base,id:fuNovoId(),data:fuAdd(data,c.n),hora:'',canal:c.canal,objetivo:c.obj,notas:'',status:'pendente',criadoEm:fuHoje(),criadoPor:quem,usuario:getSessao().user||''}));
+  });
+  closeModal('modal-followup');
+  alertMsg(editId?'Follow-up atualizado!':(cad?'Cadência criada: 3 contatos agendados!':'Follow-up agendado!'));
+  fuRefresh();
+}
+async function gerarCadenciaFu(orcId, data){
+  const ctx=await fuCtx(); const o=ctx.orcMap[orcId]; if(!o) return;
+  const linhas=FU_CADENCIA.map(c=>`• ${fmtDate(fuAdd(data,c.n))} — ${FU_CANAIS[c.canal].l}: ${c.obj}`).join('\n');
+  if(!confirm(`Criar a cadência C@P para ${_num(orcId)} · ${ctx.cli(o.clienteId).nome||''}?\n\n${linhas}`)) return;
+  const quem=getSessao().nome||'', agora=new Date().toISOString();
+  await fuMutar(arr=>FU_CADENCIA.forEach(c=>arr.push({id:fuNovoId(),tipo:'cliente',orcId,clienteId:o.clienteId,vendedorId:o.vendedorId,
+    data:fuAdd(data,c.n),hora:'',canal:c.canal,objetivo:c.obj,temp:'',notas:'',status:'pendente',criadoEm:fuHoje(),criadoPor:quem,usuario:getSessao().user||'',atualizadoEm:agora})));
+  alertMsg('Cadência criada: 3 contatos agendados!');
+  fuRefresh();
+}
+async function cancelarFollowup(id){
+  if(!confirm('Cancelar este follow-up?')) return;
+  await fuMutar(arr=>{ const f=arr.find(x=>x.id===id); if(f){ f.status='cancelado'; f.atualizadoEm=new Date().toISOString(); } });
+  const tm=fuTimerGet(); if(tm&&tm.id===id) fuTimerSet(null);
+  alertMsg('Follow-up cancelado');
+  fuRefresh();
+}
+
+// ---------- REGISTRAR CONTATO ----------
+async function abrirRegistroFu(id){
+  const f=getFollowups().find(x=>x.id===id); if(!f) return;
+  const ctx=await fuCtx(); const o=ctx.orcMap[f.orcId]; const canal=FU_CANAIS[f.canal]||{l:f.canal,i:''};
+  document.getElementById('fur-id').value=id;
+  const tm=fuTimerGet();
+  document.getElementById('fur-dur').value=(tm&&tm.id===id)?(fuTimerSeg()/60).toFixed(1):(f.duracaoSeg?(f.duracaoSeg/60).toFixed(1):'');
+  document.getElementById('fur-dur-hint').textContent=(tm&&tm.id===id)?'⏱️ Tempo do cronômetro: '+fuClock(fuTimerSeg()):'Opcional — use o ▶️ na agenda para cronometrar';
+  document.getElementById('fur-info').innerHTML=`<b>${fuEhArq(f)?'📐 ':''}${fuEsc(fuNome(f,ctx))}</b>${fuEhArq(f)?' · Arquiteto':''}${o?` · ${_num(o.id)} · ${fmt(o.valorFinal)}`:''}<br>
+    ${canal.i} ${canal.l} · planejado para ${fmtDate(f.data)}${f.hora?' às '+f.hora:''}<br>🎯 ${fuEsc(f.objetivo||'')}${f.notas?'<br>📝 '+fuEsc(f.notas):''}`;
+  document.getElementById('fur-resultado').value='';
+  document.getElementById('fur-temp').value=f.temp||'';
+  document.getElementById('fur-notas').value='';
+  document.getElementById('fur-prox').value='';
+  document.getElementById('fur-agendar').checked=true;
+  document.getElementById('fur-data').value=fuAdd(fuHoje(),3);
+  document.getElementById('fur-canal').value=f.canal||'whatsapp';
+  furToggle();
+  openModal('modal-fu-registro');
+}
+function furResultadoChange(){
+  const r=document.getElementById('fur-resultado').value;
+  const fim=['fechou','perdeu'].includes(r);
+  document.getElementById('fur-agendar').checked=!fim;
+  const n={semresposta:2,ajuste:2,depois:7,analise:3,interessado:2}[r]||3;
+  document.getElementById('fur-data').value=fuAdd(fuHoje(),n);
+  if(r==='semresposta') document.getElementById('fur-canal').value='ligacao';
+  furToggle();
+}
+function furToggle(){ document.getElementById('fur-prox-wrap').style.display=document.getElementById('fur-agendar').checked?'grid':'none'; }
+async function salvarRegistroFu(){
+  const id=document.getElementById('fur-id').value;
+  const r=document.getElementById('fur-resultado').value;
+  if(!r) return alertMsg('Selecione o resultado do contato','danger');
+  const temp=document.getElementById('fur-temp').value;
+  const notas=document.getElementById('fur-notas').value.trim();
+  const prox=document.getElementById('fur-prox').value.trim();
+  const ag=document.getElementById('fur-agendar').checked;
+  const dataProx=document.getElementById('fur-data').value;
+  const canalProx=document.getElementById('fur-canal').value;
+  if(ag && !dataProx) return alertMsg('Informe a data do próximo contato','danger');
+  const durMin=parseFloat(String(document.getElementById('fur-dur').value).replace(',','.'));
+  const duracaoSeg=isFinite(durMin)&&durMin>0?Math.round(durMin*60):0;
+  const quem=getSessao().nome||'', agora=new Date().toISOString();
+  let orcId=null;
+  await fuMutar(arr=>{
+    const f=arr.find(x=>x.id===id); if(!f) return;
+    orcId=f.orcId;
+    Object.assign(f,{status:'realizado',resultado:r,duracaoSeg,temp:temp||f.temp||'',notasResultado:notas,proximoPasso:prox,realizadoEm:fuHoje(),realizadoPor:quem,atualizadoEm:agora});
+    // Venda decidida: cancela os demais contatos pendentes deste orçamento
+    if(['fechou','perdeu'].includes(r)) arr.forEach(x=>{ if(x.orcId===f.orcId&&x.status==='pendente'&&x.id!==id){ x.status='cancelado'; x.atualizadoEm=agora; } });
+    if(ag) arr.push({id:fuNovoId(),tipo:f.tipo||'cliente',orcId:f.orcId,clienteId:f.clienteId,arquitetoId:f.arquitetoId||null,vendedorId:f.vendedorId,data:dataProx,hora:'',canal:canalProx,
+      objetivo:prox||'Dar Continuidade à Negociação',temp:temp||f.temp||'',notas:'',status:'pendente',criadoEm:fuHoje(),criadoPor:quem,usuario:f.usuario||getSessao().user||'',atualizadoEm:agora});
+  });
+  const tm=fuTimerGet(); if(tm&&tm.id===id) fuTimerSet(null);
+  closeModal('modal-fu-registro');
+  alertMsg('Contato registrado!'+(duracaoSeg?' Tempo: '+fuDur(duracaoSeg)+'.':'')+(ag?' Próximo follow-up agendado.':''));
+  if(orcId){
+    const o=(await SUPA_DB.get('orcamentos')).find(x=>x.id===orcId);
+    if(r==='fechou' && o && !GANHO_ST.includes(o.status) && confirm(`Venda fechada! Deseja marcar o orçamento ${_num(o.id)} como Aprovado agora?`)) return mudarStatus(o.id,'aprovado');
+    if(r==='perdeu' && o && o.status!=='reprovado' && confirm(`Deseja registrar a reprovação do orçamento ${_num(o.id)} agora, com o motivo da perda?`)) return abrirReprovar(o.id,'followup');
+  }
+  fuRefresh();
+}
+
+// ---------- TELA: DASHBOARD FOLLOW-UP ----------
+async function renderDashFollowup(){
+  await syncFollowupsSupa();
+  const ctx=await fuCtx();
+  _popSelectVend(document.getElementById('dfu-filter-vend'), ctx.vends);
+  const vendF=fuFiltroVendedor('dfu-filter-vend');
+  const ini=document.getElementById('dfu-filter-ini')?.value||'';
+  const fim=document.getElementById('dfu-filter-fim')?.value||'';
+  const tipoF=document.getElementById('dfu-filter-tipo')?.value||'';
+  const hoje=fuHoje();
+  const doVend=x=>!vendF||String(x.vendedorId)===vendF;
+  const orcOk=o=>fuOrcVisivel(o,ctx)&&doVend(o);
+  const inP=d=>!!d&&(!ini||d>=ini)&&(!fim||d<=fim);
+  const all=fuVisiveis(ctx).filter(f=>doVend(f)&&(!tipoF||(f.tipo||'cliente')===tipoF));
+  const plan=all.filter(f=>f.status!=='cancelado'&&inP(f.data));
+  const real=all.filter(f=>f.status==='realizado'&&inP(f.realizadoEm||f.data));
+  const devidos=plan.filter(f=>f.data<=hoje);
+  const feitosDev=devidos.filter(f=>f.status==='realizado');
+  const exec=devidos.length?feitosDev.length/devidos.length:null;
+  const atr=all.filter(f=>f.status==='pendente'&&f.data<hoje);
+  const emDia=real.length?real.filter(f=>String(f.realizadoEm||'')<=f.data).length/real.length:null;
+  const resp=real.length?real.filter(f=>f.resultado!=='semresposta').length/real.length:null;
+  const idsReal=new Set(all.filter(f=>f.status==='realizado').map(f=>f.orcId));
+  const orcsC=[...new Set(real.map(f=>f.orcId))].map(id=>ctx.orcMap[id]).filter(Boolean);
+  const gan=orcsC.filter(o=>GANHO_ST.includes(o.status)), per=orcsC.filter(o=>o.status==='reprovado');
+  const conv=(gan.length+per.length)?gan.length/(gan.length+per.length):null;
+  const decSem=ctx.orcs.filter(o=>orcOk(o)&&(!ini&&!fim||inP(_dt10(o.criadoEm)))&&!idsReal.has(o.id)&&(GANHO_ST.includes(o.status)||o.status==='reprovado'));
+  const convSem=decSem.length?decSem.filter(o=>GANHO_ST.includes(o.status)).length/decSem.length:null;
+  const idsGan=new Set(gan.map(o=>o.id));
+  const contPorVenda=gan.length?real.filter(f=>idsGan.has(f.orcId)).length/gan.length:null;
+  const valAtr=_sum([...new Set(atr.map(f=>f.orcId))].map(id=>ctx.orcMap[id]).filter(Boolean),o=>o.valorFinal);
+
+  document.getElementById('dfu-kpis').innerHTML=[
+    {ico:'📌',c:DX_G.indigo, label:'Follow-ups Planejados', val:String(plan.length), sub:`${real.length} realizado(s) no período`},
+    {ico:'✅',c:DX_G.emerald,label:'Taxa de Execução', val:exec==null?'—':dxPct(exec), sub:`${feitosDev.length} de ${devidos.length} contatos devidos foram feitos`, bar:exec||0},
+    {ico:'🚨',c:DX_G.rose,   label:'Atrasados Agora', val:String(atr.length), sub:atr.length?dxK(valAtr)+' em negociação esperando':'Agenda em dia'},
+    {ico:'⏱️',c:DX_G.sky,    label:'Feitos no Prazo', val:emDia==null?'—':dxPct(emDia), sub:'Contatos feitos até a data planejada', bar:emDia||0},
+    {ico:'💬',c:DX_G.amber,  label:'Taxa de Resposta', val:resp==null?'—':dxPct(resp), sub:'Contatos em que o cliente respondeu', bar:resp||0},
+    {ico:'🎯',c:DX_G.gold,   label:'Conversão com Follow-up', val:conv==null?'—':dxPct(conv), sub:[convSem!=null?`Sem follow-up: ${dxPct(convSem)}`:'',contPorVenda?`${contPorVenda.toFixed(1).replace('.',',')} contatos por venda`:''].filter(Boolean).join(' · ')||'Orçamentos decididos após contato', bar:conv||0},
+  ].map(dxKpi).join('');
+
+  // Semanas
+  const seg=iso=>{ const x=new Date(iso+'T12:00'); x.setDate(x.getDate()-((x.getDay()+6)%7)); return fuIso(x); };
+  const s0=seg(hoje), semanas=[];
+  for(let i=7;i>=0;i--){ const k=fuAdd(s0,-7*i); semanas.push({k,lbl:fmtDate(k).slice(0,5),p:0,r:0}); }
+  all.forEach(f=>{
+    if(f.status!=='cancelado'&&f.data){ const w=semanas.find(x=>x.k===seg(f.data)); if(w) w.p++; }
+    if(f.status==='realizado'&&f.realizadoEm){ const w=semanas.find(x=>x.k===seg(f.realizadoEm)); if(w) w.r++; }
+  });
+  document.getElementById('dfu-semanas').innerHTML=dxColunas(semanas,[{k:'p',c:DX_G.indigo},{k:'r',c:DX_G.emerald}],
+    m=>`<b>Semana de ${m.lbl}</b><br>Planejados: ${m.p}<br>Realizados: ${m.r}`, v=>String(Math.round(v)));
+
+  // Resultados
+  const resRows=Object.entries(FU_RES).map(([k,v])=>({k,n:v.l,c:v.c,q:real.filter(f=>f.resultado===k).length})).filter(r=>r.q);
+  document.getElementById('dfu-resultados').innerHTML=dxHBars(resRows.map(r=>({n:r.n,v:r.q,vl:`${r.q}×`,extra:dxPct(real.length?r.q/real.length:0),c:r.c})),DX_G.sky);
+
+  // Canal
+  const canRows=Object.entries(FU_CANAIS).map(([k,v],i)=>{ const l=real.filter(f=>f.canal===k);
+    return {n:v.i+' '+v.l,q:l.length,r:l.length?l.filter(f=>f.resultado!=='semresposta').length/l.length:0,c:CORES_SERIE[(i+3)%CORES_SERIE.length]}; }).filter(r=>r.q);
+  document.getElementById('dfu-canal').innerHTML=dxHBars(canRows.map(r=>({n:r.n,v:r.q,vl:`${r.q} contato(s)`,extra:`resposta ${dxPct(r.r)}`,c:r.c})),DX_G.sky);
+
+  // Temperatura
+  const abertos=ctx.orcs.filter(o=>FU_ABERTOS.includes(o.status)&&orcOk(o));
+  const ultTemp={};
+  fuVisiveis(ctx).filter(f=>f.temp).sort((a,b)=>String(a.atualizadoEm||a.realizadoEm||a.data).localeCompare(String(b.atualizadoEm||b.realizadoEm||b.data)))
+    .forEach(f=>{ ultTemp[f.orcId]=f.temp; });
+  const tRows=[...Object.entries(FU_TEMP).map(([k,v])=>({n:v.i+' '+v.l,c:v.c,l:abertos.filter(o=>ultTemp[o.id]===k)})),
+    {n:'Sem Avaliação',c:['#cbd5e1','#64748b'],l:abertos.filter(o=>!ultTemp[o.id])}].filter(r=>r.l.length);
+  document.getElementById('dfu-temp').innerHTML=dxHBars(tRows.map(r=>({n:r.n,v:_sum(r.l,o=>o.valorFinal),vl:dxK(_sum(r.l,o=>o.valorFinal)),extra:`${r.l.length} orç.`,c:r.c})),DX_G.amber);
+
+  // Cobertura
+  const idsPend=new Set(all.filter(f=>f.status==='pendente').map(f=>f.orcId));
+  const neg=ctx.orcs.filter(o=>['enviado','futura','diretoria'].includes(o.status)&&orcOk(o));
+  const com=neg.filter(o=>idsPend.has(o.id)), sem=neg.filter(o=>!idsPend.has(o.id));
+  const cob=neg.length?com.length/neg.length:null;
+  document.getElementById('dfu-cob').innerHTML = neg.length
+    ? `<div class="fn-box" style="margin-bottom:14px"><small>Cobertura</small><b>${dxPct(cob)}</b>
+        <div class="dx-bar"><span style="width:${cob*100}%;background:${dxGrad(cob>=0.8?DX_G.emerald:cob>=0.5?DX_G.amber:DX_G.rose,90)}"></span></div>
+        <p>${com.length} de ${neg.length} orçamentos em negociação têm próximo contato agendado</p></div>`
+      + dxHBars([{n:'✅ Com follow-up agendado',v:_sum(com,o=>o.valorFinal),vl:dxK(_sum(com,o=>o.valorFinal)),extra:`${com.length} orç.`,c:DX_G.emerald},
+                 {n:'⚠️ Sem follow-up',v:_sum(sem,o=>o.valorFinal),vl:dxK(_sum(sem,o=>o.valorFinal)),extra:`${sem.length} orç.`,c:DX_G.rose}].filter(r=>r.v||r.extra!=='0 orç.'),DX_G.emerald)
+    : '<div class="dx-empty">Nenhum orçamento em negociação</div>';
+
+  // Por vendedor
+  const vm={};
+  const reg=k=>vm[k]||(vm[k]={n:ctx.vendNome(+k||null),p:0,r:0,d:0,dr:0,a:0,resp:0,g:new Set(),t:0,tc:0});
+  plan.forEach(f=>{ const r=reg(f.vendedorId||0); r.p++; if(f.data<=hoje){ r.d++; if(f.status==='realizado') r.dr++; } });
+  real.forEach(f=>{ const r=reg(f.vendedorId||0); r.r++; if(f.resultado!=='semresposta') r.resp++; if(idsGan.has(f.orcId)) r.g.add(f.orcId); if(f.duracaoSeg>0){ r.t+=f.duracaoSeg; r.tc++; } });
+  atr.forEach(f=>reg(f.vendedorId||0).a++);
+  const vRows=Object.values(vm).sort((a,b)=>b.r-a.r||b.p-a.p);
+  document.getElementById('dfu-vend').innerHTML = vRows.length ? `<div class="table-wrap"><table class="an-table">
+    <thead><tr><th>Vendedor</th><th class="r">Planejados</th><th class="r">Realizados</th><th class="r">Atrasados</th><th class="r">Execução</th><th class="r">Taxa de Resposta</th><th class="r">Vendas Após Follow-up</th><th class="r">Tempo Total</th><th class="r">Tempo Médio</th></tr></thead>
+    <tbody>${vRows.map(r=>{ const ex=r.d?r.dr/r.d:null; return `<tr><td><b>${fuEsc(r.n)}</b></td><td class="r">${r.p}</td><td class="r" style="color:var(--success);font-weight:600">${r.r}</td>
+      <td class="r" style="color:${r.a?'var(--danger)':'var(--text3)'};font-weight:${r.a?700:400}">${r.a}</td>
+      <td class="r"><b style="color:${ex==null?'var(--text3)':ex>=0.8?'var(--success)':ex>=0.5?'var(--warning)':'var(--danger)'}">${ex==null?'—':dxPct(ex)}</b></td>
+      <td class="r">${r.r?dxPct(r.resp/r.r):'—'}</td><td class="r">${r.g.size}</td>
+      <td class="r">${r.t?fuDur(r.t):'—'}</td><td class="r">${r.tc?fuDur(r.t/r.tc):'—'}</td></tr>`; }).join('')}</tbody></table></div>`
+    : '<div class="dx-empty">Nenhum follow-up registrado ainda. Comece pela tela Planejar Follow-up.</div>';
+
+  // Tempo investido (cronômetro)
+  const crono=real.filter(f=>f.duracaoSeg>0);
+  const tTot=_sum(crono,f=>f.duracaoSeg), tMed=crono.length?tTot/crono.length:0;
+  const tGan=_sum(crono.filter(f=>idsGan.has(f.orcId)),f=>f.duracaoSeg);
+  document.getElementById('dfu-tempo').innerHTML = crono.length
+    ? `<div class="fn-conv">
+        <div class="fn-box"><small>Tempo Total</small><b>${fuDur(tTot)}</b><p>Em ${crono.length} contato(s) cronometrado(s)</p></div>
+        <div class="fn-box"><small>Tempo Médio</small><b>${fuDur(tMed)}</b><p>Por contato realizado</p></div>
+        <div class="fn-box"><small>Cronometrados</small><b>${dxPct(real.length?crono.length/real.length:0)}</b><p>${crono.length} de ${real.length} contatos com tempo registrado</p></div>
+        <div class="fn-box"><small>Tempo por Venda</small><b>${gan.length&&tGan?fuDur(tGan/gan.length):'—'}</b><p>Tempo de contato por venda fechada</p></div>
+      </div>
+      <div style="margin-top:16px">${dxHBars([['cliente','👤 Clientes',DX_G.indigo],['arquiteto','📐 Arquitetos',DX_G.violet]].map(([k,n,c])=>{ const l=crono.filter(f=>(f.tipo||'cliente')===k); const t=_sum(l,f=>f.duracaoSeg);
+          return {n,v:t,vl:fuDur(t),extra:l.length?`${l.length} contato(s) · média ${fuDur(t/l.length)}`:'',c}; }).filter(r=>r.v),DX_G.indigo)}</div>`
+    : '<div class="dx-empty">Nenhum contato cronometrado ainda. Use o botão ▶️ na agenda ao iniciar cada contato.</div>';
+  const tCan=Object.entries(FU_CANAIS).map(([k,v],i)=>{ const l=crono.filter(f=>f.canal===k); const t=_sum(l,f=>f.duracaoSeg);
+    return {n:v.i+' '+v.l,q:l.length,m:l.length?t/l.length:0,c:CORES_SERIE[(i+3)%CORES_SERIE.length]}; }).filter(r=>r.q);
+  document.getElementById('dfu-tempo-canal').innerHTML=dxHBars(tCan.map(r=>({n:r.n,v:r.m,vl:fuDur(r.m),extra:`${r.q} contato(s)`,c:r.c})),DX_G.sky);
+  const tVend=Object.values(vm).filter(r=>r.t).sort((a,b)=>b.t-a.t);
+  document.getElementById('dfu-tempo-vend').innerHTML=dxHBars(tVend.map((r,i)=>({n:r.n,v:r.t,vl:fuDur(r.t),extra:`média ${fuDur(r.t/r.tc)}`,c:CORES_SERIE[(i+5)%CORES_SERIE.length]})),DX_G.teal);
+
+  // Leitura
+  const ins=[];
+  if(!all.length) ins.push({k:'info',ico:'ℹ️',txt:'Ainda não há follow-ups registrados. Use <b>Planejar Follow-up</b> e as sugestões C@P para montar a agenda dos orçamentos em negociação.'});
+  else{
+    if(atr.length){ const velho=atr.slice().sort((a,b)=>a.data.localeCompare(b.data))[0];
+      ins.push({k:'bad',ico:'🚨',txt:`<b>${atr.length}</b> follow-up(s) atrasado(s), com ${fmt(valAtr)} em negociação parada. O mais antigo é de <b>${fuEsc(fuNome(velho,ctx))}</b>, vencido há ${-fuDias(velho.data)} dia(s).`}); }
+    if(exec!=null) ins.push(exec>=0.8
+      ? {k:'good',ico:'✅',txt:`Boa disciplina: <b>${dxPct(exec)}</b> dos contatos planejados foram executados.`}
+      : {k:'warn',ico:'📋',txt:`Só <b>${dxPct(exec)}</b> dos contatos planejados foram executados. Reserve um horário fixo do dia para follow-up — ex.: 10h e 16h — e registre o resultado logo após cada contato.`});
+    if(conv!=null && convSem!=null && conv>convSem) ins.push({k:'good',ico:'🎯',txt:`Orçamentos com follow-up convertem <b>${dxPct(conv)}</b>, contra <b>${dxPct(convSem)}</b> dos que não receberam contato. O acompanhamento está gerando venda.`});
+    else if(conv!=null && convSem!=null) ins.push({k:'warn',ico:'🔎',txt:`A conversão com follow-up (${dxPct(conv)}) não está acima da conversão sem follow-up (${dxPct(convSem)}). Revise o roteiro: o contato precisa trazer algo novo — alternativa, condição ou prazo — e não apenas perguntar se o cliente decidiu.`});
+    if(resp!=null && resp<0.5 && canRows.length>1){ const best=canRows.slice().sort((a,b)=>b.r-a.r)[0];
+      ins.push({k:'warn',ico:'💬',txt:`Taxa de resposta baixa (${dxPct(resp)}). O canal com melhor retorno tem sido <b>${best.n}</b> (${dxPct(best.r)}) — priorize-o nas próximas tentativas.`}); }
+    if(sem.length) ins.push({k:'warn',ico:'⚠️',txt:`<b>${sem.length}</b> orçamento(s) em negociação estão sem próximo contato (${fmt(_sum(sem,o=>o.valorFinal))}). Todo orçamento enviado deve sair com o próximo follow-up já agendado.`});
+    const quentes=abertos.filter(o=>ultTemp[o.id]==='quente');
+    if(quentes.length) ins.push({k:'info',ico:'🔥',txt:`<b>${quentes.length}</b> cliente(s) avaliados como quentes somam <b>${fmt(_sum(quentes,o=>o.valorFinal))}</b>. São os contatos com maior chance de fechar — priorize-os na agenda desta semana.`});
+    const sr={}; all.filter(f=>f.status==='realizado'&&f.resultado==='semresposta').forEach(f=>{ sr[f.orcId]=(sr[f.orcId]||0)+1; });
+    const insist=Object.entries(sr).filter(([id,n])=>n>=3&&FU_ABERTOS.includes(ctx.orcMap[id]?.status));
+    if(insist.length) ins.push({k:'info',ico:'✉️',txt:`<b>${insist.length}</b> orçamento(s) já tiveram 3 ou mais tentativas sem resposta. Envie a mensagem de encerramento ("vou arquivar sua proposta — posso ajudar em algo antes?") ou mova para Venda Futura.`});
+  }
+  if(real.length>=3 && crono.length<real.length/2) ins.push({k:'info',ico:'⏱️',txt:`Apenas ${crono.length} de ${real.length} contatos tiveram o tempo cronometrado. Use o ▶️ ao iniciar cada contato para medir quanto tempo o time investe em follow-up.`});
+  if(tCan.length>1){ const lento=tCan.slice().sort((a,b)=>b.m-a.m)[0]; if(lento.q>=3 && lento.m>=tMed*1.5) ins.push({k:'info',ico:'⏳',txt:`Contatos por <b>${lento.n}</b> levam em média ${fuDur(lento.m)}, bem acima da média geral (${fuDur(tMed)}). Avalie usar esse canal só quando a negociação estiver mais madura.`}); }
+  document.getElementById('dfu-insights').innerHTML=dxInsHtml(ins);
+}
+
 // ===================== ATUALIZAR SISTEMA =====================
 // Recarrega todos os dados do Supabase (orçamentos, cadastros, usuários,
 // permissões, empresa e vendas futuras) e redesenha a tela atual.
@@ -6476,12 +7433,12 @@ async function atualizarSistema(){
     Object.keys(_cache).forEach(k=>delete _cache[k]);
     Object.keys(_fotoThumbCache).forEach(k=>delete _fotoThumbCache[k]);
     _supaOnline=true;
-    await Promise.all([syncUsuariosSupa(),syncPermissoesSupa(),syncEmpresaSupa(),syncVendasFuturasSupa()].map(p=>Promise.resolve(p).catch(()=>{})));
+    await Promise.all([syncUsuariosSupa(),syncPermissoesSupa(),syncEmpresaSupa(),syncVendasFuturasSupa(),syncFollowupsSupa()].map(p=>Promise.resolve(p).catch(()=>{})));
     const [orcs,vends,arqs]=await Promise.all([
       SUPA_DB.get('orcamentos'),SUPA_DB.get('vendedores'),SUPA_DB.get('arquitetos'),
       SUPA_DB.get('clientes'),SUPA_DB.get('produtos')
     ]);
-    _refazerSelect(['dash-vendedor','orc-filter-vend','fun-filter-vend','rep-filter-vend','pd-filter-vend','ag-filter-vend','vf-filter-vend'],
+    _refazerSelect(['dash-vendedor','orc-filter-vend','fun-filter-vend','rep-filter-vend','pd-filter-vend','ag-filter-vend','vf-filter-vend','fu-filter-vend','dfu-filter-vend'],
       vends.map(v=>[v.id,v.nome]));
     _refazerSelect(['arq-filter-nome'], arqs.map(a=>[a.nome,a.nome]));
     _refazerSelect(['rep-filter-motivo'], [...new Set(orcs.filter(o=>o.status==='reprovado').map(o=>o.motivoReprovacao||'Não informado'))].sort().map(m=>[m,m]));
